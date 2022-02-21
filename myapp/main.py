@@ -98,6 +98,7 @@ def ticker3_change(attrname, old, new):
     TICKER[1].completions = nix(new, TICKER_GENELIST)
     TICKER[3].completions = nix(new, TICKER_GENELIST)
 
+
 def ticker4_change(attrname, old, new):
     print(f"ticker 4 changes to {new}")
     global TICKER_INDEX
@@ -108,6 +109,7 @@ def ticker4_change(attrname, old, new):
 
 
 TICKER_FUNCTION_LIST = [ticker1_change, ticker2_change, ticker3_change, ticker4_change]
+
 
 def correlation_update(attrname, old, new):
     gene = new
@@ -154,7 +156,6 @@ def correlation_update(attrname, old, new):
     me_cor2_source.data[y_to_change] = cor_y[2]
 
     # change line plot legend and scatter plot
-
 
 
 def jo_subtype_update(attrname, old, new):
@@ -390,6 +391,7 @@ def update_mrna_correlation(attrname, old, new):
 
     mRNA_table_gene_col_name.title = f'Genes correlated with {Gene}' # update plot title
     print("Step 3: change table")
+
 
 def update_protein_correlation(attrname, old, new):
     """ function that responds to correlation table  text box change"""
