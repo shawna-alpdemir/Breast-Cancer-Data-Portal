@@ -10,8 +10,8 @@ from functools import lru_cache # a function that helps in reducing the executio
 # import Style_Plot as style
 
 # Global variables
-SUBTYPE_PLOT_WIDTH = 600
-SUBTYPE_PLOT_HEIGHT = 300
+SUBTYPE_PLOT_WIDTH = 500
+SUBTYPE_PLOT_HEIGHT = 250
 
 ########################################################################################################################
 ################################################### Johansson ##########################################################
