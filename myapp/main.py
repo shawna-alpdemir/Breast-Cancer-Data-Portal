@@ -22,7 +22,6 @@ from Style_Plot import StylePlots
 from Subtype_Average_DF import jo_Subtype_Avg_SEM_DFs, kr_Subtype_Avg_SEM_DFs, me_Subtype_Avg_SEM_DFs
 from Subtype_Average_Plot_Source import jo_Subtype_Avg_Plot_Source, kr_Subtype_Avg_Plot_Source, me_Subtype_Avg_Plot_Source, reverseTuple
 from Subtype_Plot import jo_Subtype_Plot, kr_Subtype_Plot, me_Subtype_Plot
-#from CorTool_widget import protein_import_data, mrna_import_data, df_to_dict_converter, button_callback
 
 ######################################### Row 0: Import all necessary functions ########################################
 # From Import_data.py
@@ -71,6 +70,7 @@ def nix(val, lst):
     """function that prevents user input the same gene in other tickers"""
     return [x for x in lst if x!= val]
 
+
 def ticker1_change(attrname, old, new):
     """ change function that triggers the update"""
     print(f"ticker 1 changes to {new}")
@@ -80,6 +80,7 @@ def ticker1_change(attrname, old, new):
     TICKER[2].completions = nix(new, TICKER_GENELIST)
     TICKER[3].completions = nix(new, TICKER_GENELIST)
 
+
 def ticker2_change(attrname, old, new):
     print(f"ticker 2 changes to {new}")
     global TICKER_INDEX
@@ -87,6 +88,7 @@ def ticker2_change(attrname, old, new):
     TICKER[0].completions = nix(new, TICKER_GENELIST)
     TICKER[2].completions = nix(new, TICKER_GENELIST)
     TICKER[3].completions = nix(new, TICKER_GENELIST)
+
 
 def ticker3_change(attrname, old, new):
     print(f"ticker 3 changes to {new}")
@@ -104,10 +106,8 @@ def ticker4_change(attrname, old, new):
     TICKER[1].completions = nix(new, TICKER_GENELIST)
     TICKER[2].completions = nix(new, TICKER_GENELIST)
 
+
 TICKER_FUNCTION_LIST = [ticker1_change, ticker2_change, ticker3_change, ticker4_change]
-
-
-
 
 def correlation_update(attrname, old, new):
     gene = new
@@ -152,6 +152,9 @@ def correlation_update(attrname, old, new):
     kr_cor2_source.data[y_to_change] = cor_y[1]
     me_cor2_source.data[x_to_change] = cor_x[2]
     me_cor2_source.data[y_to_change] = cor_y[2]
+
+    # change line plot legend and scatter plot
+
 
 
 def jo_subtype_update(attrname, old, new):
@@ -313,7 +316,7 @@ def update(attrname, old, new):
 
 
 def update_mrna_correlation(attrname, old, new):
-    """ function that responds to text box change"""
+    """ function that responds to correlation table text box change"""
     Gene = new
     print("Step 1: get new gene name")
 
@@ -389,7 +392,7 @@ def update_mrna_correlation(attrname, old, new):
     print("Step 3: change table")
 
 def update_protein_correlation(attrname, old, new):
-    """ function that responds to text box change"""
+    """ function that responds to correlation table  text box change"""
     Gene = new
     print("Step 1: get new gene name")
 
@@ -466,31 +469,35 @@ def update_protein_correlation(attrname, old, new):
 
 
 ################################# Row 1: Protein Complex Subunit Correlation Plot ######################################
+LINE_PLOT_WIDTH = 1000
+LINE_PLOT_HEIGHT = 200
+
 # Initializing the figure object
 jo_plot_p = figure(x_range=FactorRange(*tuple(zip(jo_df_protein['Pam50'], jo_df_protein.index))), title='',
                    x_axis_label='', y_axis_label='protein z-score',
-                   plot_width=1000, plot_height=200)
+                   plot_width=LINE_PLOT_WIDTH, plot_height=LINE_PLOT_HEIGHT)
 jo_plot_m = figure(x_range=FactorRange(*tuple(zip(jo_df_mrna['Pam50'], jo_df_mrna.index))), title='', x_axis_label='',
                    y_axis_label='mRNA z-score',
-                   plot_width=1000, plot_height=200)
+                   plot_width=LINE_PLOT_WIDTH, plot_height=LINE_PLOT_HEIGHT)
 
 kr_plot_p = figure(x_range=FactorRange(*tuple(zip(kr_df_protein['PAM50'], kr_df_protein.index))), title='',
                    x_axis_label='', y_axis_label='protein z-score',
-                   plot_width=1000, plot_height=200)
+                   plot_width=LINE_PLOT_WIDTH, plot_height=LINE_PLOT_HEIGHT)
 kr_plot_m = figure(x_range=FactorRange(*tuple(zip(kr_df_mrna['PAM50'], kr_df_mrna.index))), title='', x_axis_label='',
                    y_axis_label='mRNA z-score',
-                   plot_width=1000, plot_height=200)
+                   plot_width=LINE_PLOT_WIDTH, plot_height=LINE_PLOT_HEIGHT)
 
 me_plot_p = figure(x_range=FactorRange(*tuple(zip(me_df_protein['PAM50'], me_df_protein.index))), title='',
                    x_axis_label='', y_axis_label='protein z-score',
-                   plot_width=1000, plot_height=200)
+                   plot_width=LINE_PLOT_WIDTH, plot_height=LINE_PLOT_HEIGHT)
 me_plot_m = figure(x_range=FactorRange(*tuple(zip(me_df_mrna['PAM50'], me_df_mrna.index))), title='', x_axis_label='',
                    y_axis_label='mRNA z-score',
-                   plot_width=1000, plot_height=200)
+                   plot_width=LINE_PLOT_WIDTH, plot_height=LINE_PLOT_HEIGHT)
 subtype = 'subtype'
 protein_data = 'protein_data'
 mRNA_data = 'mRNA_data'
 gene = 'gene'
+
 # Johansson figure
 for j in range(4):
     jo_plot_p.line(subtype, protein_data, source=jo_LineSourceList[j], color=GENE_COLORS[j], legend_label=GENE_NUMBER[j])
@@ -562,24 +569,27 @@ button4.js_on_event("button_click", CustomJS(args=dict(source=kr_LineSourceList[
 button4.js_on_event("button_click", CustomJS(args=dict(source=me_LineSourceList[3]),code=open(join(dirname(__file__),"download_javascript/me_download.js")).read()))
 
 ################################# Row 2: mRNA-Protein Correlation Scatter Plot #########################################
+mRNA_PRO_PLOT_WIDTH = 515
+mRNA_PRO_PLOT_HEIGHT = 275
+
 # Johansson figure
 jo_plot_mRNA_prot1 = figure(title=GENE_NUMBER[0], x_axis_label='mRNA z-score', y_axis_label='protein z-score',
-                            plot_width=600, plot_height=300)
+                            plot_width=mRNA_PRO_PLOT_WIDTH, plot_height=mRNA_PRO_PLOT_HEIGHT)
 jo_plot_mRNA_prot1.scatter('x1', 'y1', source=jo_cor2_source,
                            color=factor_cmap('type1', jo_subtype_colors, jo_subtypes), legend_group='type1')
 
 jo_plot_mRNA_prot2 = figure(title=GENE_NUMBER[1], x_axis_label='mRNA z-score', y_axis_label='protein z-score',
-                            plot_width=600, plot_height=300)
+                            plot_width=mRNA_PRO_PLOT_WIDTH, plot_height=mRNA_PRO_PLOT_HEIGHT)
 jo_plot_mRNA_prot2.scatter('x2', 'y2', source=jo_cor2_source,
                            color=factor_cmap('type2', jo_subtype_colors, jo_subtypes), legend_group='type2')
 
 jo_plot_mRNA_prot3 = figure(title=GENE_NUMBER[2], x_axis_label='mRNA z-score', y_axis_label='protein z-score',
-                            plot_width=600, plot_height=300)
+                            plot_width=mRNA_PRO_PLOT_WIDTH, plot_height=mRNA_PRO_PLOT_HEIGHT)
 jo_plot_mRNA_prot3.scatter('x3', 'y3', source=jo_cor2_source,
                            color=factor_cmap('type3', jo_subtype_colors, jo_subtypes), legend_group='type3')
 
 jo_plot_mRNA_prot4 = figure(title=GENE_NUMBER[3], x_axis_label='mRNA z-score', y_axis_label='protein z-score',
-                            plot_width=600, plot_height=300)
+                            plot_width=mRNA_PRO_PLOT_WIDTH, plot_height=mRNA_PRO_PLOT_HEIGHT)
 jo_plot_mRNA_prot4.scatter('x4', 'y4', source=jo_cor2_source,
                            color=factor_cmap('type4', jo_subtype_colors, jo_subtypes), legend_group='type4')
 
@@ -590,22 +600,22 @@ for i in jo_plot_mRNA_prot:
 
 # Krug figure
 kr_plot_mRNA_prot1 = figure(title=GENE_NUMBER[0], x_axis_label='mRNA z-score', y_axis_label='protein z-score',
-                            plot_width=600, plot_height=300)
+                            plot_width=mRNA_PRO_PLOT_WIDTH, plot_height=mRNA_PRO_PLOT_HEIGHT)
 kr_plot_mRNA_prot1.scatter('x1', 'y1', source=kr_cor2_source,
                            color=factor_cmap('type1', kr_subtype_colors, kr_subtypes), legend_group='type1')
 
 kr_plot_mRNA_prot2 = figure(title=GENE_NUMBER[1], x_axis_label='mRNA z-score', y_axis_label='protein z-score',
-                            plot_width=600, plot_height=300)
+                            plot_width=mRNA_PRO_PLOT_WIDTH, plot_height=mRNA_PRO_PLOT_HEIGHT)
 kr_plot_mRNA_prot2.scatter('x2', 'y2', source=kr_cor2_source,
                            color=factor_cmap('type2', kr_subtype_colors, kr_subtypes), legend_group='type2')
 
 kr_plot_mRNA_prot3 = figure(title=GENE_NUMBER[2], x_axis_label='mRNA z-score', y_axis_label='protein z-score',
-                            plot_width=600, plot_height=300)
+                            plot_width=mRNA_PRO_PLOT_WIDTH, plot_height=mRNA_PRO_PLOT_HEIGHT)
 kr_plot_mRNA_prot3.scatter('x3', 'y3', source=kr_cor2_source,
                            color=factor_cmap('type3', kr_subtype_colors, kr_subtypes), legend_group='type3')
 
 kr_plot_mRNA_prot4 = figure(title=GENE_NUMBER[3], x_axis_label='mRNA z-score', y_axis_label='protein z-score',
-                            plot_width=600, plot_height=300)
+                            plot_width=mRNA_PRO_PLOT_WIDTH, plot_height=mRNA_PRO_PLOT_HEIGHT)
 kr_plot_mRNA_prot4.scatter('x4', 'y4', source=kr_cor2_source,
                            color=factor_cmap('type4', kr_subtype_colors, kr_subtypes), legend_group='type4')
 
@@ -616,22 +626,22 @@ for i in kr_plot_mRNA_prot:
 
 # Mertins figure
 me_plot_mRNA_prot1 = figure(title=GENE_NUMBER[0], x_axis_label='mRNA z-score', y_axis_label='protein z-score',
-                            plot_width=600, plot_height=300)
+                            plot_width=mRNA_PRO_PLOT_WIDTH, plot_height=mRNA_PRO_PLOT_HEIGHT)
 me_plot_mRNA_prot1.scatter('x1', 'y1', source=me_cor2_source,
                            color=factor_cmap('type1', me_subtype_colors, me_subtypes), legend_group='type1')
 
 me_plot_mRNA_prot2 = figure(title=GENE_NUMBER[1], x_axis_label='mRNA z-score', y_axis_label='protein z-score',
-                            plot_width=600, plot_height=300)
+                            plot_width=mRNA_PRO_PLOT_WIDTH, plot_height=mRNA_PRO_PLOT_HEIGHT)
 me_plot_mRNA_prot2.scatter('x2', 'y2', source=me_cor2_source,
                            color=factor_cmap('type2', me_subtype_colors, me_subtypes), legend_group='type2')
 
 me_plot_mRNA_prot3 = figure(title=GENE_NUMBER[2], x_axis_label='mRNA z-score', y_axis_label='protein z-score',
-                            plot_width=600, plot_height=300)
+                            plot_width=mRNA_PRO_PLOT_WIDTH, plot_height=mRNA_PRO_PLOT_HEIGHT)
 me_plot_mRNA_prot3.scatter('x3', 'y3', source=me_cor2_source,
                            color=factor_cmap('type3', me_subtype_colors, me_subtypes), legend_group='type3')
 
 me_plot_mRNA_prot4 = figure(title=GENE_NUMBER[3], x_axis_label='mRNA z-score', y_axis_label='protein z-score',
-                            plot_width=600, plot_height=300)
+                            plot_width=mRNA_PRO_PLOT_WIDTH, plot_height=mRNA_PRO_PLOT_HEIGHT)
 me_plot_mRNA_prot4.scatter('x4', 'y4', source=me_cor2_source,
                            color=factor_cmap('type4', me_subtype_colors, me_subtypes), legend_group='type4')
 
@@ -643,15 +653,15 @@ for i in me_plot_mRNA_prot:
 # put gene1 and gene2 mRNA-protein correlation plots in the same row, with a spacer between
 # put gene3 and gene4 mRNA-protein correlation plots in the row below, with a spacer between.
 # spacer to divide the rows
-scatter_plot_jo_layout = layout(column(row(jo_plot_mRNA_prot[0],Spacer(width=30),jo_plot_mRNA_prot[1]),
+scatter_plot_jo_layout = layout(column(row(jo_plot_mRNA_prot[0],jo_plot_mRNA_prot[1]),
                                        Spacer(height=30),
-                                       row(jo_plot_mRNA_prot[2],Spacer(width=30),jo_plot_mRNA_prot[3])))
-scatter_plot_kr_layout = layout(column(row(kr_plot_mRNA_prot[0],Spacer(width=30),kr_plot_mRNA_prot[1]),
+                                       row(jo_plot_mRNA_prot[2],jo_plot_mRNA_prot[3])))
+scatter_plot_kr_layout = layout(column(row(kr_plot_mRNA_prot[0],kr_plot_mRNA_prot[1]),
                                        Spacer(height=30),
-                                       row(kr_plot_mRNA_prot[2],Spacer(width=30),kr_plot_mRNA_prot[3])))
-scatter_plot_me_layout = layout(column(row(me_plot_mRNA_prot[0],Spacer(width=30),me_plot_mRNA_prot[1]),
+                                       row(kr_plot_mRNA_prot[2],kr_plot_mRNA_prot[3])))
+scatter_plot_me_layout = layout(column(row(me_plot_mRNA_prot[0],me_plot_mRNA_prot[1]),
                                        Spacer(height=30),
-                                       row(me_plot_mRNA_prot[2],Spacer(width=30),me_plot_mRNA_prot[3])))
+                                       row(me_plot_mRNA_prot[2],me_plot_mRNA_prot[3])))
 # stack 3 layouts into tab
 scatter_plot_tab = Tabs(tabs=[Panel(child=scatter_plot_jo_layout, title="Johansson"),
                               Panel(child=scatter_plot_kr_layout, title="Krug"),
@@ -669,9 +679,9 @@ me_plot_subtype_p = StylePlots(me_subtype_plot_protein, PlotID='Subtype')
 me_plot_subtype_m = StylePlots(me_subtype_plot_mrna, PlotID='Subtype')
 
 # Put the subtype plots for protein and mRNA into the same row, each plot takes a column, with a spacer spearating them
-subtype_plot_jo_layout = layout(row(column(jo_plot_subtype_p), Spacer(width=30), column(jo_plot_subtype_m)))
-subtype_plot_kr_layout = layout(row(column(kr_plot_subtype_p), Spacer(width=30), column(kr_plot_subtype_m)))
-subtype_plot_me_layout = layout(row(column(me_plot_subtype_p), Spacer(width=30), column(me_plot_subtype_m)))
+subtype_plot_jo_layout = layout(row(column(jo_plot_subtype_p), column(jo_plot_subtype_m)))
+subtype_plot_kr_layout = layout(row(column(kr_plot_subtype_p), column(kr_plot_subtype_m)))
+subtype_plot_me_layout = layout(row(column(me_plot_subtype_p), column(me_plot_subtype_m)))
 
 # Stack the 3 layouts into tabs
 subtype_plot_tab = Tabs(tabs=[Panel(child=subtype_plot_jo_layout, title="Johansson"),
@@ -814,13 +824,16 @@ protein_table_columns = [protein_table_gene_col_name,  # set up mRNA_table_colum
                          TableColumn(field='p', title='p value')]
 
 # create table widget by assembling columndatasource and mRNA_table_columns
-jo_mrna_cor_data_table = DataTable(source=jo_mrna_gene_cor_source, columns = mRNA_table_columns, width=500, height = 500, editable=True, index_position=None)
-kr_mrna_cor_data_table = DataTable(source=kr_mrna_gene_cor_source, columns = mRNA_table_columns, width=500, height = 500, editable=True, index_position=None)
-me_mrna_cor_data_table = DataTable(source=me_mrna_gene_cor_source, columns = mRNA_table_columns, width=500, height = 500, editable=True, index_position=None)
+TABLE_WIDTH = 500
+TABLE_HEIGHT = 300
 
-jo_pro_cor_data_table = DataTable(source=jo_pro_gene_cor_source, columns = protein_table_columns, width=500, height = 500, editable=True, index_position=None)
-kr_pro_cor_data_table = DataTable(source=kr_pro_gene_cor_source, columns = protein_table_columns, width=500, height = 500, editable=True, index_position=None)
-me_pro_cor_data_table = DataTable(source=me_pro_gene_cor_source, columns = protein_table_columns, width=500, height = 500, editable=True, index_position=None)
+jo_mrna_cor_data_table = DataTable(source=jo_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=True, index_position=None)
+kr_mrna_cor_data_table = DataTable(source=kr_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=True, index_position=None)
+me_mrna_cor_data_table = DataTable(source=me_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=True, index_position=None)
+
+jo_pro_cor_data_table = DataTable(source=jo_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=True, index_position=None)
+kr_pro_cor_data_table = DataTable(source=kr_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=True, index_position=None)
+me_pro_cor_data_table = DataTable(source=me_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=True, index_position=None)
 
 # combine tables into tabs
 cor_pro_table_tab = Tabs(tabs=[Panel(child=jo_pro_cor_data_table, title ="Johansson"),
@@ -850,10 +863,11 @@ pro_cor_data_download_button.js_on_event("button_click", CustomJS(args=dict(sour
 
 
 ###################################################### Run the application #############################################
-ToolText = "Breast Cancer Data Portal"
-ToolTitleDiv = Div(text=ToolText,
+ToolTitleText = "Breast Cancer Data Portal"
+ToolTitleDiv = Div(text=ToolTitleText,
                    style={'font-size': '200%', 'color': 'black', 'font-style': 'normal', 'font-weight': 'bold'},
                    width=1000)
+
 
 KrugInfo = '''The BRCA cohort from Krug et al. contains 122 treatment-naive primary breast cancer tumors. Sample subtypes include 29 basal-like, 14 Her2-enriched, 57 LumA, 17 LumB and 5 normal-like samples.
              The dataset provided identifications of fully quantified 10734 gene transcripts and 7583 proteins.'''
@@ -861,9 +875,8 @@ JohanssonInfo = '''The Oslo cohort from Johansson et al. has 45 breast cancer tu
              The dataset provided identifications of fully quantified 22581 gene transcripts and 9995 proteins.'''
 MertinsInfo = '''The TCGA-BRCA cohort from Mertins et al. contains 77 breast cancer tumors. Subtypes include 18 basal-like, 12 Her2-enriched, 23 LumA and 24 LumB samples.
              The dataset provided identifications of fully quantified 20530 gene transcripts, 6359 proteins.'''
-
-Background_TextDiv = column(Div(text="Background Information:",
-                                style={'font-size': '110%', 'color': 'black', 'font-style': 'italic',
+Background_InfoDiv = column(Div(text="Background Information:",
+                                style={'font-size': '120%', 'color': 'black', 'font-style': 'italic',
                                        'font-weight': 'bold'}),
                             Div(text=JohanssonInfo,
                                 style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}),
@@ -873,61 +886,57 @@ Background_TextDiv = column(Div(text="Background Information:",
                                 style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}),
                             width=1000)
 
-DescriptiveTextCorrelation = "Abundances of proteins that are part of the same complex are tightly correlated across breast tumors. " \
+
+DescriptiveTextLine = "Abundances of proteins that are part of the same complex are tightly correlated across breast tumors. " \
                              "However, this does not appear to be the case for the corresponding mRNA transcripts. " \
                              "The plots are initialized showing abundances of structural proteins of complex I of the electron transport chain. " \
                              "If you wish to hide the curve for a specific gene, click on the corresponding legend entries."
-
 CorrelationTextDiv = column(Div(text="Protein Complex Subunit Correlation:",
-                                style={'font-size': '110%', 'color': 'black', 'font-style': 'italic',
+                                style={'font-size': '120%', 'color': 'black', 'font-style': 'italic',
                                        'font-weight': 'bold'}),
-                            Div(text=DescriptiveTextCorrelation,
+                            Div(text=DescriptiveTextLine,
                                 style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}),
                             width=1000)
 
-DescriptiveText_mRNA_Prot_Cor = "Protein and transcript abundances often are not correlated; indicating substantial utilization of post-transcriptional regulatory mechanisms."
 
+DescriptiveTextScatter = "Protein and transcript abundances often are not correlated; indicating substantial utilization of post-transcriptional regulatory mechanisms."
 mRNA_Prot_TextDiv = column(Div(text="mRNA-Protein Correlation:",
-                               style={'font-size': '110%', 'color': 'black', 'font-style': 'italic',
+                               style={'font-size': '120%', 'color': 'black', 'font-style': 'italic',
                                       'font-weight': 'bold'}),
-                           Div(text=DescriptiveText_mRNA_Prot_Cor,
+                           Div(text=DescriptiveTextScatter,
                                style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}),
                            width=1000)
+
 
 DescriptiveTextSubtypes = "Breast cancer subtypes are defined by their gene expression profiles. " \
                           "The plots are initialized above showing abundances of ER (ESR1), PR (PGR), HER2 (ERBB2), and KI-67 (MKI67); " \
                           "four immunohistochemical markers commonly used in the clinic. " \
                           "Values are means +/- standard error of the mean (SEM). " \
                           "If data are not available for a gene, values will appear as all zeros with no SEMs."
-
 SubtypesTextDiv = column(Div(text="Protein and mRNA Expression by Breast Cancer PAM50 Subtype:",
-                             style={'font-size': '110%', 'color': 'black', 'font-style': 'italic',
+                             style={'font-size': '120%', 'color': 'black', 'font-style': 'italic',
                                     'font-weight': 'bold'}),
                          Div(text=DescriptiveTextSubtypes,
                              style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}),
                          width=1000)
 
+
 Protein_Table_TitleText = "Correlation Table - Protein"
 Mrna_Table_TitleText = "Correlation Table - mRNA"
-Computation_TimeText = "Computing correlations takes roughly 30 seconds. Please be patient."
 Protein_Table_TitleDiv = column(Div(text=Protein_Table_TitleText,
-                                    style={'font-size': '110%', 'color': 'black', 'font-weight': 'bold'}))
+                                    style={'font-size': '120%', 'color': 'black', 'font-weight': 'bold'}))
 mrna_Table_TitleDiv = column(Div(text=Mrna_Table_TitleText,
-                                 style={'font-size': '100%', 'color': 'black', 'font-weight': 'bold'}))
-Computation_TimeDiv = column(Div(text=Computation_TimeText,
-                                 style={'font-size': '110%', 'color': 'red', 'font-style': 'italic'}))
-
-CorTableText = "The gene-gene correlation is calculated from protein and mRNA expression data using the pearson correlation. " \
-               "The table shows the top 100 genes that are correlated with the input gene based on the p-value."
+                                 style={'font-size': '120%', 'color': 'black', 'font-weight': 'bold'}))
+DescriptiveTextCorTable = "The gene-gene correlation is calculated from protein and mRNA expression data using the pearson correlation. " \
+               "The table shows the top 100 genes that are correlated with the input gene based on the p-value. " \
+               "The computation roughly takes 30 seconds, please be patient."
 CorTableTextDiv = column(Div(text="Gene-Gene Correlation Table:",
-                             style={'font-size': '110%', 'color': 'black', 'font-style': 'italic',
+                             style={'font-size': '120%', 'color': 'black', 'font-style': 'italic',
                                     'font-weight': 'bold'}),
-                         Div(text=CorTableText,
+                         Div(text=DescriptiveTextCorTable,
                              style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}),
                          width=1000)
 
-SpacerWidth = 30
-SpacerHeight = 30
 
 RowSpacer = Spacer(height=30)
 PageMargin = Spacer(width=30)
@@ -935,37 +944,38 @@ PageMargin = Spacer(width=30)
 InstructionsText = "To view data for a different gene, type a HGNC gene symbol in the textbox."
 BlankGeneInstructionText = "If you wish to leave certain textboxes blank, please input the corresponding blank entries."
 WarningText = "Please do not enter same gene/blank entry across multiple textboxes."
-DownloadDiv = 'Click "download" to save the protein and mRNA data for corresponding genes from the three studies. ' \
-              'Please use Firefox or Google Chrome for better download experience'
-InstructionsDiv = Div(text=InstructionsText, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'},
-                      width=300)
-BlankGeneInstructionDiv = Div(text=BlankGeneInstructionText, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'},
-                      width=280)
-WarningDiv = Div(text=WarningText, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'},
-                      width=300)
-DownloadDiv = Div(text=DownloadDiv, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'},
-                      width=300)
+DownloadText = 'Click "download" to save the protein and mRNA data for corresponding genes from the three studies. ' \
+              'Please use Firefox or Google Chrome for better download experience.'
+RedTextDiv = column(Div(text=InstructionsText, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'},
+                      width=300),
+                    Div(text=BlankGeneInstructionText,
+                        style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'},
+                        width=300),
+                    Div(text=WarningText, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'},
+                      width=300),
+                    Div(text=DownloadText, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'},
+                        width=300))
 
 formatted_button1 = row(column(Spacer(height=19),button1))
 formatted_button2 = row(column(Spacer(height=19),button2))
 formatted_button3 = row(column(Spacer(height=19),button3))
 formatted_button4 = row(column(Spacer(height=19),button4))
-
 TextBox_and_buttons = column(row(TICKER[0],formatted_button1), row(TICKER[1],formatted_button2), row(TICKER[2],formatted_button3), row(TICKER[3],formatted_button4))
-GeneColumn = column(TextBox_and_buttons, InstructionsDiv, BlankGeneInstructionDiv, WarningDiv, DownloadDiv)
+
+
+GeneColumn = column(TextBox_and_buttons, RedTextDiv)
 Line_Plots = column(row(line_plot_tab), row(CorrelationTextDiv))
 mRNA_Protein_Plots = column(row(scatter_plot_tab), row(mRNA_Prot_TextDiv))
 Subtype_Plots = column(row(subtype_plot_tab), row(SubtypesTextDiv))
-GxGCorTables = column(row(column(protein_correlation_textbox, Protein_Table_TitleDiv,cor_pro_table_tab, pro_cor_data_download_button),
-                          Spacer(width=100),
-                          column(mrna_correlation_textbox, mrna_Table_TitleDiv, cor_mrna_table_tab, mrna_cor_data_download_button),
-                          column(Computation_TimeDiv)),
+GxGCorTables = column(row(column(Protein_Table_TitleDiv, protein_correlation_textbox, cor_pro_table_tab, pro_cor_data_download_button),
+                          Spacer(width=30),
+                          column(mrna_Table_TitleDiv, mrna_correlation_textbox, cor_mrna_table_tab, mrna_cor_data_download_button)),
                       row(CorTableTextDiv))
 
 l = layout([
-    [ToolTitleDiv],
+    [PageMargin, ToolTitleDiv],
     [RowSpacer],
-    [PageMargin, Background_TextDiv],
+    [PageMargin, Background_InfoDiv],
     [RowSpacer],
     [PageMargin, Line_Plots, GeneColumn],
     [RowSpacer],
