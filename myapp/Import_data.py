@@ -58,7 +58,7 @@ def kr_ImportData():
     kr_df_protein = pd.read_csv('myapp/Data/Krug/kr_data_p.txt', sep='\t')
 
     # mRNA file
-    kr_df_mrna = pd.read_csv('myapp/Data/Krug/kr_data_m_z.txt', sep='\t')
+    kr_df_mrna = pd.read_csv('myapp/Data/Krug/kr_data_m.txt', sep='\t')
 
     # unique gene list
     kr_genes = pd.unique(
@@ -101,7 +101,7 @@ def me_ImportData():
     me_df_protein = pd.read_csv('myapp/Data/Mertins/me_data_p.txt', sep='\t')
 
     # mRNA file
-    me_df_mrna = pd.read_csv('myapp/Data/Mertins/me_data_m_z.txt', sep='\t')
+    me_df_mrna = pd.read_csv('myapp/Data/Mertins/me_data_m.txt', sep='\t')
 
 
     # unique gene list
