@@ -133,9 +133,9 @@ def Import_Correlation_Data():
     jo_mrna_for_cor = pd.read_csv('myapp/Data/Johansson/jo_data_m.txt',index_col='Gene', sep='\t')
 
     kr_protein_for_cor = pd.read_csv('myapp/Data/Krug/kr_data_p.txt',index_col='Gene', sep='\t')
-    kr_mrna_for_cor = pd.read_csv('myapp/Data/Krug/kr_data_m_z.txt',index_col='Gene', sep='\t')
+    kr_mrna_for_cor = pd.read_csv('myapp/Data/Krug/kr_data_m.txt',index_col='Gene', sep='\t')
 
     me_protein_for_cor = pd.read_csv('myapp/Data/Mertins/me_data_p.txt',index_col='Gene', sep='\t')
-    me_mrna_for_cor = pd.read_csv('myapp/Data/Mertins/me_data_m_z.txt',index_col='Gene', sep='\t')
+    me_mrna_for_cor = pd.read_csv('myapp/Data/Mertins/me_data_m.txt',index_col='Gene', sep='\t')
 
     return jo_mrna_for_cor, kr_mrna_for_cor, me_mrna_for_cor, jo_protein_for_cor, kr_protein_for_cor, me_protein_for_cor
