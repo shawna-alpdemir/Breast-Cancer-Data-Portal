@@ -58,7 +58,7 @@ def kr_ImportData():
     kr_df_protein = pd.read_csv('myapp/Data/Krug/kr_data_p.txt', sep='\t')
 
     # mRNA file
-    kr_df_mrna = pd.read_csv('myapp/Data/Krug/kr_data_m_z.txt', sep='\t')
+    kr_df_mrna = pd.read_csv('myapp/Data/Krug/kr_data_m.txt', sep='\t')
 
     # unique gene list
     kr_genes = pd.unique(
@@ -101,7 +101,7 @@ def me_ImportData():
     me_df_protein = pd.read_csv('myapp/Data/Mertins/me_data_p.txt', sep='\t')
 
     # mRNA file
-    me_df_mrna = pd.read_csv('myapp/Data/Mertins/me_data_m_z.txt', sep='\t')
+    me_df_mrna = pd.read_csv('myapp/Data/Mertins/me_data_m.txt', sep='\t')
 
 
     # unique gene list
@@ -133,9 +133,9 @@ def Import_Correlation_Data():
     jo_mrna_for_cor = pd.read_csv('myapp/Data/Johansson/jo_data_m.txt',index_col='Gene', sep='\t')
 
     kr_protein_for_cor = pd.read_csv('myapp/Data/Krug/kr_data_p.txt',index_col='Gene', sep='\t')
-    kr_mrna_for_cor = pd.read_csv('myapp/Data/Krug/kr_data_m_z.txt',index_col='Gene', sep='\t')
+    kr_mrna_for_cor = pd.read_csv('myapp/Data/Krug/kr_data_m.txt',index_col='Gene', sep='\t')
 
     me_protein_for_cor = pd.read_csv('myapp/Data/Mertins/me_data_p.txt',index_col='Gene', sep='\t')
-    me_mrna_for_cor = pd.read_csv('myapp/Data/Mertins/me_data_m_z.txt',index_col='Gene', sep='\t')
+    me_mrna_for_cor = pd.read_csv('myapp/Data/Mertins/me_data_m.txt',index_col='Gene', sep='\t')
 
     return jo_mrna_for_cor, kr_mrna_for_cor, me_mrna_for_cor, jo_protein_for_cor, kr_protein_for_cor, me_protein_for_cor
