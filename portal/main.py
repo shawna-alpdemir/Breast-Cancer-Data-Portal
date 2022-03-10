@@ -990,7 +990,8 @@ l = layout([
 
 # Create the bokeh server application
 curdoc().add_root(l)
+curdoc().title="Breast Cancer Data Portal"
 
 # run line in terminal
 # first, cd /Users/zhuoheng/PycharmProjects/Breast Cancer Data Portal
-# bokeh serve --show myapp --session-token-expiration=1000000
+# bokeh serve --show portal --session-token-expiration=1000000
