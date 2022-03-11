@@ -15,7 +15,7 @@ me_mrna_for_cor = pd.read_csv('/Users/zhuoheng/PycharmProjects/Breast Cancer Dat
 me_protein_for_cor = pd.read_csv('/Users/zhuoheng/PycharmProjects/Breast Cancer Data Portal/portal/Data/Mertins/me_data_p.txt',index_col='Gene', sep='\t')
 
 list = [jo_mrna_for_cor,jo_protein_for_cor,kr_mrna_for_cor,kr_protein_for_cor,me_mrna_for_cor,me_protein_for_cor]
-name_list = ['jo_mrna_for_cor','jo_protein_for_cor','kr_mrna_for_cor','kr_protein_for_cor','me_mrna_for_cor','me_protein_for_cor']
+name_list = ['jo_mrna_for_cor_ERBB2','jo_protein_for_cor_ERBB2','kr_mrna_for_cor_ERBB2','kr_protein_for_cor_ERBB2','me_mrna_for_cor_ERBB2','me_protein_for_cor_ERBB2']
 
 
 def GeneCorrelationTable(Dataset, Gene_name, Output_name):
