@@ -15,7 +15,7 @@ from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
 
 # import necessary functions
-from Import_data import jo_ImportData, kr_ImportData, me_ImportData, Import_Correlation_Data
+from Import_data import jo_ImportData, kr_ImportData, me_ImportData, Import_Correlation_Data, Import_Static_Correlation_Table
 from Correlation_LinePlot_Source import jo_Cor1_Source, kr_Cor1_Source, me_Cor1_Source
 from Correlation_CirPlot_Source import jo_Cor2_Source, kr_Cor2_Source, me_Cor2_Source
 from Style_Plot import StylePlots
@@ -29,6 +29,7 @@ from Subtype_Plot import jo_Subtype_Plot, kr_Subtype_Plot, me_Subtype_Plot
 [kr_df_protein, kr_df_mrna, kr_genes, kr_subtypes, kr_subtype_colors] = kr_ImportData()
 [me_df_protein, me_df_mrna, me_genes, me_subtypes, me_subtype_colors] = me_ImportData()
 [jo_mrna_for_cor, kr_mrna_for_cor, me_mrna_for_cor, jo_protein_for_cor, kr_protein_for_cor, me_protein_for_cor] = Import_Correlation_Data()
+[jo_mrna_ERBB2, jo_protein_ERBB2, kr_mrna_ERBB2, kr_protein_ERBB2, me_mrna_ERBB2, me_protein_ERBB2] = Import_Static_Correlation_Table()
 
 # From Correlation_linePlot_Source.py
 jo_LineSourceList = jo_Cor1_Source(jo_df_protein, jo_df_mrna, INITIAL_GENE=['NDUFS2', 'NDUFS3', 'NDUFS7', 'blank 4'])
@@ -319,155 +320,185 @@ def update(attrname, old, new):
 def update_mrna_correlation(attrname, old, new):
     """ function that responds to correlation table text box change"""
     Gene = new
-    print("Step 1: get new gene name")
+    print("get new gene name...[DONE]")
 
     # Johansson
     try:
-        new_jo_mrna_without_input = jo_mrna_for_cor.drop(Gene) # drop the newly input gene and drop out NA
-        new_jo_mrna_without_input.dropna(inplace=True)
+        Dataset_without_input =jo_mrna_for_cor.drop(Gene)
+        # drop the gene in the textbox, so the input gene can be correlated with the rest of the genes.
 
-        new_jo_mrna_cor_df = []
-        for i in range(len(new_jo_mrna_without_input)):
-            new_jo_mrna_cor_df.append([new_jo_mrna_without_input.index[i],
-                                       round(sc.pearsonr(jo_mrna_for_cor.loc[Gene], new_jo_mrna_without_input.iloc[i])[0], 4),
-                                       sc.pearsonr(jo_mrna_for_cor.loc[Gene], new_jo_mrna_without_input.iloc[i])[1]])
+        Correlation_matrix = Dataset_without_input.transpose().corrwith(
+            jo_mrna_for_cor.transpose().loc[:, Gene])  # perform correlation
+        Correlation_array = np.asarray(Correlation_matrix)
+        Correlation_array = np.round(Correlation_array, 4)  # round r value
 
-        new_jo_mrna_cor_df = pd.DataFrame(new_jo_mrna_cor_df, columns=['Gene', 'r', 'p']) # turn the list into df and give column labels
-        new_jo_mrna_cor_df = new_jo_mrna_cor_df.sort_values('p', ascending=True) # sort the df by p values, starting from the smallest
-        new_jo_top_gene_cor = new_jo_mrna_cor_df.head(100) # only display top 100 genes
+        TestStat = (Correlation_matrix * (45 - 2) ** 0.5) / (1 - Correlation_matrix ** 2) ** 0.5  # calculate t score
+        Sig = sc.t.sf(abs(TestStat),df=45 - 2) * 2  # using the survival function to compute one sided p-value, then doubled it to make it two-side
+
+        Gene_name_array = np.asarray(Dataset_without_input.index, dtype=str)  # get the gene name
+        jo_mRNA_Correlation_table_df = pd.DataFrame(data=np.column_stack((Gene_name_array, Correlation_array, Sig)),
+                                                    columns=['Gene', 'r', 'p'])
+        jo_mRNA_Correlation_table_df = jo_mRNA_Correlation_table_df.sort_values('p', ascending=True)  # sort the gene by smallest p value
+        jo_mRNA_Correlation_table_df = jo_mRNA_Correlation_table_df.head(100)
+
     except KeyError:
-        new_jo_top_gene_cor = pd.DataFrame({"Gene" : [f"No data for {Gene}"],
+        jo_mRNA_Correlation_table_df = pd.DataFrame({"Gene" : [f"No data for {Gene}"],
                                             "r": ["NA"],
                                             "p": ["NA"]})
 
     # Krug
     try:
-        new_kr_mrna_without_input = kr_mrna_for_cor.drop(Gene) # drop the newly input gene and drop out NA
-        new_kr_mrna_without_input.dropna(inplace=True)
+        Dataset_without_input =kr_mrna_for_cor.drop(Gene)
+        # drop the gene in the textbox, so the input gene can be correlated with the rest of the genes.
 
-        new_kr_mrna_cor_df = []
-        for i in range(len(new_kr_mrna_without_input)):
-            new_kr_mrna_cor_df.append([new_kr_mrna_without_input.index[i],
-                                       round(sc.pearsonr(kr_mrna_for_cor.loc[Gene], new_kr_mrna_without_input.iloc[i])[0], 4),
-                                       sc.pearsonr(kr_mrna_for_cor.loc[Gene], new_kr_mrna_without_input.iloc[i])[1]])
+        Correlation_matrix = Dataset_without_input.transpose().corrwith(
+            kr_mrna_for_cor.transpose().loc[:, Gene])  # perform correlation
+        Correlation_array = np.asarray(Correlation_matrix)
+        Correlation_array = np.round(Correlation_array, 4)  # round r value
 
-        new_kr_mrna_cor_df = pd.DataFrame(new_kr_mrna_cor_df, columns=['Gene', 'r', 'p']) # turn the list into df and give column labels
-        new_kr_mrna_cor_df = new_kr_mrna_cor_df.sort_values('p', ascending=True) # sort the df by p values, starting from the smallest
-        new_kr_top_gene_cor = new_kr_mrna_cor_df.head(100) # only display top 100 genes
+        TestStat = (Correlation_matrix * (122 - 2) ** 0.5) / (1 - Correlation_matrix ** 2) ** 0.5  # calculate t score
+        Sig = sc.t.sf(abs(TestStat),df=122 - 2) * 2  # using the survival function to compute one sided p-value, then doubled it to make it two-side
+
+        Gene_name_array = np.asarray(Dataset_without_input.index, dtype=str)  # get the gene name
+        kr_mRNA_Correlation_table_df = pd.DataFrame(data=np.column_stack((Gene_name_array, Correlation_array, Sig)),
+                                            columns=['Gene', 'r', 'p'])
+        kr_mRNA_Correlation_table_df = kr_mRNA_Correlation_table_df.sort_values('p',ascending=True)  # sort the gene by smallest p value
+        kr_mRNA_Correlation_table_df = kr_mRNA_Correlation_table_df.head(100)
     except KeyError:
-        new_kr_top_gene_cor = pd.DataFrame({"Gene" : [f"No data for {Gene}"],
+        kr_mRNA_Correlation_table_df = pd.DataFrame({"Gene" : [f"No data for {Gene}"],
                                             "r": ["NA"],
                                             "p": ["NA"]})
 
     # Mertins
     try:
-        new_me_mrna_without_input = me_mrna_for_cor.drop(Gene) # drop the newly input gene and drop out NA
-        new_me_mrna_without_input.dropna(inplace=True)
+        Dataset_without_input =me_mrna_for_cor.drop(Gene)
+        # drop the gene in the textbox, so the input gene can be correlated with the rest of the genes.
 
-        new_me_mrna_cor_df = []
-        for i in range(len(new_me_mrna_without_input)):
-            new_me_mrna_cor_df.append([new_me_mrna_without_input.index[i],
-                                       round(sc.pearsonr(me_mrna_for_cor.loc[Gene], new_me_mrna_without_input.iloc[i])[0], 4),
-                                       sc.pearsonr(me_mrna_for_cor.loc[Gene], new_me_mrna_without_input.iloc[i])[1]])
+        Correlation_matrix = Dataset_without_input.transpose().corrwith(
+            me_mrna_for_cor.transpose().loc[:, Gene])  # perform correlation
+        Correlation_array = np.asarray(Correlation_matrix)
+        Correlation_array = np.round(Correlation_array, 4)  # round r value
 
-        new_me_mrna_cor_df = pd.DataFrame(new_me_mrna_cor_df, columns=['Gene', 'r', 'p']) # turn the list into df and give column labels
-        new_me_mrna_cor_df = new_me_mrna_cor_df.sort_values('p', ascending=True) # sort the df by p values, starting from the smallest
-        new_me_top_gene_cor = new_me_mrna_cor_df.head(100) # only display top 100 genes
+        TestStat = (Correlation_matrix * (77 - 2) ** 0.5) / (1 - Correlation_matrix ** 2) ** 0.5  # calculate t score
+        Sig = sc.t.sf(abs(TestStat),df=77 - 2) * 2  # using the survival function to compute one sided p-value, then doubled it to make it two-side
+
+        Gene_name_array = np.asarray(Dataset_without_input.index, dtype=str)  # get the gene name
+        me_mRNA_Correlation_table_df = pd.DataFrame(data=np.column_stack((Gene_name_array, Correlation_array, Sig)),
+                                            columns=['Gene', 'r', 'p'])
+        me_mRNA_Correlation_table_df = me_mRNA_Correlation_table_df.sort_values('p',ascending=True)  # sort the gene by smallest p value
+        me_mRNA_Correlation_table_df = me_mRNA_Correlation_table_df.head(100)
     except:
-        new_me_top_gene_cor = pd.DataFrame({"Gene" : [f"No data for {Gene}"],
+        me_mRNA_Correlation_table_df = pd.DataFrame({"Gene" : [f"No data for {Gene}"],
                                             "r": ["NA"],
                                             "p": ["NA"]})
 
-    print("Step 2: put together top 100 genes")
+    print("put together top 100 genes.....[DONE]")
 
-    jo_mrna_gene_cor_source.data = new_jo_top_gene_cor # update column data source
+    jo_mrna_gene_cor_source.data = jo_mRNA_Correlation_table_df # update column data source
     jo_mrna_cor_data_table.source = jo_mrna_gene_cor_source # update table
 
-    kr_mrna_gene_cor_source.data = new_kr_top_gene_cor  # update column data source
+    kr_mrna_gene_cor_source.data = kr_mRNA_Correlation_table_df  # update column data source
     kr_mrna_cor_data_table.source = kr_mrna_gene_cor_source  # update table
 
-    me_mrna_gene_cor_source.data = new_me_top_gene_cor  # update column data source
+    me_mrna_gene_cor_source.data = me_mRNA_Correlation_table_df  # update column data source
     me_mrna_cor_data_table.source = me_mrna_gene_cor_source  # update table
 
     mRNA_table_gene_col_name.title = f'Genes correlated with {Gene}' # update plot title
-    print("Step 3: change table")
+    print("change table...[DONE]")
 
 
 def update_protein_correlation(attrname, old, new):
     """ function that responds to correlation table  text box change"""
     Gene = new
-    print("Step 1: get new gene name")
+    print("get new gene name...[DONE]")
 
     # Johansson
     try:
-        new_jo_pro_without_input = jo_protein_for_cor.drop(Gene) # drop the newly input gene and drop out NA
-        new_jo_pro_without_input.dropna(inplace=True)
+        Dataset_without_input = jo_protein_for_cor.drop(Gene)
+        # drop the gene in the textbox, so the input gene can be correlated with the rest of the genes.
 
-        new_jo_pro_cor_df = []
-        for i in range(len(new_jo_pro_without_input)):
-            new_jo_pro_cor_df.append([new_jo_pro_without_input.index[i],
-                                      round(sc.pearsonr(jo_protein_for_cor.loc[Gene], new_jo_pro_without_input.iloc[i])[0], 4),
-                                      sc.pearsonr(jo_protein_for_cor.loc[Gene], new_jo_pro_without_input.iloc[i])[1]])
+        Correlation_matrix = Dataset_without_input.transpose().corrwith(
+            jo_protein_for_cor.transpose().loc[:, Gene])  # perform correlation
+        Correlation_array = np.asarray(Correlation_matrix)
+        Correlation_array = np.round(Correlation_array, 4)  # round r value
 
-        new_jo_pro_cor_df = pd.DataFrame(new_jo_pro_cor_df, columns=['Gene', 'r', 'p']) # turn the list into df and give column labels
-        new_jo_pro_cor_df = new_jo_pro_cor_df.sort_values('p', ascending=True) # sort the df by p values, starting from the smallest
-        new_jo_pro_top_gene_cor = new_jo_pro_cor_df.head(100) # only display top 100 genes
+        TestStat = (Correlation_matrix * (45 - 2) ** 0.5) / (1 - Correlation_matrix ** 2) ** 0.5  # calculate t score
+        Sig = sc.t.sf(abs(TestStat),df=45 - 2) * 2  # using the survival function to compute one sided p-value, then doubled it to make it two-side
+
+        Gene_name_array = np.asarray(Dataset_without_input.index, dtype=str)  # get the gene name
+        jo_protein_Correlation_table_df = pd.DataFrame(data=np.column_stack((Gene_name_array, Correlation_array, Sig)),
+                                               columns=['Gene', 'r', 'p'])
+        jo_protein_Correlation_table_df = jo_protein_Correlation_table_df.sort_values('p',
+                                                                      ascending=True)  # sort the gene by smallest p value
+        jo_protein_Correlation_table_df = jo_protein_Correlation_table_df.head(100)
     except KeyError:
-        new_jo_pro_top_gene_cor = pd.DataFrame({"Gene" : [f"No data for {Gene}"],
+        jo_protein_Correlation_table_df = pd.DataFrame({"Gene" : [f"No data for {Gene}"],
                                             "r": ["NA"],
                                             "p": ["NA"]})
 
     # Krug
     try:
-        new_kr_pro_without_input = kr_protein_for_cor.drop(Gene) # drop the newly input gene and drop out NA
-        new_kr_pro_without_input.dropna(inplace=True)
+        Dataset_without_input = kr_protein_for_cor.drop(Gene)
+        # drop the gene in the textbox, so the input gene can be correlated with the rest of the genes.
 
-        new_kr_pro_cor_df = []
-        for i in range(len(new_kr_pro_without_input)):
-            new_kr_pro_cor_df.append([new_kr_pro_without_input.index[i],
-                                      round(sc.pearsonr(kr_protein_for_cor.loc[Gene], new_kr_pro_without_input.iloc[i])[0], 4),
-                                      sc.pearsonr(kr_protein_for_cor.loc[Gene], new_kr_pro_without_input.iloc[i])[1]])
+        Correlation_matrix = Dataset_without_input.transpose().corrwith(
+            kr_protein_for_cor.transpose().loc[:, Gene])  # perform correlation
+        Correlation_array = np.asarray(Correlation_matrix)
+        Correlation_array = np.round(Correlation_array, 4)  # round r value
 
-        new_kr_pro_cor_df = pd.DataFrame(new_kr_pro_cor_df, columns=['Gene', 'r', 'p']) # turn the list into df and give column labels
-        new_kr_pro_cor_df = new_kr_pro_cor_df.sort_values('p', ascending=True) # sort the df by p values, starting from the smallest
-        new_kr_pro_top_gene_cor = new_kr_pro_cor_df.head(100) # only display top 100 genes
+        TestStat = (Correlation_matrix * (122 - 2) ** 0.5) / (1 - Correlation_matrix ** 2) ** 0.5  # calculate t score
+        Sig = sc.t.sf(abs(TestStat),
+                      df=122 - 2) * 2  # using the survival function to compute one sided p-value, then doubled it to make it two-side
+
+        Gene_name_array = np.asarray(Dataset_without_input.index, dtype=str)  # get the gene name
+        kr_protein_Correlation_table_df = pd.DataFrame(data=np.column_stack((Gene_name_array, Correlation_array, Sig)),
+                                               columns=['Gene', 'r', 'p'])
+        kr_protein_Correlation_table_df = kr_protein_Correlation_table_df.sort_values('p',
+                                                                      ascending=True)  # sort the gene by smallest p value
+        kr_protein_Correlation_table_df = kr_protein_Correlation_table_df.head(100)
     except KeyError:
-        new_kr_pro_top_gene_cor = pd.DataFrame({"Gene" : [f"No data for {Gene}"],
+        kr_protein_Correlation_table_df = pd.DataFrame({"Gene" : [f"No data for {Gene}"],
                                             "r": ["NA"],
                                             "p": ["NA"]})
 
     # Mertins
     try:
-        new_me_pro_without_input = me_protein_for_cor.drop(Gene) # drop the newly input gene and drop out NA
-        new_me_pro_without_input.dropna(inplace=True)
+        Dataset_without_input = me_protein_for_cor.drop(Gene)
+        # drop the gene in the textbox, so the input gene can be correlated with the rest of the genes.
 
-        new_me_pro_cor_df = []
-        for i in range(len(new_me_pro_without_input)):
-            new_me_pro_cor_df.append([new_me_pro_without_input.index[i],
-                                      round(sc.pearsonr(me_protein_for_cor.loc[Gene], new_me_pro_without_input.iloc[i])[0], 4),
-                                      sc.pearsonr(me_protein_for_cor.loc[Gene], new_me_pro_without_input.iloc[i])[1]])
+        Correlation_matrix = Dataset_without_input.transpose().corrwith(
+            me_protein_for_cor.transpose().loc[:, Gene])  # perform correlation
+        Correlation_array = np.asarray(Correlation_matrix)
+        Correlation_array = np.round(Correlation_array, 4)  # round r value
 
-        new_me_pro_cor_df = pd.DataFrame(new_me_pro_cor_df, columns=['Gene', 'r', 'p']) # turn the list into df and give column labels
-        new_me_pro_cor_df = new_me_pro_cor_df.sort_values('p', ascending=True) # sort the df by p values, starting from the smallest
-        new_me_pro_top_gene_cor = new_me_pro_cor_df.head(100) # only display top 100 genes
+        TestStat = (Correlation_matrix * (77 - 2) ** 0.5) / (1 - Correlation_matrix ** 2) ** 0.5  # calculate t score
+        Sig = sc.t.sf(abs(TestStat),
+                      df=77 - 2) * 2  # using the survival function to compute one sided p-value, then doubled it to make it two-side
+
+        Gene_name_array = np.asarray(Dataset_without_input.index, dtype=str)  # get the gene name
+        me_protein_Correlation_table_df = pd.DataFrame(data=np.column_stack((Gene_name_array, Correlation_array, Sig)),
+                                               columns=['Gene', 'r', 'p'])
+        me_protein_Correlation_table_df = me_protein_Correlation_table_df.sort_values('p',
+                                                                      ascending=True)  # sort the gene by smallest p value
+        me_protein_Correlation_table_df = me_protein_Correlation_table_df.head(100)
     except:
-        new_me_pro_top_gene_cor = pd.DataFrame({"Gene" : [f"No data for {Gene}"],
+        me_protein_Correlation_table_df = pd.DataFrame({"Gene" : [f"No data for {Gene}"],
                                             "r": ["NA"],
                                             "p": ["NA"]})
 
-    print("Step 2: put together top 100 genes")
+    print("put together top 100 genes.....[DONE]")
 
-    jo_pro_gene_cor_source.data = new_jo_pro_top_gene_cor # update column data source
+    jo_pro_gene_cor_source.data = jo_protein_Correlation_table_df # update column data source
     jo_pro_cor_data_table.source = jo_pro_gene_cor_source # update table
 
-    kr_pro_gene_cor_source.data = new_kr_pro_top_gene_cor  # update column data source
+    kr_pro_gene_cor_source.data = kr_protein_Correlation_table_df  # update column data source
     kr_pro_cor_data_table.source = kr_pro_gene_cor_source  # update table
 
-    me_pro_gene_cor_source.data = new_me_pro_top_gene_cor  # update column data source
+    me_pro_gene_cor_source.data = me_protein_Correlation_table_df  # update column data source
     me_pro_cor_data_table.source = me_pro_gene_cor_source  # update table
 
     protein_table_gene_col_name.title = f'Genes correlated with {Gene}' # update plot title
-    print("Step 3: change table")
+    print("change table...[DONE]")
 
 
 ################################# Row 1: Protein Complex Subunit Correlation Plot ######################################
@@ -698,102 +729,6 @@ mrna_cor_gene_list = np.ndarray.tolist(np.unique(mrna_cor_gene_list))
 protein_cor_gene_list = list(jo_protein_for_cor.index) + list(kr_protein_for_cor.index) + list(me_protein_for_cor.index)
 protein_cor_gene_list = np.ndarray.tolist(np.unique(protein_cor_gene_list))
 
-######## Johansson - mRNA
-# drop the gene in the textbox, so the input gene can be correlated with the rest of the genes.
-jo_mrna_without_input = jo_mrna_for_cor.drop(Gene)
-jo_mrna_without_input = jo_mrna_without_input.dropna()
-
-# create a list to collect gene name, r value and p value that the input gene is correlated with
-jo_mrna_cor = []
-for i in range(len(jo_mrna_without_input)):
-    jo_mrna_cor.append([jo_mrna_without_input.index[i],
-                        round(sc.pearsonr(jo_mrna_for_cor.loc[Gene], jo_mrna_without_input.iloc[i])[0], 4),
-                        sc.pearsonr(jo_mrna_for_cor.loc[Gene], jo_mrna_without_input.iloc[i])[1]])
-
-jo_mrna_cor = pd.DataFrame(jo_mrna_cor, columns = ['Gene', 'r', 'p'])
-jo_mrna_cor = jo_mrna_cor.sort_values('p', ascending=True) # sort the gene by smallest p value
-jo_mrna_top_gene_cor = jo_mrna_cor.head(100) # retrieve the top 100 most significant correlated genes
-
-######## Krug - mRNA
-# drop the gene in the textbox, so the input gene can be correlated with the rest of the genes.
-kr_mrna_without_input = kr_mrna_for_cor.drop(Gene)
-kr_mrna_without_input = kr_mrna_without_input.dropna()
-
-# create a list to collect gene name, r value and p value that the input gene is correlated with
-kr_mrna_cor = []
-for i in range(len(kr_mrna_without_input)):
-    kr_mrna_cor.append([kr_mrna_without_input.index[i],
-                        round(sc.pearsonr(kr_mrna_for_cor.loc[Gene], kr_mrna_without_input.iloc[i])[0], 4),
-                        sc.pearsonr(kr_mrna_for_cor.loc[Gene], kr_mrna_without_input.iloc[i])[1]])
-
-kr_mrna_cor = pd.DataFrame(kr_mrna_cor, columns = ['Gene', 'r', 'p'])
-kr_mrna_cor = kr_mrna_cor.sort_values('p', ascending=True) # sort the gene by smallest p value
-kr_mrna_top_gene_cor = kr_mrna_cor.head(100) # retrieve the top 100 most significant correlated genes
-
-######## Mertins - mRNA
-# drop the gene in the textbox, so the input gene can be correlated with the rest of the genes.
-me_mrna_without_input = me_mrna_for_cor.drop(Gene)
-me_mrna_without_input = me_mrna_without_input.dropna()
-
-# create a list to collect gene name, r value and p value that the input gene is correlated with
-me_mrna_cor = []
-for i in range(len(me_mrna_without_input)):
-    me_mrna_cor.append([me_mrna_without_input.index[i],
-                        round(sc.pearsonr(me_mrna_for_cor.loc[Gene], me_mrna_without_input.iloc[i])[0], 4),
-                        sc.pearsonr(me_mrna_for_cor.loc[Gene], me_mrna_without_input.iloc[i])[1]])
-
-me_mrna_cor = pd.DataFrame(me_mrna_cor, columns = ['Gene', 'r', 'p'])
-me_mrna_cor = me_mrna_cor.sort_values('p', ascending=True) # sort the gene by smallest p value
-me_mrna_top_gene_cor = me_mrna_cor.head(100) # retrieve the top 100 most significant correlated genes
-
-######## Johansson - protein
-# drop the gene in the textbox, so the input gene can be correlated with the rest of the genes.
-jo_pro_without_input = jo_protein_for_cor.drop(Gene)
-jo_pro_without_input = jo_pro_without_input.dropna()
-
-# create a list to collect gene name, r value and p value that the input gene is correlated with
-jo_pro_cor = []
-for i in range(len(jo_pro_without_input)):
-    jo_pro_cor.append([jo_pro_without_input.index[i],
-                       round(sc.pearsonr(jo_protein_for_cor.loc[Gene], jo_pro_without_input.iloc[i])[0], 4),
-                       sc.pearsonr(jo_protein_for_cor.loc[Gene], jo_pro_without_input.iloc[i])[1]])
-
-jo_pro_cor = pd.DataFrame(jo_pro_cor, columns = ['Gene', 'r', 'p'])
-jo_pro_cor = jo_pro_cor.sort_values('p', ascending=True) # sort the gene by smallest p value
-jo_pro_top_gene_cor = jo_pro_cor.head(100) # retrieve the top 100 most significant correlated genes
-
-######## Krug - protein
-# drop the gene in the textbox, so the input gene can be correlated with the rest of the genes.
-kr_pro_without_input = kr_protein_for_cor.drop(Gene)
-kr_pro_without_input = kr_pro_without_input.dropna()
-
-# create a list to collect gene name, r value and p value that the input gene is correlated with
-kr_pro_cor = []
-for i in range(len(kr_pro_without_input)):
-    kr_pro_cor.append([kr_pro_without_input.index[i],
-                       round(sc.pearsonr(kr_protein_for_cor.loc[Gene], kr_pro_without_input.iloc[i])[0], 4),
-                       sc.pearsonr(kr_protein_for_cor.loc[Gene], kr_pro_without_input.iloc[i])[1]])
-
-kr_pro_cor = pd.DataFrame(kr_pro_cor, columns = ['Gene', 'r', 'p'])
-kr_pro_cor = kr_pro_cor.sort_values('p', ascending=True) # sort the gene by smallest p value
-kr_pro_top_gene_cor = kr_pro_cor.head(100) # retrieve the top 100 most significant correlated genes
-
-######## Mertins - protein
-# drop the gene in the textbox, so the input gene can be correlated with the rest of the genes.
-me_pro_without_input = me_protein_for_cor.drop(Gene)
-me_pro_without_input = me_pro_without_input.dropna()
-
-# create a list to collect gene name, r value and p value that the input gene is correlated with
-me_pro_cor = []
-for i in range(len(me_pro_without_input)):
-    me_pro_cor.append([me_pro_without_input.index[i],
-                       round(sc.pearsonr(me_protein_for_cor.loc[Gene], me_pro_without_input.iloc[i])[0], 4),
-                       sc.pearsonr(me_protein_for_cor.loc[Gene], me_pro_without_input.iloc[i])[1]])
-
-me_pro_cor = pd.DataFrame(me_pro_cor, columns = ['Gene', 'r', 'p'])
-me_pro_cor = me_pro_cor.sort_values('p', ascending=True) # sort the gene by smallest p value
-me_pro_top_gene_cor = me_pro_cor.head(100) # retrieve the top 100 most significant correlated genes
-
 ######## Widget and aesthetic
 
 # update when textbox input changes
@@ -805,14 +740,14 @@ protein_correlation_textbox = AutocompleteInput(title='Gene Name for protein cor
                                              min_characters=3, completions = protein_cor_gene_list, case_sensitive=False)
 protein_correlation_textbox.on_change('value', update_protein_correlation)
 
-# aesthetic
-jo_mrna_gene_cor_source = ColumnDataSource(data=jo_mrna_top_gene_cor) # set up columndatasource
-kr_mrna_gene_cor_source = ColumnDataSource(data=kr_mrna_top_gene_cor)
-me_mrna_gene_cor_source = ColumnDataSource(data=me_mrna_top_gene_cor)
+# aesthetic --  static tables
+jo_mrna_gene_cor_source = ColumnDataSource(data=jo_mrna_ERBB2) # set up columndatasource
+kr_mrna_gene_cor_source = ColumnDataSource(data=kr_mrna_ERBB2)
+me_mrna_gene_cor_source = ColumnDataSource(data=me_mrna_ERBB2)
 
-jo_pro_gene_cor_source = ColumnDataSource(data=jo_pro_top_gene_cor) # set up columndatasource
-kr_pro_gene_cor_source = ColumnDataSource(data=kr_pro_top_gene_cor)
-me_pro_gene_cor_source = ColumnDataSource(data=me_pro_top_gene_cor)
+jo_pro_gene_cor_source = ColumnDataSource(data=jo_protein_ERBB2) # set up columndatasource
+kr_pro_gene_cor_source = ColumnDataSource(data=kr_protein_ERBB2)
+me_pro_gene_cor_source = ColumnDataSource(data=me_protein_ERBB2)
 
 mRNA_table_gene_col_name = TableColumn(field='Gene', title=f'Genes correlated with {mrna_correlation_textbox.value}')
 protein_table_gene_col_name = TableColumn(field='Gene', title=f'Genes correlated with {protein_correlation_textbox.value}')
@@ -862,8 +797,6 @@ pro_cor_data_download_button.js_on_event("button_click", CustomJS(args=dict(sour
                                                                                                                              "download_javascript/kr_cor_table_download.js")).read()))
 pro_cor_data_download_button.js_on_event("button_click", CustomJS(args=dict(source=me_pro_gene_cor_source), code=open(join(dirname(__file__),
                                                                                                                              "download_javascript/me_cor_table_download.js")).read()))
-
-
 ###################################################### Run the application #############################################
 ToolTitleText = "Breast Cancer Data Portal"
 ToolTitleDiv = Div(text=ToolTitleText,
