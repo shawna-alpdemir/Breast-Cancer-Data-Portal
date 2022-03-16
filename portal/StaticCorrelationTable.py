@@ -36,6 +36,7 @@ def GeneCorrelationTable(Dataset, Gene_name, Output_name):
     Gene_name_array = np.asarray(Dataset_without_input.index, dtype=str)  # get the gene name
     Correlation_table_df = pd.DataFrame(data=np.column_stack((Gene_name_array, Correlation_array, Sig)),
                                         columns=['Gene', 'r', 'p'])
+    Correlation_table_df[['r','p']] = Correlation_table_df[['r','p']].apply(pd.to_numeric)
     Correlation_table_df = Correlation_table_df.sort_values('p', ascending=True)  # sort the gene by smallest p value
     Correlation_table_df = Correlation_table_df.head(100)
 
@@ -45,5 +46,7 @@ def GeneCorrelationTable(Dataset, Gene_name, Output_name):
     # time_elapsed = end_time - start_time
     # print(time_elapsed)
 
+
+#GeneCorrelationTable(jo_mrna_for_cor,'ERBB2','jo_mrna_for_cor_ERBB2')
 for i,j in zip(list,name_list):
     GeneCorrelationTable(i, 'ERBB2', j)

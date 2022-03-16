@@ -338,6 +338,7 @@ def update_mrna_correlation(attrname, old, new):
         Gene_name_array = np.asarray(Dataset_without_input.index, dtype=str)  # get the gene name
         jo_mRNA_Correlation_table_df = pd.DataFrame(data=np.column_stack((Gene_name_array, Correlation_array, Sig)),
                                                     columns=['Gene', 'r', 'p'])
+        jo_mRNA_Correlation_table_df[['r', 'p']] = jo_mRNA_Correlation_table_df[['r', 'p']].apply(pd.to_numeric)
         jo_mRNA_Correlation_table_df = jo_mRNA_Correlation_table_df.sort_values('p', ascending=True)  # sort the gene by smallest p value
         jo_mRNA_Correlation_table_df = jo_mRNA_Correlation_table_df.head(100)
 
@@ -362,6 +363,7 @@ def update_mrna_correlation(attrname, old, new):
         Gene_name_array = np.asarray(Dataset_without_input.index, dtype=str)  # get the gene name
         kr_mRNA_Correlation_table_df = pd.DataFrame(data=np.column_stack((Gene_name_array, Correlation_array, Sig)),
                                             columns=['Gene', 'r', 'p'])
+        kr_mRNA_Correlation_table_df[['r', 'p']] = kr_mRNA_Correlation_table_df[['r', 'p']].apply(pd.to_numeric)
         kr_mRNA_Correlation_table_df = kr_mRNA_Correlation_table_df.sort_values('p',ascending=True)  # sort the gene by smallest p value
         kr_mRNA_Correlation_table_df = kr_mRNA_Correlation_table_df.head(100)
     except KeyError:
@@ -385,6 +387,7 @@ def update_mrna_correlation(attrname, old, new):
         Gene_name_array = np.asarray(Dataset_without_input.index, dtype=str)  # get the gene name
         me_mRNA_Correlation_table_df = pd.DataFrame(data=np.column_stack((Gene_name_array, Correlation_array, Sig)),
                                             columns=['Gene', 'r', 'p'])
+        me_mRNA_Correlation_table_df[['r', 'p']] = me_mRNA_Correlation_table_df[['r', 'p']].apply(pd.to_numeric)
         me_mRNA_Correlation_table_df = me_mRNA_Correlation_table_df.sort_values('p',ascending=True)  # sort the gene by smallest p value
         me_mRNA_Correlation_table_df = me_mRNA_Correlation_table_df.head(100)
     except:
@@ -428,8 +431,8 @@ def update_protein_correlation(attrname, old, new):
         Gene_name_array = np.asarray(Dataset_without_input.index, dtype=str)  # get the gene name
         jo_protein_Correlation_table_df = pd.DataFrame(data=np.column_stack((Gene_name_array, Correlation_array, Sig)),
                                                columns=['Gene', 'r', 'p'])
-        jo_protein_Correlation_table_df = jo_protein_Correlation_table_df.sort_values('p',
-                                                                      ascending=True)  # sort the gene by smallest p value
+        jo_protein_Correlation_table_df[['r', 'p']] = jo_protein_Correlation_table_df[['r', 'p']].apply(pd.to_numeric)
+        jo_protein_Correlation_table_df = jo_protein_Correlation_table_df.sort_values('p',ascending=True)  # sort the gene by smallest p value
         jo_protein_Correlation_table_df = jo_protein_Correlation_table_df.head(100)
     except KeyError:
         jo_protein_Correlation_table_df = pd.DataFrame({"Gene" : [f"No data for {Gene}"],
@@ -453,8 +456,8 @@ def update_protein_correlation(attrname, old, new):
         Gene_name_array = np.asarray(Dataset_without_input.index, dtype=str)  # get the gene name
         kr_protein_Correlation_table_df = pd.DataFrame(data=np.column_stack((Gene_name_array, Correlation_array, Sig)),
                                                columns=['Gene', 'r', 'p'])
-        kr_protein_Correlation_table_df = kr_protein_Correlation_table_df.sort_values('p',
-                                                                      ascending=True)  # sort the gene by smallest p value
+        kr_protein_Correlation_table_df[['r', 'p']] = kr_protein_Correlation_table_df[['r', 'p']].apply(pd.to_numeric)
+        kr_protein_Correlation_table_df = kr_protein_Correlation_table_df.sort_values('p',ascending=True)  # sort the gene by smallest p value
         kr_protein_Correlation_table_df = kr_protein_Correlation_table_df.head(100)
     except KeyError:
         kr_protein_Correlation_table_df = pd.DataFrame({"Gene" : [f"No data for {Gene}"],
@@ -478,8 +481,8 @@ def update_protein_correlation(attrname, old, new):
         Gene_name_array = np.asarray(Dataset_without_input.index, dtype=str)  # get the gene name
         me_protein_Correlation_table_df = pd.DataFrame(data=np.column_stack((Gene_name_array, Correlation_array, Sig)),
                                                columns=['Gene', 'r', 'p'])
-        me_protein_Correlation_table_df = me_protein_Correlation_table_df.sort_values('p',
-                                                                      ascending=True)  # sort the gene by smallest p value
+        me_protein_Correlation_table_df[['r', 'p']] = me_protein_Correlation_table_df[['r', 'p']].apply(pd.to_numeric)
+        me_protein_Correlation_table_df = me_protein_Correlation_table_df.sort_values('p',ascending=True)  # sort the gene by smallest p value
         me_protein_Correlation_table_df = me_protein_Correlation_table_df.head(100)
     except:
         me_protein_Correlation_table_df = pd.DataFrame({"Gene" : [f"No data for {Gene}"],
