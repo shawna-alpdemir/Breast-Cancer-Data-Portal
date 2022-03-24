@@ -4,8 +4,8 @@ import pandas as pd
 
 ################################### Johansson
 # create hdf5 files
-JohanssonProteome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/JohanssonProteome.hdf5'
-JohanssonTranscriptome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/JohanssonTranscriptome.hdf5'
+JohanssonProteome = '/portal_hdf5/Data/JohanssonProteome.hdf5'
+JohanssonTranscriptome = '/portal_hdf5/Data/JohanssonTranscriptome.hdf5'
 
 # read in txt files
 # jo_df_protein = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/jo_data_p.txt',
@@ -17,8 +17,8 @@ JohanssonTranscriptome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/Joh
 
 ################################### Krug
 # create hdf5 files
-KrugProteome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/KrugProteome.hdf5'
-KrugTranscriptome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/KrugTranscriptome.hdf5'
+KrugProteome = '/portal_hdf5/Data/KrugProteome.hdf5'
+KrugTranscriptome = '/portal_hdf5/Data/KrugTranscriptome.hdf5'
 
 # read in txt files
 # kr_df_protein = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/kr_data_p.txt',
@@ -30,8 +30,8 @@ KrugTranscriptome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/KrugTran
 
 ################################### Mertins
 # create hdf5 files
-MertinsProteome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/MertinsProteome.hdf5'
-MertinsTranscriptome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/MertinsTranscriptome.hdf5'
+MertinsProteome = '/portal_hdf5/Data/MertinsProteome.hdf5'
+MertinsTranscriptome = '/portal_hdf5/Data/MertinsTranscriptome.hdf5'
 
 # read in txt files
 # me_df_protein = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/me_data_p.txt',
@@ -63,7 +63,7 @@ def write_hdf5(hdf5_FileName, DF_quant, DF_subtype, Subtype_col_num):
     # write the DF into hdf5 file, containing each gene as a dataset and tumor list as dataset
     with h5py.File(hdf5_FileName, "w") as hdf5:
         for gene in genes:
-            gene_quant = np.array(DF.loc[gene, :])
+            gene_quant = np.array(DF.loc[gene,:])
             hdf5.create_dataset(str(gene), data=gene_quant)
 
         hdf5.create_dataset('genes', data=genes)
