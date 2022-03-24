@@ -4,42 +4,42 @@ import pandas as pd
 
 ################################### Johansson
 # create hdf5 files
-JohanssonProteome = '/portal_hdf5/Data/JohanssonProteome.hdf5'
-JohanssonTranscriptome = '/portal_hdf5/Data/JohanssonTranscriptome.hdf5'
+JohanssonProteome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/JohanssonProteome.hdf5'
+JohanssonTranscriptome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/JohanssonTranscriptome.hdf5'
 
 # read in txt files
-# jo_df_protein = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/jo_data_p.txt',
-#                             sep='\t', index_col='Gene')
-# jo_df_RNA = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/jo_data_m.txt',
-#                             sep='\t', index_col='Gene')
-# jo_df_subtype = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/jo_group_key.txt',
-#                             sep='\t')
+jo_df_protein = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/jo_data_p.txt',
+                            sep='\t', index_col='Gene')
+jo_df_RNA = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/jo_data_m.txt',
+                            sep='\t', index_col='Gene')
+jo_df_subtype = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/jo_group_key.txt',
+                            sep='\t')
 
 ################################### Krug
 # create hdf5 files
-KrugProteome = '/portal_hdf5/Data/KrugProteome.hdf5'
-KrugTranscriptome = '/portal_hdf5/Data/KrugTranscriptome.hdf5'
+KrugProteome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/KrugProteome.hdf5'
+KrugTranscriptome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/KrugTranscriptome.hdf5'
 
 # read in txt files
-# kr_df_protein = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/kr_data_p.txt',
-#                             sep='\t', index_col='Gene')
-# kr_df_RNA = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/kr_data_m.txt',
-#                             sep='\t', index_col='Gene')
-# kr_df_subtype = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/kr_group_key.txt',
-#                             sep='\t')
+kr_df_protein = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/kr_data_p.txt',
+                            sep='\t', index_col='Gene')
+kr_df_RNA = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/kr_data_m.txt',
+                            sep='\t', index_col='Gene')
+kr_df_subtype = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/kr_group_key.txt',
+                            sep='\t')
 
 ################################### Mertins
 # create hdf5 files
-MertinsProteome = '/portal_hdf5/Data/MertinsProteome.hdf5'
-MertinsTranscriptome = '/portal_hdf5/Data/MertinsTranscriptome.hdf5'
+MertinsProteome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/MertinsProteome.hdf5'
+MertinsTranscriptome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/MertinsTranscriptome.hdf5'
 
 # read in txt files
-# me_df_protein = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/me_data_p.txt',
-#                             sep='\t', index_col='Gene')
-# me_df_RNA = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/me_data_m.txt',
-#                             sep='\t', index_col='Gene')
-# me_df_subtype = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/me_group_key.txt',
-#                             sep='\t')
+me_df_protein = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/me_data_p.txt',
+                            sep='\t', index_col='Gene')
+me_df_RNA = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/me_data_m.txt',
+                            sep='\t', index_col='Gene')
+me_df_subtype = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/me_group_key.txt',
+                            sep='\t')
 
 
 # function
@@ -57,6 +57,17 @@ def write_hdf5(hdf5_FileName, DF_quant, DF_subtype, Subtype_col_num):
     genes = DF_quant.index.to_list()
     subtypes = DF_subtype.iloc[:, Subtype_col_num].to_list()
 
+    # blank entries
+    blank_entries = ['blank 1', 'blank 2', 'blank 3', 'blank 4']
+    genes.extend(blank_entries)
+
+    blank_arrays = np.array([
+        np.repeat(np.nan, len(tumors)),
+        np.repeat(np.nan, len(tumors)),
+        np.repeat(np.nan, len(tumors)),
+        np.repeat(np.nan, len(tumors))])
+    quantities = np.vstack((quantities, blank_arrays))
+
     # aseemble dataframe
     DF = pd.DataFrame(data=quantities, index=genes, columns=tumors)
 
@@ -71,14 +82,14 @@ def write_hdf5(hdf5_FileName, DF_quant, DF_subtype, Subtype_col_num):
         hdf5.create_dataset('subtypes', data=subtypes)
 
 # write the files
-# write_hdf5(JohanssonProteome, jo_df_protein, jo_df_subtype, 2)
-# write_hdf5(JohanssonTranscriptome, jo_df_RNA, jo_df_subtype, 2)
-#
-# write_hdf5(KrugProteome, kr_df_protein, kr_df_subtype, 2)
-# write_hdf5(KrugTranscriptome, kr_df_RNA, kr_df_subtype, 2)
-#
-# write_hdf5(MertinsProteome, me_df_protein, me_df_subtype, 1)
-# write_hdf5(MertinsTranscriptome, me_df_RNA, me_df_subtype, 1)
+write_hdf5(JohanssonProteome, jo_df_protein, jo_df_subtype, 2)
+write_hdf5(JohanssonTranscriptome, jo_df_RNA, jo_df_subtype, 2)
+
+write_hdf5(KrugProteome, kr_df_protein, kr_df_subtype, 2)
+write_hdf5(KrugTranscriptome, kr_df_RNA, kr_df_subtype, 2)
+
+write_hdf5(MertinsProteome, me_df_protein, me_df_subtype, 1)
+write_hdf5(MertinsTranscriptome, me_df_RNA, me_df_subtype, 1)
 
 # test
 with h5py.File(MertinsTranscriptome, "r") as hdf5:
@@ -91,8 +102,5 @@ with h5py.File(MertinsTranscriptome, "r") as hdf5:
     gene_list = np.array(hdf5.get('genes'))
     # print(tumor_list)
     # print(len(subtype_list))
-    print(type(blank1_quants))
+    print(len(blank1_quants))
     print(blank4_quants)
-
-    print(gene_list)
-    print(type(gene_list))
