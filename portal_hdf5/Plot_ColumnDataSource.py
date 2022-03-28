@@ -50,9 +50,16 @@ def Johansson_CDS():
                  protein_data: np.array(a.get('blank 4')),
                  mRNA_data: np.array(b.get('blank 4')),
                  gene: np.repeat('blank 4', len(tumor_list))}
-
+        dict5 = {subtype_tuple: johansson_subtype_tumor_tuple,
+                 subtype: subtype_list,
+                 'x_protein_data': np.array(a.get('NDUFS2')),
+                 'y_protein_data': np.array(a.get('NDUFS3'))}
+        dict6 = {subtype_tuple: johansson_subtype_tumor_tuple,
+                 subtype: subtype_list,
+                 'x_mRNA_data': np.array(b.get('NDUFS2')),
+                 'y_mRNA_data': np.array(b.get('NDUFS3'))}
         johansson_cds = []
-        for i in [dict1, dict2, dict3, dict4]:
+        for i in [dict1, dict2, dict3, dict4, dict5, dict6]:
             johansson_cds.append(ColumnDataSource(data=i))
 
     return johansson_cds, johansson_subtype_tumor_tuple
@@ -94,9 +101,16 @@ def Krug_CDS():
                  protein_data: np.array(a.get('blank 4')),
                  mRNA_data: np.array(b.get('blank 4')),
                  gene: np.repeat('blank 4', len(tumor_list))}
-
+        dict5 = {subtype_tuple: krug_subtype_tumor_tuple,
+                 subtype: subtype_list,
+                 'x_protein_data': np.array(a.get('NDUFS2')),
+                 'y_protein_data': np.array(a.get('NDUFS3'))}
+        dict6 = {subtype_tuple: krug_subtype_tumor_tuple,
+                 subtype: subtype_list,
+                 'x_mRNA_data': np.array(b.get('NDUFS2')),
+                 'y_mRNA_data': np.array(b.get('NDUFS3'))}
         krug_cds = []
-        for i in [dict1, dict2, dict3, dict4]:
+        for i in [dict1, dict2, dict3, dict4, dict5, dict6]:
             krug_cds.append(ColumnDataSource(data=i))
 
     return krug_cds, krug_subtype_tumor_tuple
@@ -138,9 +152,16 @@ def Mertins_CDS():
                  protein_data: np.array(a.get('blank 4')),
                  mRNA_data: np.array(b.get('blank 4')),
                  gene: np.repeat('blank 4', len(tumor_list))}
-
+        dict5 = {subtype_tuple: mertins_subtype_tumor_tuple,
+                 subtype: subtype_list,
+                 'x_protein_data': np.array(a.get('NDUFS2')),
+                 'y_protein_data': np.array(a.get('NDUFS3'))}
+        dict6 = {subtype_tuple: mertins_subtype_tumor_tuple,
+                 subtype: subtype_list,
+                 'x_mRNA_data': np.array(b.get('NDUFS2')),
+                 'y_mRNA_data': np.array(b.get('NDUFS3'))}
         mertins_cds = []
-        for i in [dict1, dict2, dict3, dict4]:
+        for i in [dict1, dict2, dict3, dict4, dict5, dict6]:
             mertins_cds.append(ColumnDataSource(data=i))
 
     return mertins_cds, mertins_subtype_tumor_tuple
