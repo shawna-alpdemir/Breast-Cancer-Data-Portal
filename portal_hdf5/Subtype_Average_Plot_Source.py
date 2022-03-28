@@ -6,7 +6,7 @@ from Subtype_Average_DF import Johansson_Subtype_Avg_SEM_DFs, Krug_Subtype_Avg_S
 ########################################################################################################################
 ##################################################### Johansson ########################################################
 
-def jo_Subtype_Avg_Plot_CDS():
+def Johansson_Subtype_Avg_Plot_CDS():
     """ Create ColumnDataSource dictionary for plotting subtype mean and SEM purposes """
     # Create empty list to store data iterated from the for loop below
     x_axis_subtype = []
@@ -66,7 +66,7 @@ def jo_Subtype_Avg_Plot_CDS():
 ########################################################################################################################
 ##################################################### Krug #############################################################
 
-def kr_Subtype_Avg_Plot_CDS():
+def Krug_Subtype_Avg_Plot_CDS():
     """ Create ColumnDataSource dictionary for plotting subtype mean and SEM purposes """
     # Create empty list to store data iterated from the for loop below
     x_axis_subtype = []
@@ -125,7 +125,7 @@ def kr_Subtype_Avg_Plot_CDS():
 ########################################################################################################################
 ##################################################### Mertins ##########################################################
 
-def me_Subtype_Avg_Plot_CDS():
+def Mertins_Subtype_Avg_Plot_CDS():
     """ Create ColumnDataSource dictionary for plotting subtype mean and SEM purposes """
     # Create empty list to store data iterated from the for loop below
     x_axis_subtype = []
