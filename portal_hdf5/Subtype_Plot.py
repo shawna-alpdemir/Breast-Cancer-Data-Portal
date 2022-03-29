@@ -2,7 +2,7 @@ from pdb import set_trace
 from bokeh.models import Whisker, FactorRange
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
-from Subtype_Average_Plot_Source import Johansson_Subtype_Avg_Plot_CDS, Krug_Subtype_Avg_Plot_CDS, Mertins_Subtype_Avg_Plot_CDS
+from Subtype_Average_Plot_CDS import Johansson_Subtype_Avg_Plot_CDS, Krug_Subtype_Avg_Plot_CDS, Mertins_Subtype_Avg_Plot_CDS
 
 # constants
 SUBTYPE_PLOT_WIDTH = 515
