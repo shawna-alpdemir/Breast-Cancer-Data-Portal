@@ -22,9 +22,17 @@ def Johansson_CDS():
     with h5py.File(JohanssonProteome, "r") as a, h5py.File(JohanssonTranscriptome, "r") as b:
         tumor_list = np.array(a.get('tumors'))
         subtype_list = np.array(a.get('subtypes'))
+        jo_pro_gene_list = np.array(a.get('genes'))
+        jo_mrna_gene_list = np.array(b.get('genes'))
 
         tumor_list = [x.decode('utf-8') for x in tumor_list]  # decode bytes string
         subtype_list = [x.decode('utf-8') for x in subtype_list]
+        jo_pro_gene_list = [x.decode('utf-8') for x in jo_pro_gene_list]
+        jo_mrna_gene_list = [x.decode('utf-8') for x in jo_mrna_gene_list]
+
+        jo_total_gene_list = jo_pro_gene_list + jo_mrna_gene_list
+        jo_unique_gene_list = np.unique(jo_total_gene_list)
+        jo_unique_gene_list = np.sort(jo_unique_gene_list) # return ndarray
 
         # create tuple containing subtype and tumor; for x_range in plotting
         johansson_subtype_tumor_tuple = tuple(zip(subtype_list, tumor_list))
@@ -62,7 +70,7 @@ def Johansson_CDS():
         for i in [dict1, dict2, dict3, dict4, dict5, dict6]:
             johansson_cds.append(ColumnDataSource(data=i))
 
-    return johansson_cds, johansson_subtype_tumor_tuple
+    return johansson_cds, johansson_subtype_tumor_tuple, jo_unique_gene_list
 
 
 ########################################################################################################################
@@ -73,9 +81,17 @@ def Krug_CDS():
     with h5py.File(KrugProteome, "r") as a, h5py.File(KrugTranscriptome, "r") as b:
         tumor_list = np.array(a.get('tumors'))
         subtype_list = np.array(a.get('subtypes'))
+        kr_pro_gene_list = np.array(a.get('genes'))
+        kr_mrna_gene_list = np.array(b.get('genes'))
 
         tumor_list = [x.decode('utf-8') for x in tumor_list]  # decode bytes string
         subtype_list = [x.decode('utf-8') for x in subtype_list]
+        kr_pro_gene_list = [x.decode('utf-8') for x in kr_pro_gene_list]
+        kr_mrna_gene_list = [x.decode('utf-8') for x in kr_mrna_gene_list]
+
+        kr_total_gene_list = kr_pro_gene_list + kr_mrna_gene_list
+        kr_unique_gene_list = np.unique(kr_total_gene_list)
+        kr_unique_gene_list = np.sort(kr_unique_gene_list) # return ndarray
 
         krug_subtype_tumor_tuple = tuple(zip(subtype_list, tumor_list))
         # create tuple containing subtype and tumor; for x_range in plotting
@@ -113,7 +129,7 @@ def Krug_CDS():
         for i in [dict1, dict2, dict3, dict4, dict5, dict6]:
             krug_cds.append(ColumnDataSource(data=i))
 
-    return krug_cds, krug_subtype_tumor_tuple
+    return krug_cds, krug_subtype_tumor_tuple, kr_unique_gene_list
 
 
 ########################################################################################################################
@@ -124,9 +140,17 @@ def Mertins_CDS():
     with h5py.File(MertinsProteome, "r") as a, h5py.File(MertinsTranscriptome, "r") as b:
         tumor_list = np.array(a.get('tumors'))
         subtype_list = np.array(a.get('subtypes'))
+        me_pro_gene_list = np.array(a.get('genes'))
+        me_mrna_gene_list = np.array(b.get('genes'))
 
         tumor_list = [x.decode('utf-8') for x in tumor_list]  # decode bytes string
         subtype_list = [x.decode('utf-8') for x in subtype_list]
+        me_pro_gene_list = [x.decode('utf-8') for x in me_pro_gene_list]
+        me_mrna_gene_list = [x.decode('utf-8') for x in me_mrna_gene_list]
+
+        me_total_gene_list = me_pro_gene_list + me_mrna_gene_list
+        me_unique_gene_list = np.unique(me_total_gene_list)
+        me_unique_gene_list = np.sort(me_unique_gene_list) # return ndarray
 
         mertins_subtype_tumor_tuple = tuple(zip(subtype_list, tumor_list))
         # create tuple containing subtype and tumor; for x_range in plotting
@@ -164,4 +188,4 @@ def Mertins_CDS():
         for i in [dict1, dict2, dict3, dict4, dict5, dict6]:
             mertins_cds.append(ColumnDataSource(data=i))
 
-    return mertins_cds, mertins_subtype_tumor_tuple
+    return mertins_cds, mertins_subtype_tumor_tuple, me_unique_gene_list
