@@ -15,13 +15,13 @@ def Import_HDF5():
 
 
 def Import_Static_Correlation_Table():
-    jo_mrna_ERBB2 = pd.read_csv('portal/Data/StaticCorrelationTable/jo_mrna_for_cor_ERBB2.txt', sep='\t')
-    jo_protein_ERBB2 = pd.read_csv('portal/Data/StaticCorrelationTable/jo_protein_for_cor_ERBB2.txt', sep='\t')
+    jo_mrna_ERBB2 = pd.read_csv('/Users/zhuoheng/PycharmProjects/Breast Cancer Data Portal/portal_hdf5/Data/StaticCorrelationTable/jo_mrna_for_cor_ERBB2.txt', sep='\t')
+    jo_protein_ERBB2 = pd.read_csv('/Users/zhuoheng/PycharmProjects/Breast Cancer Data Portal/portal_hdf5/Data/StaticCorrelationTable/jo_protein_for_cor_ERBB2.txt', sep='\t')
 
-    kr_mrna_ERBB2 = pd.read_csv('portal/Data/StaticCorrelationTable/kr_mrna_for_cor_ERBB2.txt', sep='\t')
-    kr_protein_ERBB2 = pd.read_csv('portal/Data/StaticCorrelationTable/kr_protein_for_cor_ERBB2.txt', sep='\t')
+    kr_mrna_ERBB2 = pd.read_csv('/Users/zhuoheng/PycharmProjects/Breast Cancer Data Portal/portal_hdf5/Data/StaticCorrelationTable/kr_mrna_for_cor_ERBB2.txt', sep='\t')
+    kr_protein_ERBB2 = pd.read_csv('/Users/zhuoheng/PycharmProjects/Breast Cancer Data Portal/portal_hdf5/Data/StaticCorrelationTable/kr_protein_for_cor_ERBB2.txt', sep='\t')
 
-    me_mrna_ERBB2 = pd.read_csv('portal/Data/StaticCorrelationTable/me_mrna_for_cor_ERBB2.txt', sep='\t')
-    me_protein_ERBB2 = pd.read_csv('portal/Data/StaticCorrelationTable/me_protein_for_cor_ERBB2.txt', sep='\t')
+    me_mrna_ERBB2 = pd.read_csv('/Users/zhuoheng/PycharmProjects/Breast Cancer Data Portal/portal_hdf5/Data/StaticCorrelationTable/me_mrna_for_cor_ERBB2.txt', sep='\t')
+    me_protein_ERBB2 = pd.read_csv('/Users/zhuoheng/PycharmProjects/Breast Cancer Data Portal/portal_hdf5/Data/StaticCorrelationTable/me_protein_for_cor_ERBB2.txt', sep='\t')
 
     return jo_mrna_ERBB2, jo_protein_ERBB2, kr_mrna_ERBB2, kr_protein_ERBB2, me_mrna_ERBB2, me_protein_ERBB2
