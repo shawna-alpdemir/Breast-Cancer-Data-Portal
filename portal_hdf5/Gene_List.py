@@ -11,5 +11,5 @@ def Gene_List():
     all_unique_genes = np.concatenate([jo_unique_gene_list,kr_unique_gene_list,me_unique_gene_list])
     all_unique_genes = np.unique(all_unique_genes)
     all_unique_genes = np.sort(all_unique_genes)
-
-    return all_unique_genes # 25894 entries, ndarray type
+    all_unique_genes = all_unique_genes.tolist()
+    return all_unique_genes # 25894 entries, list type

@@ -4,9 +4,9 @@ from bokeh.plotting import figure
 from Plot_Line_Scatter_ColumnDataSource import Johansson_CDS, Krug_CDS, Mertins_CDS
 
 # function call
-[johansson_cds, johansson_subtype_tumor_tuple] = Johansson_CDS()
-[krug_cds, krug_subtype_tumor_tuple] = Krug_CDS()
-[mertins_cds, mertins_subtype_tumor_tuple] = Mertins_CDS()
+[johansson_cds, johansson_subtype_tumor_tuple, jo_unique_gene_list] = Johansson_CDS()
+[krug_cds, krug_subtype_tumor_tuple, kr_unique_gene_list] = Krug_CDS()
+[mertins_cds, mertins_subtype_tumor_tuple, me_unique_gene_list] = Mertins_CDS()
 
 # dictionary key name
 subtype_tuple = 'subtype, tumor'
