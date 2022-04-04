@@ -11,14 +11,14 @@ five_subtype_colors = ['#E31A1C', '#FB9A99', '#1F78B4', '#A6CEE3','#33A02C']
 five_subtypes = ['Basal', 'Her2', 'LumA', 'LumB', 'Norm']
 
 # function call
-[jo_subtype_protein_CDS, jo_subtype_mRNA_CDS] = Johansson_Subtype_Avg_Plot_CDS()
-[kr_subtype_protein_CDS, kr_subtype_mRNA_CDS] = Krug_Subtype_Avg_Plot_CDS()
-[me_subtype_protein_CDS, me_subtype_mRNA_CDS] = Mertins_Subtype_Avg_Plot_CDS()
+[jo_subtype_protein_CDS, jo_subtype_mRNA_CDS] = Johansson_Subtype_Avg_Plot_CDS(['ESR1', 'PGR', 'ERBB2', 'MKI67'])
+[kr_subtype_protein_CDS, kr_subtype_mRNA_CDS] = Krug_Subtype_Avg_Plot_CDS(['ESR1', 'PGR', 'ERBB2', 'MKI67'])
+[me_subtype_protein_CDS, me_subtype_mRNA_CDS] = Mertins_Subtype_Avg_Plot_CDS(['ESR1', 'PGR', 'ERBB2', 'MKI67'])
 
 ########################################################################################################################
 ################################################### Johansson ##########################################################
 
-def Johansson_Subtype_Plot():
+def Johansson_Subtype_Plot(jo_subtype_protein_CDS, jo_subtype_mRNA_CDS):
     """ Function that carries bokeh plot configurations"""
     # Initialize the figure object
     jo_protein_subtype_plot = figure(x_range=FactorRange(*jo_subtype_protein_CDS.data["x"]),
@@ -66,7 +66,7 @@ def Johansson_Subtype_Plot():
 ########################################################################################################################
 ##################################################### Krug #############################################################
 
-def Krug_Subtype_Plot():
+def Krug_Subtype_Plot(kr_subtype_protein_CDS, kr_subtype_mRNA_CDS):
     """ Function that carries bokeh plot configurations"""
     # Initialize the figure object
     kr_protein_subtype_plot = figure(x_range=FactorRange(*kr_subtype_protein_CDS.data["x"]),
@@ -114,7 +114,7 @@ def Krug_Subtype_Plot():
 ########################################################################################################################
 ##################################################### Mertins ##########################################################
 
-def Mertins_Subtype_Plot():
+def Mertins_Subtype_Plot(me_subtype_protein_CDS, me_subtype_mRNA_CDS):
     """ Function that carries bokeh plot configurations"""
     # Initialize the figure object
     me_protein_subtype_plot = figure(x_range=FactorRange(*me_subtype_protein_CDS.data["x"]),

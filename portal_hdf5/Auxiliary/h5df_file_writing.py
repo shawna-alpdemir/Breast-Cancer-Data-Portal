@@ -1,7 +1,8 @@
 import h5py
 import numpy as np
 import pandas as pd
-
+import scipy.stats as sc
+import time
 ################################### Johansson
 # create hdf5 files
 JohanssonProteome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/JohanssonProteome.hdf5'
@@ -92,14 +93,8 @@ def write_hdf5(hdf5_FileName, DF_quant, DF_subtype, Subtype_col_num):
 # write_hdf5(MertinsTranscriptome, me_df_RNA, me_df_subtype, 1)
 
 # test
-with h5py.File(KrugTranscriptome, "r") as a, h5py.File(KrugProteome, "r") as b:
-    gene1 = np.array(a.get('MCM3'))
-    gene2 = np.array(b.get('MCM3'))
+with h5py.File(MertinsTranscriptome, "r") as a:
+    gene_list = np.array(a.get('genes'))
 
-    if not np.all(gene1):
-        gene1 = np.repeat(np.nan, 45)
-    if not np.all(gene2):
-        gene2 = np.repeat(np.nan, 45)
+    print(len(gene_list))
 
-    print(gene1)
-    print(gene2)

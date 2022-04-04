@@ -6,7 +6,7 @@ from Subtype_Average_DF import Johansson_Subtype_Avg_SEM_DFs, Krug_Subtype_Avg_S
 ########################################################################################################################
 ##################################################### Johansson ########################################################
 
-def Johansson_Subtype_Avg_Plot_CDS():
+def Johansson_Subtype_Avg_Plot_CDS(genelist):
     """ Create ColumnDataSource dictionary for plotting subtype mean and SEM purposes """
     # Create empty list to store data iterated from the for loop below
     x_axis_subtype = []
@@ -21,7 +21,7 @@ def Johansson_Subtype_Avg_Plot_CDS():
 
     subtype = []
 
-    for gene in ['ESR1', 'PGR', 'ERBB2', 'MKI67']:
+    for gene in genelist:
         [jo_avg_protein_DF, jo_sem_protein_DF, jo_avg_mRNA_DF, jo_sem_mRNA_DF] = Johansson_Subtype_Avg_SEM_DFs(gene)
 
         x_axis_subtype.extend([(gene,x) for x in ['Basal', 'Her2', 'LumA', 'LumB', 'Norm']])
@@ -66,7 +66,7 @@ def Johansson_Subtype_Avg_Plot_CDS():
 ########################################################################################################################
 ##################################################### Krug #############################################################
 
-def Krug_Subtype_Avg_Plot_CDS():
+def Krug_Subtype_Avg_Plot_CDS(genelist):
     """ Create ColumnDataSource dictionary for plotting subtype mean and SEM purposes """
     # Create empty list to store data iterated from the for loop below
     x_axis_subtype = []
@@ -81,7 +81,7 @@ def Krug_Subtype_Avg_Plot_CDS():
 
     subtype = []
 
-    for gene in ['ESR1', 'PGR', 'ERBB2', 'MKI67']:
+    for gene in genelist:
         [kr_avg_protein_DF, kr_sem_protein_DF, kr_avg_mRNA_DF, kr_sem_mRNA_DF] = Krug_Subtype_Avg_SEM_DFs(gene)
 
         x_axis_subtype.extend([(gene,x) for x in ['Basal', 'Her2', 'LumA', 'LumB', 'Norm']])
@@ -125,7 +125,7 @@ def Krug_Subtype_Avg_Plot_CDS():
 ########################################################################################################################
 ##################################################### Mertins ##########################################################
 
-def Mertins_Subtype_Avg_Plot_CDS():
+def Mertins_Subtype_Avg_Plot_CDS(genelist):
     """ Create ColumnDataSource dictionary for plotting subtype mean and SEM purposes """
     # Create empty list to store data iterated from the for loop below
     x_axis_subtype = []
@@ -140,7 +140,7 @@ def Mertins_Subtype_Avg_Plot_CDS():
 
     subtype = []
 
-    for gene in ['ESR1', 'PGR', 'ERBB2', 'MKI67']:
+    for gene in genelist:
         [me_avg_protein_DF, me_sem_protein_DF, me_avg_mRNA_DF, me_sem_mRNA_DF] = Mertins_Subtype_Avg_SEM_DFs(gene)
 
         x_axis_subtype.extend([(gene,x) for x in ['Basal', 'Her2', 'LumA', 'LumB']])

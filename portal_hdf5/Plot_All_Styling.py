@@ -1,4 +1,4 @@
-from bokeh.models import Legend
+from bokeh.models import Legend, DataRange1d
 
 
 def StylePlots(plot, PlotID):

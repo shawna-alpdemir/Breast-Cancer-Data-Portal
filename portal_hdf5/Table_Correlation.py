@@ -37,4 +37,4 @@ def Correlation_DataTable():
     kr_pro_cor_data_table = DataTable(source=kr_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=True, index_position=None)
     me_pro_cor_data_table = DataTable(source=me_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=True, index_position=None)
 
-    return jo_pro_cor_data_table, kr_pro_cor_data_table, me_pro_cor_data_table, jo_mrna_cor_data_table, kr_mrna_cor_data_table, me_mrna_cor_data_table
+    return jo_mrna_gene_cor_source, kr_mrna_gene_cor_source, me_mrna_gene_cor_source, jo_pro_gene_cor_source, kr_pro_gene_cor_source, me_pro_gene_cor_source, jo_pro_cor_data_table, kr_pro_cor_data_table, me_pro_cor_data_table, jo_mrna_cor_data_table, kr_mrna_cor_data_table, me_mrna_cor_data_table

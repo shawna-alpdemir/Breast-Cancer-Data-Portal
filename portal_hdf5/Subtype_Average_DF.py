@@ -9,6 +9,15 @@ from Import_Files import Import_HDF5
 
 ########################################################################################################################
 ##################################################### Johansson ########################################################
+def Check_NaN_in_DF(df):
+    """
+    Check if the DF contains NaN, if so, swap NaN with 0
+    """
+    is_nan_exist = df.isnull().any()
+    if is_nan_exist[0]: # return true then fill with 0, false then pass
+        df.fillna(0, inplace=True)
+    else:
+        pass
 
 def Johansson_Subtype_Avg_SEM_DFs(gene):
     """
@@ -29,6 +38,11 @@ def Johansson_Subtype_Avg_SEM_DFs(gene):
 
         jo_avg_mRNA_DF = gene_mRNA_DF.groupby(by='subtype').mean()
         jo_sem_mRNA_DF = gene_mRNA_DF.groupby(by='subtype').sem()
+
+        Check_NaN_in_DF(jo_avg_protein_DF)
+        Check_NaN_in_DF(jo_sem_protein_DF)
+        Check_NaN_in_DF(jo_avg_mRNA_DF)
+        Check_NaN_in_DF(jo_sem_mRNA_DF)
 
     return jo_avg_protein_DF, jo_sem_protein_DF, jo_avg_mRNA_DF, jo_sem_mRNA_DF
 
@@ -56,6 +70,11 @@ def Krug_Subtype_Avg_SEM_DFs(gene):
         kr_avg_mRNA_DF = gene_mRNA_DF.groupby(by='subtype').mean()
         kr_sem_mRNA_DF = gene_mRNA_DF.groupby(by='subtype').sem()
 
+        Check_NaN_in_DF(kr_avg_protein_DF)
+        Check_NaN_in_DF(kr_sem_protein_DF)
+        Check_NaN_in_DF(kr_avg_mRNA_DF)
+        Check_NaN_in_DF(kr_sem_mRNA_DF)
+
     return kr_avg_protein_DF, kr_sem_protein_DF, kr_avg_mRNA_DF, kr_sem_mRNA_DF
 
 
@@ -81,5 +100,10 @@ def Mertins_Subtype_Avg_SEM_DFs(gene):
 
         me_avg_mRNA_DF = gene_mRNA_DF.groupby(by='subtype').mean()
         me_sem_mRNA_DF = gene_mRNA_DF.groupby(by='subtype').sem()
+
+        Check_NaN_in_DF(me_avg_protein_DF)
+        Check_NaN_in_DF(me_sem_protein_DF)
+        Check_NaN_in_DF(me_avg_mRNA_DF)
+        Check_NaN_in_DF(me_sem_mRNA_DF)
 
     return me_avg_protein_DF, me_sem_protein_DF, me_avg_mRNA_DF, me_sem_mRNA_DF
