@@ -1,8 +1,12 @@
+# this script is for creating the correlation table from protein and mRNA data
+# with the hdf5 file open, try to get the data for the target gene,
+# except target gene does not exist in the dataset, empty df will be returned instead.
+
 import pandas as pd
 import h5py
 import numpy as np
 import scipy.stats as sc
-import time
+#import time
 
 JohanssonProteome = 'portal_hdf5/Data/HDF5/JohanssonProteome.hdf5'
 JohanssonTranscriptome = 'portal_hdf5/Data/HDF5/JohanssonTranscriptome.hdf5'
