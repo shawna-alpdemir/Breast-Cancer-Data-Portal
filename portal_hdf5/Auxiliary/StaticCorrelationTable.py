@@ -5,7 +5,7 @@ import h5py
 import time
 
 #jo_mrna_for_cor = pd.read_csv('/portal/Data/Johansson/jo_data_m.txt',index_col='Gene', sep='\t')
-jo_protein_for_cor = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/jo_data_p.txt',index_col='Gene', sep='\t')
+#jo_protein_for_cor = pd.read_csv('/portal/Data/Johansson/jo_data_p.txt',index_col='Gene', sep='\t')
 
 #kr_mrna_for_cor = pd.read_csv('/portal/Data/Krug/kr_data_m.txt', index_col='Gene', sep='\t')
 #kr_protein_for_cor = pd.read_csv('/portal/Data/Krug/kr_data_p.txt', index_col='Gene', sep='\t')
@@ -48,23 +48,7 @@ def GeneCorrelationTable(Dataset, Gene_name):
         df_list.append(data)
 
     return df_list
-    #Correlation_table_df.to_csv(f'/Users/zhuoheng/PycharmProjects/Breast Cancer Data Portal/portal/Data/StaticCorrelationTable/{Output_name}.txt', sep='\t', index=False)
 
     # end_time = time.time()
     # time_elapsed = end_time - start_time
     # print(time_elapsed)
-
-start = time.time()
-print("start")
-with h5py.File(JohanssonProteinCorrelation, "w") as hdf5:
-    #for i in jo_protein_for_cor.index:
-    df_list = GeneCorrelationTable(jo_protein_for_cor, 'ERBB2')
-    hdf5.create_dataset('ERBB2', data=np.array(df_list, dtype='S'))
-end = time.time()
-elapse = end-start
-print(elapse)
-
-with h5py.File(JohanssonProteinCorrelation, "r") as hdf5:
-    erbb2_data = np.array(hdf5.get('ERBB2'))
-    erbb2_data = [x.decode('utf-8') for x in erbb2_data[0]]
-print(erbb2_data)
