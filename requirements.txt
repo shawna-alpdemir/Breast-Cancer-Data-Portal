@@ -16,3 +16,4 @@ MarkupSafe~=2.0.1
 six~=1.16.0
 pyparsing~=3.0.7
 scipy~=1.8.0
+h5py~=3.6.0
