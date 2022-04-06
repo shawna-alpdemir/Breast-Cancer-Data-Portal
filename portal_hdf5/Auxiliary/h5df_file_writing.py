@@ -1,8 +1,10 @@
+# create hdf5 files by writing each gene entry including blank genes into the file, and store gene name, tumor name,
+# subtype information as a list. total 6 hdf5 files are created.
+
 import h5py
 import numpy as np
 import pandas as pd
-import scipy.stats as sc
-import time
+#import time
 
 ################################### Johansson
 # create hdf5 files
