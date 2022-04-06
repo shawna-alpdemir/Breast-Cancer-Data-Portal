@@ -1,8 +1,9 @@
+# create default gene-gene correlation tables from protein and mRNA data
 import pandas as pd
 import scipy.stats as sc
 import numpy as np
-import h5py
-import time
+#import h5py
+#import time
 
 #jo_mrna_for_cor = pd.read_csv('/portal/Data/Johansson/jo_data_m.txt',index_col='Gene', sep='\t')
 #jo_protein_for_cor = pd.read_csv('/portal/Data/Johansson/jo_data_p.txt',index_col='Gene', sep='\t')
