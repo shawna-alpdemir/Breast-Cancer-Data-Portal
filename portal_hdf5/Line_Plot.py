@@ -1,6 +1,7 @@
+# function that initiates the line plot figure
+
 from bokeh.models import FactorRange
 from bokeh.plotting import figure
-
 from Plot_Line_Scatter_ColumnDataSource import Johansson_CDS, Krug_CDS, Mertins_CDS
 
 # function call

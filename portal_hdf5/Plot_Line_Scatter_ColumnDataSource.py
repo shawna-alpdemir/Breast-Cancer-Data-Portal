@@ -1,8 +1,10 @@
+# function that creates CDS for line plots and scatter plots
+
 import h5py
 import numpy as np
 from bokeh.models import ColumnDataSource
 from Import_Files import Import_HDF5
-from pdb import set_trace
+#from pdb import set_trace
 
 # function call
 [JohanssonProteome, JohanssonTranscriptome, KrugProteome, KrugTranscriptome, MertinsProteome, MertinsTranscriptome] = Import_HDF5()

@@ -1,4 +1,6 @@
-from pdb import set_trace
+# function that take subtype plot CDS to make subtype plots
+
+#from pdb import set_trace
 from bokeh.models import Whisker, FactorRange
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap

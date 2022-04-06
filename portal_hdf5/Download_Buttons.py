@@ -1,5 +1,7 @@
-from os.path import join, dirname
+# function that returns download button for gene entry, download button for correlation table is in main.py
 
+# import
+from os.path import join, dirname
 from bokeh.models import CustomJS, Button
 from Plot_Line_Scatter_ColumnDataSource import Johansson_CDS, Krug_CDS, Mertins_CDS
 

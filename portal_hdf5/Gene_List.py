@@ -1,5 +1,7 @@
-import numpy as np
+# function that create total gene list, all protein genes and mRNA genes are combined
 
+# import
+import numpy as np
 from Plot_Line_Scatter_ColumnDataSource import Johansson_CDS, Krug_CDS, Mertins_CDS
 
 # function calls

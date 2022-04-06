@@ -1,4 +1,6 @@
-from pdb import set_trace
+# function that creates subtype plot CDS
+
+#from pdb import set_trace
 from bokeh.models import ColumnDataSource
 from Subtype_Average_DF import Johansson_Subtype_Avg_SEM_DFs, Krug_Subtype_Avg_SEM_DFs, Mertins_Subtype_Avg_SEM_DFs
 

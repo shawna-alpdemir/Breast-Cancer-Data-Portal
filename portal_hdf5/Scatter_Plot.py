@@ -1,8 +1,7 @@
+# function that initiates scatter plots
+
 from bokeh.plotting import figure
-from bokeh.transform import factor_cmap
-
 from Plot_Line_Scatter_ColumnDataSource import Johansson_CDS, Krug_CDS, Mertins_CDS
-
 
 #################################### protein-protein/RNA-RNA scatter plot ##############################################
 # this plot is make from dict 5 and dict 6 from Plot_ColumnDataSource

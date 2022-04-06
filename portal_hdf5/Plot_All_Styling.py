@@ -1,5 +1,4 @@
-from bokeh.models import Legend, DataRange1d
-
+# function that style all plots
 
 def StylePlots(plot, PlotID):
     """ Aesthetic settings"""
