@@ -3,10 +3,11 @@ import numpy as np
 import pandas as pd
 import scipy.stats as sc
 import time
+
 ################################### Johansson
 # create hdf5 files
-JohanssonProteome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/JohanssonProteome.hdf5'
-JohanssonTranscriptome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/JohanssonTranscriptome.hdf5'
+JohanssonProteome = 'portal_hdf5/Data/HDF5/JohanssonProteome.hdf5'
+JohanssonTranscriptome = 'portal_hdf5/Data/HDF5/JohanssonTranscriptome.hdf5'
 
 # read in txt files
 # jo_df_protein = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/jo_data_p.txt',
@@ -18,8 +19,8 @@ JohanssonTranscriptome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/Joh
 
 ################################### Krug
 # create hdf5 files
-KrugProteome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/KrugProteome.hdf5'
-KrugTranscriptome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/KrugTranscriptome.hdf5'
+KrugProteome = 'portal_hdf5/Data/HDF5/KrugProteome.hdf5'
+KrugTranscriptome = 'portal_hdf5/Data/HDF5/KrugTranscriptome.hdf5'
 
 # read in txt files
 # kr_df_protein = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/kr_data_p.txt',
@@ -31,8 +32,8 @@ KrugTranscriptome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/KrugTran
 
 ################################### Mertins
 # create hdf5 files
-MertinsProteome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/MertinsProteome.hdf5'
-MertinsTranscriptome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/hdf5/MertinsTranscriptome.hdf5'
+MertinsProteome = 'portal_hdf5/Data/HDF5/MertinsProteome.hdf5'
+MertinsTranscriptome = 'portal_hdf5/Data/HDF5/MertinsTranscriptome.hdf5'
 
 # read in txt files
 # me_df_protein = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/me_data_p.txt',
