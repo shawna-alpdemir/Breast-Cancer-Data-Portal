@@ -1,7 +1,6 @@
 import pandas as pd
 import scipy.stats as sc
 import numpy as np
-import time
 
 jo_mrna_for_cor = pd.read_csv('/portal/Data/Johansson/jo_data_m.txt',
                               index_col='Gene', sep='\t')
