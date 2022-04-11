@@ -1,8 +1,9 @@
 ##### Import ###########################################################################################################
-from os.path import join, dirname
-
 import h5py
 import numpy as np
+import pandas as pd
+import time
+from os.path import join, dirname
 from bokeh.io import curdoc
 from bokeh.layouts import layout, column, row
 from bokeh.models import Spacer, Tabs, Panel, AutocompleteInput, ColumnDataSource, TableColumn, DataTable, Button, \
@@ -20,10 +21,8 @@ from Scatter_Plot import Pro_Pro_Scatter_Plot, RNA_RNA_Scatter_Plot, Johansson_R
 from Subtype_Average_DF import Johansson_Subtype_Avg_SEM_DFs, Krug_Subtype_Avg_SEM_DFs, Mertins_Subtype_Avg_SEM_DFs
 from Subtype_Average_Plot_CDS import Johansson_Subtype_Avg_Plot_CDS, Krug_Subtype_Avg_Plot_CDS, Mertins_Subtype_Avg_Plot_CDS
 from Subtype_Plot import Johansson_Subtype_Plot, Krug_Subtype_Plot, Mertins_Subtype_Plot
-#from Table_Correlation import Correlation_DataTable
 
-import time
-
+pd.set_option("display.precision", 4) # set how many decimals to display?
 ##### Row 0: Functions Def ##############################3##############################################################
 # constants
 TICKER = {}
@@ -86,12 +85,14 @@ def Line_Plot_Update(attrname, old, new):
         protein_data_new_gene = np.array(a.get(new))
         mRNA_data_new_gene = np.array(b.get(new))
         if not np.all(protein_data_new_gene):
-            protein_data_new_gene = np.repeat(np.nan, 45)
+            #protein_data_new_gene = np.repeat(np.nan, 45)
+            protein_data_new_gene = np.zeros(45)
         if not np.all(mRNA_data_new_gene):
-            mRNA_data_new_gene = np.repeat(np.nan, 45)
+            #mRNA_data_new_gene = np.repeat(np.nan, 45)
+            mRNA_data_new_gene = np.zeros(45)
 
         johansson_cds[TICKER_INDEX].data = {subtype_tuple: johansson_subtype_tumor_tuple,
-                 subtype: list(zip(*johansson_subtype_tumor_tuple))[0], # extract first element of the list of subtype_tumor_tuple
+                 subtype: list(zip(*johansson_subtype_tumor_tuple))[0], # extract first element of the list of subtype_tumor_tuple, which is the subtype
                  protein_data: protein_data_new_gene,
                  mRNA_data: mRNA_data_new_gene,
                  gene: np.repeat(gene, 45)}
@@ -100,9 +101,11 @@ def Line_Plot_Update(attrname, old, new):
         protein_data_new_gene = np.array(a.get(new))
         mRNA_data_new_gene = np.array(b.get(new))
         if not np.all(protein_data_new_gene):
-            protein_data_new_gene = np.repeat(np.nan, 122)
+            #protein_data_new_gene = np.repeat(np.nan, 122)
+            protein_data_new_gene = np.zeros(122)
         if not np.all(mRNA_data_new_gene):
-            mRNA_data_new_gene = np.repeat(np.nan, 122)
+            #mRNA_data_new_gene = np.repeat(np.nan, 122)
+            mRNA_data_new_gene = np.zeros(122)
 
         krug_cds[TICKER_INDEX].data = {subtype_tuple: krug_subtype_tumor_tuple,
                  subtype: list(zip(*krug_subtype_tumor_tuple))[0], # extract first element of the list of subtype_tumor_tuple
@@ -114,9 +117,11 @@ def Line_Plot_Update(attrname, old, new):
         protein_data_new_gene = np.array(a.get(new))
         mRNA_data_new_gene = np.array(b.get(new))
         if not np.all(protein_data_new_gene):
-            protein_data_new_gene = np.repeat(np.nan, 77)
+            #protein_data_new_gene = np.repeat(np.nan, 77)
+            protein_data_new_gene = np.zeros(77)
         if not np.all(mRNA_data_new_gene):
-            mRNA_data_new_gene = np.repeat(np.nan, 77)
+            #mRNA_data_new_gene = np.repeat(np.nan, 77)
+            mRNA_data_new_gene = np.zeros(77)
 
         mertins_cds[TICKER_INDEX].data = {subtype_tuple: mertins_subtype_tumor_tuple,
                  subtype: list(zip(*mertins_subtype_tumor_tuple))[0], # extract first element of the list of subtype_tumor_tuple
@@ -149,7 +154,8 @@ def Scatter_Select_Update(event):
         new_data_list = []
         for data in old_data_list:
             if not np.all(data):
-                data = np.repeat(np.nan, 45)
+                #data = np.repeat(np.nan, 45)
+                data = np.zeros(45)
             new_data_list.append(data)
 
         johansson_cds[4].data = {subtype_tuple: johansson_subtype_tumor_tuple,
@@ -172,7 +178,8 @@ def Scatter_Select_Update(event):
         new_data_list = []
         for data in old_data_list:
             if not np.all(data):
-                data = np.repeat(np.nan, 122)
+                #data = np.repeat(np.nan, 122)
+                data = np.zeros(122)
             new_data_list.append(data)
 
         krug_cds[4].data = {subtype_tuple: krug_subtype_tumor_tuple,
@@ -195,7 +202,8 @@ def Scatter_Select_Update(event):
         new_data_list = []
         for data in old_data_list:
             if not np.all(data):
-                data = np.repeat(np.nan, 77)
+                #data = np.repeat(np.nan, 77)
+                data = np.zeros(77)
             new_data_list.append(data)
 
         mertins_cds[4].data = {subtype_tuple: mertins_subtype_tumor_tuple,
@@ -398,21 +406,17 @@ start_time = time.time()
 all_unique_genes = Gene_List()
 
 # constants
-LINE_PLOT_WIDTH = 1000
-LINE_PLOT_HEIGHT = 200
 GENE_NUMBER = ['Gene 1', 'Gene 2', 'Gene 3', 'Gene 4']
-INITIAL_GENE = ['NDUFS2', 'NDUFS3', 'NDUFS7', 'blank 4']
+INITIAL_GENE = ['NDUFS2', 'NDUFS3', 'NDUFS7', 'NDUFS8']
 GENE_COLORS = ['red', 'blue', 'green', 'orange']
 
 for j in range(4):
-    jo_plot_p.line(subtype_tuple, protein_data, source=johansson_cds[j], color=GENE_COLORS[j],
-                   legend_label=GENE_NUMBER[j])
-    jo_plot_p.circle(subtype_tuple, protein_data, source=johansson_cds[j], color=GENE_COLORS[j], size=4,
-                     legend_label=GENE_NUMBER[j])
-    jo_plot_m.line(subtype_tuple, mRNA_data, source=johansson_cds[j], color=GENE_COLORS[j],
-                   legend_label=GENE_NUMBER[j])
-    jo_plot_m.circle(subtype_tuple, mRNA_data, source=johansson_cds[j], color=GENE_COLORS[j], size=4,
-                     legend_label=GENE_NUMBER[j])
+    jo_plot_p.line(subtype_tuple, protein_data, source=johansson_cds[j], color=GENE_COLORS[j], legend_label=GENE_NUMBER[j])
+    #jo_plot_p.circle(subtype_tuple, protein_data, source=johansson_cds[j], color=GENE_COLORS[j], size=4,
+    #                 legend_label=GENE_NUMBER[j])
+    jo_plot_m.line(subtype_tuple, mRNA_data, source=johansson_cds[j], color=GENE_COLORS[j], legend_label=GENE_NUMBER[j])
+    #jo_plot_m.circle(subtype_tuple, mRNA_data, source=johansson_cds[j], color=GENE_COLORS[j], size=4,
+    #                 legend_label=GENE_NUMBER[j])
     TICKER[j] = AutocompleteInput(title=GENE_NUMBER[j], value=INITIAL_GENE[j], width=100, width_policy='auto',
                                   min_characters=3, completions=Nix(INITIAL_GENE[j], all_unique_genes),
                                   case_sensitive=False)
@@ -421,13 +425,12 @@ for j in range(4):
     TICKER[j].on_change('value', All_Subtype_Plot_Update)
 
 for j in range(4):
-    kr_plot_p.line(subtype_tuple, protein_data, source=krug_cds[j], color=GENE_COLORS[j],
-                   legend_label=GENE_NUMBER[j])
-    kr_plot_p.circle(subtype_tuple, protein_data, source=krug_cds[j], color=GENE_COLORS[j], size=4,
-                     legend_label=GENE_NUMBER[j])
+    kr_plot_p.line(subtype_tuple, protein_data, source=krug_cds[j], color=GENE_COLORS[j], legend_label=GENE_NUMBER[j])
+    # kr_plot_p.circle(subtype_tuple, protein_data, source=krug_cds[j], color=GENE_COLORS[j], size=4,
+    #                  legend_label=GENE_NUMBER[j])
     kr_plot_m.line(subtype_tuple, mRNA_data, source=krug_cds[j], color=GENE_COLORS[j], legend_label=GENE_NUMBER[j])
-    kr_plot_m.circle(subtype_tuple, mRNA_data, source=krug_cds[j], color=GENE_COLORS[j], size=4,
-                     legend_label=GENE_NUMBER[j])
+    # kr_plot_m.circle(subtype_tuple, mRNA_data, source=krug_cds[j], color=GENE_COLORS[j], size=4,
+    #                  legend_label=GENE_NUMBER[j])
     TICKER[j] = AutocompleteInput(title=GENE_NUMBER[j], value=INITIAL_GENE[j], width=100, width_policy='auto',
                                   min_characters=3, completions=Nix(INITIAL_GENE[j], all_unique_genes),
                                   case_sensitive=False)
@@ -436,14 +439,12 @@ for j in range(4):
     TICKER[j].on_change('value', All_Subtype_Plot_Update)
 
 for j in range(4):
-    me_plot_p.line(subtype_tuple, protein_data, source=mertins_cds[j], color=GENE_COLORS[j],
-                   legend_label=GENE_NUMBER[j])
-    me_plot_p.circle(subtype_tuple, protein_data, source=mertins_cds[j], color=GENE_COLORS[j], size=4,
-                     legend_label=GENE_NUMBER[j])
-    me_plot_m.line(subtype_tuple, mRNA_data, source=mertins_cds[j], color=GENE_COLORS[j],
-                   legend_label=GENE_NUMBER[j])
-    me_plot_m.circle(subtype_tuple, mRNA_data, source=mertins_cds[j], color=GENE_COLORS[j], size=4,
-                     legend_label=GENE_NUMBER[j])
+    me_plot_p.line(subtype_tuple, protein_data, source=mertins_cds[j], color=GENE_COLORS[j], legend_label=GENE_NUMBER[j])
+    # me_plot_p.circle(subtype_tuple, protein_data, source=mertins_cds[j], color=GENE_COLORS[j], size=4,
+    #                  legend_label=GENE_NUMBER[j])
+    me_plot_m.line(subtype_tuple, mRNA_data, source=mertins_cds[j], color=GENE_COLORS[j], legend_label=GENE_NUMBER[j])
+    # me_plot_m.circle(subtype_tuple, mRNA_data, source=mertins_cds[j], color=GENE_COLORS[j], size=4,
+    #                  legend_label=GENE_NUMBER[j])
     TICKER[j] = AutocompleteInput(title=GENE_NUMBER[j], value=INITIAL_GENE[j], width=100, width_policy='auto',
                                   min_characters=3, completions=Nix(INITIAL_GENE[j], all_unique_genes),
                                   case_sensitive=False)
@@ -508,11 +509,11 @@ for i,j in zip(p_p_plots,r_r_plots):
     StylePlots(j, PlotID='mRNA-Prot')
 
 # layout
-scatter_plot_jo_layout = layout(column(row(p_p_plots[0],r_r_plots[0])))
+scatter_plot_jo_layout = layout(column(row(p_p_plots[0]), Spacer(height=10),row(r_r_plots[0])))
 
-scatter_plot_kr_layout = layout(column(row(p_p_plots[1],r_r_plots[1])))
+scatter_plot_kr_layout = layout(column(row(p_p_plots[1]), Spacer(height=10),row(r_r_plots[1])))
 
-scatter_plot_me_layout = layout(column(row(p_p_plots[2],r_r_plots[2])))
+scatter_plot_me_layout = layout(column(row(p_p_plots[2]), Spacer(height=10),row(r_r_plots[2])))
 
 # stack 3 layouts into tab
 pprr_scatter_plot_tab = Tabs(tabs=[Panel(child=scatter_plot_jo_layout, title="Johansson"),
@@ -580,13 +581,13 @@ for i in [me_plot_mRNA_prot1, me_plot_mRNA_prot2, me_plot_mRNA_prot3, me_plot_mR
 # put gene3 and gene4 mRNA-protein correlation plots in the row below, with a spacer between.
 # spacer to divide the rows
 scatter_plot_jo_layout = layout(column(row(jo_plot_mRNA_prot1,jo_plot_mRNA_prot2),
-                                       Spacer(height=30),
+                                       Spacer(height=10),
                                        row(jo_plot_mRNA_prot3,jo_plot_mRNA_prot4)))
 scatter_plot_kr_layout = layout(column(row(kr_plot_mRNA_prot1,kr_plot_mRNA_prot2),
-                                       Spacer(height=30),
+                                       Spacer(height=10),
                                        row(kr_plot_mRNA_prot3,kr_plot_mRNA_prot4)))
 scatter_plot_me_layout = layout(column(row(me_plot_mRNA_prot1,me_plot_mRNA_prot2),
-                                       Spacer(height=30),
+                                       Spacer(height=10),
                                        row(me_plot_mRNA_prot3,me_plot_mRNA_prot4)))
 # stack 3 layouts into tab
 scatter_plot_tab = Tabs(tabs=[Panel(child=scatter_plot_jo_layout, title="Johansson"),
@@ -629,13 +630,13 @@ subtype_plot_tab = Tabs(tabs=[Panel(child=subtype_plot_jo_layout, title="Johanss
 
 # constant
 TABLE_WIDTH = 500
-TABLE_HEIGHT = 300
+TABLE_HEIGHT = 250
 
 # textbox widget and on_change
-protein_correlation_textbox = AutocompleteInput(title='Gene for protein correlation table:', value=str('ERBB2'), width=150, width_policy ='auto',
+protein_correlation_textbox = AutocompleteInput(title='Gene:', value=str('ERBB2'), width=150, width_policy ='auto',
                                             min_characters=3, completions = all_unique_genes, case_sensitive=False)
 protein_correlation_textbox.on_change('value', Correlation_Table_Protein_Update)
-mrna_correlation_textbox = AutocompleteInput(title='Gene for mRNA correlation table:', value=str('ERBB2'), width=150, width_policy ='auto',
+mrna_correlation_textbox = AutocompleteInput(title='Gene:', value=str('ERBB2'), width=150, width_policy ='auto',
                                             min_characters=3, completions = all_unique_genes, case_sensitive=False)
 mrna_correlation_textbox.on_change('value', Correlation_Table_mRNA_Update)
 
@@ -678,7 +679,7 @@ cor_mrna_table_tab = Tabs(tabs=[Panel(child=jo_mrna_cor_data_table, title ="Joha
                            Panel(child=me_mrna_cor_data_table, title = "Mertins")])
 
 # button and call back
-button5 = Button(label="Download mRNA Correlation Table", button_type="success", width=150)
+button5 = Button(label="Download", button_type="success", width=150) #mRNA Correlation Table
 button5.js_on_event("button_click", CustomJS(args=dict(source=jo_mrna_gene_cor_source),
                                              code=open(join(dirname(__file__),
                                                             "download_javascript/jo_cor_table_download.js")).read()))
@@ -689,7 +690,7 @@ button5.js_on_event("button_click", CustomJS(args=dict(source=me_mrna_gene_cor_s
                                              code=open(join(dirname(__file__),
                                                             "download_javascript/me_cor_table_download.js")).read()))
 
-button6 = Button(label="Download Protein Correlation Table", button_type="success", width=150)
+button6 = Button(label="Download", button_type="success", width=150) #Protein Correlation Table
 button6.js_on_event("button_click", CustomJS(args=dict(source=jo_pro_gene_cor_source),
                                              code=open(join(dirname(__file__),
                                                             "download_javascript/jo_cor_table_download.js")).read()))
@@ -709,91 +710,83 @@ tool_title_div = Div(text=tool_title_text,
                      style={'font-size': '200%', 'color': 'black', 'font-style': 'normal', 'font-weight': 'bold'},
                      width=1000)
 
-jo_info_text = '''The Oslo cohort from Johansson et al. has 45 breast cancer tumors including 5 subtypes (basal-like, Her2-enriched, LumA, LumB and normal-like). Each subtype contains 9 samples.
-             The dataset provided identifications of fully quantified 23663 gene transcripts and 9995 proteins.'''
-kr_info_text = '''The BRCA cohort from Krug et al. contains 122 treatment-naive primary breast cancer tumors. Sample subtypes include 29 basal-like, 14 Her2-enriched, 57 LumA, 17 LumB and 5 normal-like samples.
-             The dataset provided identifications of fully quantified 10733 gene transcripts and 7586 proteins.'''
-me_info_text = '''The TCGA-BRCA cohort from Mertins et al. contains 77 breast cancer tumors. Subtypes include 18 basal-like, 12 Her2-enriched, 23 LumA and 24 LumB samples.
-             The dataset provided identifications of fully quantified 14440 gene transcripts, 7016 proteins.'''
-bg_info_div = column(Div(text="Background Information:",
-                         style={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}),
-                     Div(text=jo_info_text,
-                                style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}),
-                     Div(text=kr_info_text,
-                                style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}),
-                     Div(text=me_info_text,
-                                style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}), width=1000)
+# jo_info_text = '''The Oslo cohort from Johansson et al. has 45 breast cancer tumors including 5 subtypes (basal-like, Her2-enriched, LumA, LumB and normal-like). Each subtype contains 9 samples.
+#              The dataset provided identifications of fully quantified 23663 gene transcripts and 9995 proteins.'''
+# kr_info_text = '''The BRCA cohort from Krug et al. contains 122 treatment-naive primary breast cancer tumors. Sample subtypes include 29 basal-like, 14 Her2-enriched, 57 LumA, 17 LumB and 5 normal-like samples.
+#              The dataset provided identifications of fully quantified 10733 gene transcripts and 7586 proteins.'''
+# me_info_text = '''The TCGA-BRCA cohort from Mertins et al. contains 77 breast cancer tumors. Subtypes include 18 basal-like, 12 Her2-enriched, 23 LumA and 24 LumB samples.
+#              The dataset provided identifications of fully quantified 14440 gene transcripts, 7016 proteins.'''
+# bg_info_div = column(Div(text="Background Information:",
+#                          style={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}),
+#                      Div(text=jo_info_text,
+#                                 style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}),
+#                      Div(text=kr_info_text,
+#                                 style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}),
+#                      Div(text=me_info_text,
+#                                 style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}), width=1000)
 
-line_plot_descriptive_text = "Abundances of proteins that are part of the same complex are tightly correlated across breast tumors. " \
-                             "However, this does not appear to be the case for the corresponding mRNA transcripts. " \
-                             "The plots are initialized showing abundances of structural proteins of complex I of the electron transport chain. " \
-                             "If you wish to hide the curve for a specific gene, click on the corresponding legend entries."
-line_plot_div = column(Div(text="Protein Complex Subunit Correlation:",
+# line_plot_descriptive_text = "Abundances of proteins that are part of the same complex are tightly correlated across breast tumors. " \
+#                              "However, this does not appear to be the case for the corresponding mRNA transcripts. " \
+#                              "The plots are initialized showing abundances of structural proteins of complex I of the electron transport chain. " \
+#                              "If you wish to hide the curve for a specific gene, click on the corresponding legend entries."
+line_plot_div = column(Div(text="Abundance Traces:",
                            style={'font-size': '120%', 'color': 'black', 'font-style': 'italic',
-                                       'font-weight': 'bold'}),
-                       Div(text=line_plot_descriptive_text,
-                           style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}), width=1000)
+                                       'font-weight': 'bold'}))
+                       # Div(text=line_plot_descriptive_text,
+                       #     style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}), width=1000)
 
-scatter_plot_descriptive_text = "Protein and transcript abundances often are not correlated; indicating substantial utilization of post-transcriptional regulatory mechanisms."
-scatter_plot_div = column(Div(text="mRNA-Protein Correlation:",
+#scatter_plot_descriptive_text = "Protein and transcript abundances often are not correlated; indicating substantial utilization of post-transcriptional regulatory mechanisms."
+scatter_plot_div = column(Div(text="Pairwise Abundances:",
                               style={'font-size': '120%', 'color': 'black', 'font-style': 'italic',
-                                      'font-weight': 'bold'}),
-                          Div(text=scatter_plot_descriptive_text,
-                              style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}), width=1000)
+                                      'font-weight': 'bold'}))
+                          # Div(text=scatter_plot_descriptive_text,
+                          #     style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}), width=1000)
 
-subtype_plot_text = "Breast cancer subtypes are defined by their gene expression profiles. " \
-                          "The plots are initialized above showing abundances of ER (ESR1), PR (PGR), HER2 (ERBB2), and KI-67 (MKI67); " \
-                          "four immunohistochemical markers commonly used in the clinic. " \
-                          "Values are means +/- standard error of the mean (SEM). " \
-                          "If data are not available for a gene, values will appear as all zeros with no SEMs."
-subtype_plot_div = column(Div(text="Protein and mRNA Expression by Breast Cancer PAM50 Subtype:",
-                              style={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}),
-                          Div(text=subtype_plot_text,
-                              style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}), width=1000)
+# subtype_plot_text = "Breast cancer subtypes are defined by their gene expression profiles. " \
+#                           "The plots are initialized above showing abundances of ER (ESR1), PR (PGR), HER2 (ERBB2), and KI-67 (MKI67); " \
+#                           "four immunohistochemical markers commonly used in the clinic. " \
+#                           "Values are means +/- standard error of the mean (SEM). " \
+#                           "If data are not available for a gene, values will appear as all zeros with no SEMs."
+subtype_plot_div = column(Div(text="Abundances by Subtype:",
+                              style={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}))
+                          # Div(text=subtype_plot_text,
+                          #     style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}), width=1000)
 
 
-protein_cor_table_title_div = column(Div(text="Correlation Table - Protein",
+protein_cor_table_title_div = column(Div(text="Correlation Table - Protein:",
                                     style={'font-size': '120%', 'color': 'black', 'font-weight': 'bold'}))
-mRNA_cor_table_title_div = column(Div(text="Correlation Table - mRNA",
+mRNA_cor_table_title_div = column(Div(text="Correlation Table - mRNA:",
                                  style={'font-size': '120%', 'color': 'black', 'font-weight': 'bold'}))
-correlation_table_text = "The gene-gene correlation is calculated from protein and mRNA expression data using the pearson correlation. " \
-               "The table shows the top 100 genes that are correlated with the input gene based on the p-value. " \
-               "The computation roughly takes 30 seconds, please be patient."
-correlation_table_div = column(Div(text="Gene-Gene Correlation Table:",
-                                   style={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}),
-                               Div(text=correlation_table_text,
-                                   style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}), width=1000)
+# correlation_table_text = "The gene-gene correlation is calculated from protein and mRNA expression data using the pearson correlation. " \
+#                "The table shows the top 100 genes that are correlated with the input gene based on the p-value. " \
+#                "The computation roughly takes 30 seconds, please be patient."
+# correlation_table_div = column(Div(text="Gene-Gene Correlation Table:",
+#                                    style={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}),
+#                                Div(text=correlation_table_text,
+#                                    style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}), width=1000)
 
-gene_entry_instruc_text = "To view data for a different gene, type a HGNC gene symbol in the textbox."
-blank_gene_instruc_text = "If you wish to leave certain textboxes blank, please input the corresponding blank entries."
-warning_text = "Please do not enter same gene/blank entry across multiple textboxes."
-download_text = 'Click "download" to save the protein and mRNA data for corresponding genes from the three studies. ' \
-              'Please use Firefox or Google Chrome for better download experience.'
-red_text_div = column(Div(text=gene_entry_instruc_text, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'}, width=300),
-                    Div(text=blank_gene_instruc_text, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'}, width=300),
-                    Div(text=warning_text, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'}, width=300),
-                    Div(text=download_text, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'}, width=300))
+# gene_entry_instruc_text = "To view data for a different gene, type a HGNC gene symbol in the textbox."
+# blank_gene_instruc_text = "If you wish to leave certain textboxes blank, please input the corresponding blank entries."
+# warning_text = "Please do not enter same gene/blank entry across multiple textboxes."
+# download_text = 'Click "download" to save the protein and mRNA data for corresponding genes from the three studies. ' \
+#               'Please use Firefox or Google Chrome for better download experience.'
+# red_text_div = column(Div(text=gene_entry_instruc_text, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'}, width=300),
+#                     Div(text=blank_gene_instruc_text, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'}, width=300),
+#                     Div(text=warning_text, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'}, width=300),
+#                     Div(text=download_text, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'}, width=300))
 
 
-gene_entry_section = column(tickers_buttons_layout, red_text_div)
-line_plot_section = column(row(line_plot_tab))
-gxg_scatter_plot_section = row(column(pprr_scatter_plot_tab, line_plot_div), column(select_widget_layout))
-scatter_plot_section = column(row(scatter_plot_tab), row(scatter_plot_div))
-subtype_plot_section = column(row(subtype_plot_tab), row(subtype_plot_div))
+gene_entry_section = column(tickers_buttons_layout)
+line_plot_section = column(line_plot_div, row(line_plot_tab, gene_entry_section))
+select_widget_section = column(select_widget_layout)
+scatter_plot_section = column(scatter_plot_div, row(scatter_plot_tab, pprr_scatter_plot_tab, select_widget_section))
+subtype_plot_section = column(subtype_plot_div, subtype_plot_tab)
 correlation_table_section = column(row(column(protein_cor_table_title_div, protein_correlation_textbox, cor_pro_table_tab, button6),
-                          Spacer(width=30),
-                          column(mRNA_cor_table_title_div, mrna_correlation_textbox, cor_mrna_table_tab, button5)),
-                          row(correlation_table_div))
-
+                          column(mRNA_cor_table_title_div, mrna_correlation_textbox, cor_mrna_table_tab, button5)))
 
 l = layout([
     [PageMargin, tool_title_div],
-    [RowSpacer],
-    [PageMargin, bg_info_div],
-    [RowSpacer],
-    [PageMargin, line_plot_section, gene_entry_section],
-    [RowSpacer],
-    [PageMargin, gxg_scatter_plot_section],
+    [PageMargin, line_plot_section],
     [RowSpacer],
     [PageMargin, scatter_plot_section],
     [RowSpacer],
