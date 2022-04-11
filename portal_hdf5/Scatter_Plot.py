@@ -7,13 +7,13 @@ from Plot_Line_Scatter_ColumnDataSource import Johansson_CDS, Krug_CDS, Mertins_
 # this plot is make from dict 5 and dict 6 from Plot_ColumnDataSource
 
 # constants
-SCATTER_PLOT_WIDTH = 515
-SCATTER_PLOT_HEIGHT = 275
+SCATTER_PLOT_WIDTH = 333
+SCATTER_PLOT_HEIGHT = 200
 GENE1 = 'NDUFS2'
 GENE2 = 'NDUFS3'
 GENE3 = 'NDUFS7'
-GENE4 = 'blank 4'
-INITIAL_GENE = ['NDUFS2', 'NDUFS3', 'NDUFS7', 'blank 4']
+GENE4 = 'NDUFS8'
+INITIAL_GENE = ['NDUFS2', 'NDUFS3', 'NDUFS7', 'NDUFS8']
 five_subtypes = ['Basal', 'Her2', 'LumA', 'LumB', 'Norm']  # list of subtypes
 five_subtype_colors = ['#E31A1C', '#FB9A99', '#1F78B4', '#A6CEE3','#33A02C']
 
@@ -62,7 +62,7 @@ def Johansson_RNA_Pro_Scatter_Plot():
                                 plot_width=SCATTER_PLOT_WIDTH, plot_height=SCATTER_PLOT_HEIGHT)
     jo_plot_mRNA_prot3 = figure(title='NDUFS7', x_axis_label='mRNA z-score', y_axis_label='protein z-score',
                                 plot_width=SCATTER_PLOT_WIDTH, plot_height=SCATTER_PLOT_HEIGHT)
-    jo_plot_mRNA_prot4 = figure(title='blank 4', x_axis_label='mRNA z-score', y_axis_label='protein z-score',
+    jo_plot_mRNA_prot4 = figure(title='NDUFS8', x_axis_label='mRNA z-score', y_axis_label='protein z-score',
                                 plot_width=SCATTER_PLOT_WIDTH, plot_height=SCATTER_PLOT_HEIGHT)
 
     return jo_plot_mRNA_prot1, jo_plot_mRNA_prot2, jo_plot_mRNA_prot3, jo_plot_mRNA_prot4
@@ -77,7 +77,7 @@ def Krug_RNA_Pro_Scatter_Plot():
                                 plot_width=SCATTER_PLOT_WIDTH, plot_height=SCATTER_PLOT_HEIGHT)
     kr_plot_mRNA_prot3 = figure(title='NDUFS7', x_axis_label='mRNA z-score', y_axis_label='protein z-score',
                                 plot_width=SCATTER_PLOT_WIDTH, plot_height=SCATTER_PLOT_HEIGHT)
-    kr_plot_mRNA_prot4 = figure(title='blank 4', x_axis_label='mRNA z-score', y_axis_label='protein z-score',
+    kr_plot_mRNA_prot4 = figure(title='NDUFS8', x_axis_label='mRNA z-score', y_axis_label='protein z-score',
                                 plot_width=SCATTER_PLOT_WIDTH, plot_height=SCATTER_PLOT_HEIGHT)
 
     return kr_plot_mRNA_prot1, kr_plot_mRNA_prot2, kr_plot_mRNA_prot3, kr_plot_mRNA_prot4
@@ -95,7 +95,7 @@ def Mertins_RNA_Pro_Scatter_Plot():
     me_plot_mRNA_prot3 = figure(title='NDUFS7', x_axis_label='mRNA z-score', y_axis_label='protein z-score',
                                 plot_width=SCATTER_PLOT_WIDTH, plot_height=SCATTER_PLOT_HEIGHT)
 
-    me_plot_mRNA_prot4 = figure(title='blank 4', x_axis_label='mRNA z-score', y_axis_label='protein z-score',
+    me_plot_mRNA_prot4 = figure(title='NDUFS8', x_axis_label='mRNA z-score', y_axis_label='protein z-score',
                                 plot_width=SCATTER_PLOT_WIDTH, plot_height=SCATTER_PLOT_HEIGHT)
 
     return me_plot_mRNA_prot1, me_plot_mRNA_prot2, me_plot_mRNA_prot3, me_plot_mRNA_prot4
