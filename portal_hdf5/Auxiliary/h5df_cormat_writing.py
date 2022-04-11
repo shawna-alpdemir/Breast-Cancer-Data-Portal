@@ -3,15 +3,16 @@ import pandas as pd
 import h5py
 import time
 
+# replace ~ with your directory
 def Import_Correlation_Data():
-    jo_protein_for_cor = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/jo_data_p.txt',index_col='Gene', sep='\t')
-    jo_mrna_for_cor = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/jo_data_m.txt',index_col='Gene', sep='\t')
+    jo_protein_for_cor = pd.read_csv('~/jo_data_p.txt',index_col='Gene', sep='\t')
+    jo_mrna_for_cor = pd.read_csv('~/jo_data_m.txt',index_col='Gene', sep='\t')
 
-    kr_protein_for_cor = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/kr_data_p.txt',index_col='Gene', sep='\t')
-    kr_mrna_for_cor = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/kr_data_m.txt',index_col='Gene', sep='\t')
+    kr_protein_for_cor = pd.read_csv('~/kr_data_p.txt',index_col='Gene', sep='\t')
+    kr_mrna_for_cor = pd.read_csv('~/kr_data_m.txt',index_col='Gene', sep='\t')
 
-    me_protein_for_cor = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/me_data_p.txt',index_col='Gene', sep='\t')
-    me_mrna_for_cor = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/me_data_m.txt',index_col='Gene', sep='\t')
+    me_protein_for_cor = pd.read_csv('~/me_data_p.txt',index_col='Gene', sep='\t')
+    me_mrna_for_cor = pd.read_csv('~/me_data_m.txt',index_col='Gene', sep='\t')
 
     return jo_mrna_for_cor, kr_mrna_for_cor, me_mrna_for_cor, jo_protein_for_cor, kr_protein_for_cor, me_protein_for_cor
 
@@ -29,12 +30,12 @@ start = time.time()
 #me_mrna_cormat = me_mrna_for_cor.transpose().corr()
 
 # create hdf5 file
-#jo_protein_cormat_hdf5 = "/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/jo_protein_cormat.hdf5"
-#kr_protein_cormat_hdf5 = "/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/kr_protein_cormat.hdf5"
-#me_protein_cormat_hdf5 = "/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/me_protein_cormat.hdf5"
-#jo_mrna_cormat_hdf5 = "/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/jo_mrna_cormat.hdf5"
-#kr_mrna_cormat_hdf5 = "/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/kr_mrna_cormat.hdf5"
-#me_mrna_cormat_hdf5 = "/Users/zhuoheng/Desktop/Vacanti/RawData_March/ConvertedDateCleanData/me_mrna_cormat.hdf5"
+#jo_protein_cormat_hdf5 = "~/jo_protein_cormat.hdf5"
+#kr_protein_cormat_hdf5 = "~/kr_protein_cormat.hdf5"
+#me_protein_cormat_hdf5 = "~/me_protein_cormat.hdf5"
+#jo_mrna_cormat_hdf5 = "~/jo_mrna_cormat.hdf5"
+#kr_mrna_cormat_hdf5 = "~/kr_mrna_cormat.hdf5"
+#me_mrna_cormat_hdf5 = "~/me_mrna_cormat.hdf5"
 
 
 def write_hdf5(hdf5_FileName, DF_quant):
