@@ -800,5 +800,5 @@ curdoc().title="Breast Cancer Data Portal"
 
 end_time=time.time()
 elapsed=end_time-start_time
-print(f'total time: {elapsed}')
+print(f'total response time: {elapsed}')
 
