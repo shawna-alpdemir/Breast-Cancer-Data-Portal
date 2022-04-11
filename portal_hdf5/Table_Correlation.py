@@ -8,7 +8,7 @@ from Import_Files import Import_Static_Correlation_Table
 
 # constant
 TABLE_WIDTH = 500
-TABLE_HEIGHT = 300
+TABLE_HEIGHT = 250
 
 # aesthetic --  static tables
 jo_pro_gene_cor_source = ColumnDataSource(data=jo_protein_ERBB2) # set up columndatasource

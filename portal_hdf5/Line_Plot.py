@@ -18,10 +18,7 @@ gene = 'gene'
 
 # figure size and other constants
 LINE_PLOT_WIDTH = 1000
-LINE_PLOT_HEIGHT = 200
-GENE_NUMBER = ['Gene 1', 'Gene 2', 'Gene 3', 'Gene 4']
-INITIAL_GENE = ['NDUFS2', 'NDUFS3', 'NDUFS7', 'blank 4']
-GENE_COLORS = ['red', 'blue', 'green', 'orange']
+LINE_PLOT_HEIGHT = 125
 
 def Johansson_Line_Plot():
     """Initializing the line plot"""
