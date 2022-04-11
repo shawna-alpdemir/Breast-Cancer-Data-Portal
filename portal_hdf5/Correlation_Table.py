@@ -260,7 +260,6 @@ def Get_Protein_Correlation_Table(gene_name):
             Sig = sc.t.sf(abs(TestStat),df=45 - 2) * 2  # using the survival function to compute one sided p-value, then doubled it to make it two-side
 
             # assemble final DF
-            pd.set_option("display.precision", 4) # rounding
             top_hundred.insert(1, 'p', Sig, True)
             top_hundred.reset_index(inplace=True)
             jo_Correlation_table_df = top_hundred
@@ -293,7 +292,6 @@ def Get_Protein_Correlation_Table(gene_name):
             Sig = sc.t.sf(abs(TestStat),df=122 - 2) * 2  # using the survival function to compute one sided p-value, then doubled it to make it two-side
 
             # assemble final DF
-            pd.set_option("display.precision", 4) # rounding
             top_hundred.insert(1, 'p', Sig, True)
             top_hundred.reset_index(inplace=True)
             kr_Correlation_table_df = top_hundred
@@ -325,7 +323,6 @@ def Get_Protein_Correlation_Table(gene_name):
             Sig = sc.t.sf(abs(TestStat),df=77 - 2) * 2  # using the survival function to compute one sided p-value, then doubled it to make it two-side
 
             # assemble final DF
-            pd.set_option("display.precision", 4)  # rounding
             top_hundred.insert(1, 'p', Sig, True)
             top_hundred.reset_index(inplace=True)
             me_Correlation_table_df = top_hundred
@@ -363,7 +360,6 @@ def Get_mRNA_Correlation_Table(gene_name):
                           df=45 - 2) * 2  # using the survival function to compute one sided p-value, then doubled it to make it two-side
 
             # assemble final DF
-            pd.set_option("display.precision", 4)  # rounding
             top_hundred.insert(1, 'p', Sig, True)
             top_hundred.reset_index(inplace=True)
             jo_m_Correlation_table_df = top_hundred
@@ -396,7 +392,6 @@ def Get_mRNA_Correlation_Table(gene_name):
             Sig = sc.t.sf(abs(TestStat), df=122 - 2) * 2  # using the survival function to compute one sided p-value, then doubled it to make it two-side
 
             # assemble final DF
-            pd.set_option("display.precision", 4)  # rounding
             top_hundred.insert(1, 'p', Sig, True)
             top_hundred.reset_index(inplace=True)
             kr_m_Correlation_table_df = top_hundred
@@ -429,7 +424,6 @@ def Get_mRNA_Correlation_Table(gene_name):
             Sig = sc.t.sf(abs(TestStat), df=77 - 2) * 2  # using the survival function to compute one sided p-value, then doubled it to make it two-side
 
             # assemble final DF
-            pd.set_option("display.precision", 4)  # rounding
             top_hundred.insert(1, 'p', Sig, True)
             top_hundred.reset_index(inplace=True)
             me_m_Correlation_table_df = top_hundred
