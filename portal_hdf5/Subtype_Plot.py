@@ -7,8 +7,8 @@ from bokeh.transform import factor_cmap
 from Subtype_Average_Plot_CDS import Johansson_Subtype_Avg_Plot_CDS, Krug_Subtype_Avg_Plot_CDS, Mertins_Subtype_Avg_Plot_CDS
 
 # constants
-SUBTYPE_PLOT_WIDTH = 515
-SUBTYPE_PLOT_HEIGHT = 275
+SUBTYPE_PLOT_WIDTH = 500
+SUBTYPE_PLOT_HEIGHT = 250
 five_subtype_colors = ['#E31A1C', '#FB9A99', '#1F78B4', '#A6CEE3','#33A02C']
 five_subtypes = ['Basal', 'Her2', 'LumA', 'LumB', 'Norm']
 
