@@ -7,7 +7,7 @@ from os.path import join, dirname
 from bokeh.io import curdoc
 from bokeh.layouts import layout, column, row
 from bokeh.models import Spacer, Tabs, Panel, AutocompleteInput, ColumnDataSource, TableColumn, DataTable, Button, \
-    Select, Div, CustomJS
+    Select, Div, CustomJS, ScientificFormatter
 from bokeh.transform import factor_cmap
 
 from Correlation_Table import Get_Protein_Correlation_Table, Get_mRNA_Correlation_Table
@@ -22,7 +22,6 @@ from Subtype_Average_DF import Johansson_Subtype_Avg_SEM_DFs, Krug_Subtype_Avg_S
 from Subtype_Average_Plot_CDS import Johansson_Subtype_Avg_Plot_CDS, Krug_Subtype_Avg_Plot_CDS, Mertins_Subtype_Avg_Plot_CDS
 from Subtype_Plot import Johansson_Subtype_Plot, Krug_Subtype_Plot, Mertins_Subtype_Plot
 
-pd.set_option("display.precision", 4) # set how many decimals to display?
 ##### Row 0: Functions Def ##############################3##############################################################
 # constants
 TICKER = {}
@@ -654,11 +653,11 @@ me_mrna_gene_cor_source = ColumnDataSource(data=me_mrna_ERBB2)
 #mRNA_table_gene_col_name = TableColumn(field='Gene', title=f'Genes correlated with {mrna_correlation_textbox.value}')
 
 protein_table_columns = [TableColumn(field='Gene', title='Gene'),  # set up mRNA_table_columns
-                         TableColumn(field='r', title='Coefficient'),
-                         TableColumn(field='p', title='p value')]
+                         TableColumn(field='r', title='Coefficient',formatter=ScientificFormatter(precision=3)),
+                         TableColumn(field='p', title='p value', formatter=ScientificFormatter(precision=3))]
 mRNA_table_columns = [TableColumn(field='Gene', title='Gene'),  # set up mRNA_table_columns
-                      TableColumn(field='r', title='Coefficient'),
-                      TableColumn(field='p', title='p value')]
+                      TableColumn(field='r', title='Coefficient', formatter=ScientificFormatter(precision=3)),
+                      TableColumn(field='p', title='p value', formatter=ScientificFormatter(precision=3))]
 
 # create table widget by assembling columndatasource and mRNA_table_columns
 jo_mrna_cor_data_table = DataTable(source=jo_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=True, index_position=None)
@@ -701,6 +700,8 @@ button6.js_on_event("button_click", CustomJS(args=dict(source=me_pro_gene_cor_so
                                              code=open(join(dirname(__file__),
                                                             "download_javascript/me_cor_table_download.js")).read()))
 
+formatted_button5 = row(column(Spacer(height=19),button5))
+formatted_button6 = row(column(Spacer(height=19),button6))
 ########################################################### layout #####################################################
 RowSpacer = Spacer(height=30)
 PageMargin = Spacer(width=30)
@@ -781,8 +782,8 @@ line_plot_section = column(line_plot_div, row(line_plot_tab, gene_entry_section)
 select_widget_section = column(select_widget_layout)
 scatter_plot_section = column(scatter_plot_div, row(scatter_plot_tab, pprr_scatter_plot_tab, select_widget_section))
 subtype_plot_section = column(subtype_plot_div, subtype_plot_tab)
-correlation_table_section = column(row(column(protein_cor_table_title_div, protein_correlation_textbox, cor_pro_table_tab, button6),
-                          column(mRNA_cor_table_title_div, mrna_correlation_textbox, cor_mrna_table_tab, button5)))
+correlation_table_section = column(row(column(protein_cor_table_title_div, row(protein_correlation_textbox, formatted_button6), cor_pro_table_tab),
+                          column(mRNA_cor_table_title_div, row(mrna_correlation_textbox,formatted_button5), cor_mrna_table_tab)))
 
 l = layout([
     [PageMargin, tool_title_div],
