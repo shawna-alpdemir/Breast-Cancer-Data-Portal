@@ -57,9 +57,9 @@ def Johansson_CDS():
                  gene: np.repeat('NDUFS7', len(tumor_list))}
         dict4 = {subtype_tuple: johansson_subtype_tumor_tuple,
                  subtype: subtype_list,
-                 protein_data: np.array(a.get('blank 4')),
-                 mRNA_data: np.array(b.get('blank 4')),
-                 gene: np.repeat('blank 4', len(tumor_list))}
+                 protein_data: np.array(a.get('NDUFS8')),
+                 mRNA_data: np.array(b.get('NDUFS8')),
+                 gene: np.repeat('NDUFS8', len(tumor_list))}
         dict5 = {subtype_tuple: johansson_subtype_tumor_tuple,
                  subtype: subtype_list,
                  'x_protein_data': np.array(a.get('NDUFS2')),
@@ -116,9 +116,9 @@ def Krug_CDS():
                  gene: np.repeat('NDUFS7', len(tumor_list))}
         dict4 = {subtype_tuple: krug_subtype_tumor_tuple,
                  subtype: subtype_list,
-                 protein_data: np.array(a.get('blank 4')),
-                 mRNA_data: np.array(b.get('blank 4')),
-                 gene: np.repeat('blank 4', len(tumor_list))}
+                 protein_data: np.array(a.get('NDUFS8')),
+                 mRNA_data: np.array(b.get('NDUFS8')),
+                 gene: np.repeat('NDUFS8', len(tumor_list))}
         dict5 = {subtype_tuple: krug_subtype_tumor_tuple,
                  subtype: subtype_list,
                  'x_protein_data': np.array(a.get('NDUFS2')),
@@ -175,9 +175,9 @@ def Mertins_CDS():
                  gene: np.repeat('NDUFS7', len(tumor_list))}
         dict4 = {subtype_tuple: mertins_subtype_tumor_tuple,
                  subtype: subtype_list,
-                 protein_data: np.array(a.get('blank 4')),
-                 mRNA_data: np.array(b.get('blank 4')),
-                 gene: np.repeat('blank 4', len(tumor_list))}
+                 protein_data: np.array(a.get('NDUFS8')),
+                 mRNA_data: np.array(b.get('NDUFS8')),
+                 gene: np.repeat('NDUFS8', len(tumor_list))}
         dict5 = {subtype_tuple: mertins_subtype_tumor_tuple,
                  subtype: subtype_list,
                  'x_protein_data': np.array(a.get('NDUFS2')),
