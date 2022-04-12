@@ -105,15 +105,15 @@ def Krug_Subtype_Avg_Plot_CDS(genelist):
 
         subtype.extend(['Basal', 'Her2', 'LumA', 'LumB', 'Norm'])
     # create the plot data sources from the dictionaries for each gene.
-    source_dict_subtype_protein = {'x': x_axis_subtype, 'y': y_axis_subtype_protein,
+    kr_source_dict_subtype_protein = {'x': x_axis_subtype, 'y': y_axis_subtype_protein,
               'upper': upper_bar_protein, 'lower': lower_bar_protein, 'legend_group': subtype}
 
-    kr_subtype_protein_CDS = ColumnDataSource(data=source_dict_subtype_protein)
+    kr_subtype_protein_CDS = ColumnDataSource(data=kr_source_dict_subtype_protein)
 
-    source_dict_subtype_mrna = {'x': x_axis_subtype, 'y': y_axis_subtype_mrna,
+    kr_source_dict_subtype_mrna = {'x': x_axis_subtype, 'y': y_axis_subtype_mrna,
               'upper': upper_bar_mrna, 'lower': lower_bar_mrna, 'legend_group': subtype}
 
-    kr_subtype_mRNA_CDS = ColumnDataSource(data=source_dict_subtype_mrna)
+    kr_subtype_mRNA_CDS = ColumnDataSource(data=kr_source_dict_subtype_mrna)
 
     # The data dictionary will look like this:
     # 'x': [(geneA, basal), (geneA, her2)....]
@@ -164,15 +164,15 @@ def Mertins_Subtype_Avg_Plot_CDS(genelist):
 
         subtype.extend(['Basal', 'Her2', 'LumA', 'LumB'])
     # create the plot data sources from the dictionaries for each gene.
-    source_dict_subtype_protein = {'x': x_axis_subtype, 'y': y_axis_subtype_protein,
+    me_source_dict_subtype_protein = {'x': x_axis_subtype, 'y': y_axis_subtype_protein,
               'upper': upper_bar_protein, 'lower': lower_bar_protein, 'legend_group': subtype}
 
-    me_subtype_protein_CDS = ColumnDataSource(data=source_dict_subtype_protein)
+    me_subtype_protein_CDS = ColumnDataSource(data=me_source_dict_subtype_protein)
 
-    source_dict_subtype_mrna = {'x': x_axis_subtype, 'y': y_axis_subtype_mrna,
+    me_source_dict_subtype_mrna = {'x': x_axis_subtype, 'y': y_axis_subtype_mrna,
               'upper': upper_bar_mrna, 'lower': lower_bar_mrna, 'legend_group': subtype}
 
-    me_subtype_mRNA_CDS = ColumnDataSource(data=source_dict_subtype_mrna)
+    me_subtype_mRNA_CDS = ColumnDataSource(data=me_source_dict_subtype_mrna)
 
     # The data dictionary will look like this:
     # 'x': [(geneA, basal), (geneA, her2)....]
