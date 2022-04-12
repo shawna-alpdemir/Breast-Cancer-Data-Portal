@@ -680,24 +680,24 @@ cor_mrna_table_tab = Tabs(tabs=[Panel(child=jo_mrna_cor_data_table, title ="Joha
 button5 = Button(label="Download", button_type="success", width=150) #mRNA Correlation Table
 button5.js_on_event("button_click", CustomJS(args=dict(source=jo_mrna_gene_cor_source),
                                              code=open(join(dirname(__file__),
-                                                            "download_javascript/jo_cor_table_download.js")).read()))
+                                                            "Download_Javascript/jo_cor_table_download.js")).read()))
 button5.js_on_event("button_click", CustomJS(args=dict(source=kr_mrna_gene_cor_source),
                                              code=open(join(dirname(__file__),
-                                                            "download_javascript/kr_cor_table_download.js")).read()))
+                                                            "Download_Javascript/kr_cor_table_download.js")).read()))
 button5.js_on_event("button_click", CustomJS(args=dict(source=me_mrna_gene_cor_source),
                                              code=open(join(dirname(__file__),
-                                                            "download_javascript/me_cor_table_download.js")).read()))
+                                                            "Download_Javascript/me_cor_table_download.js")).read()))
 
 button6 = Button(label="Download", button_type="success", width=150) #Protein Correlation Table
 button6.js_on_event("button_click", CustomJS(args=dict(source=jo_pro_gene_cor_source),
                                              code=open(join(dirname(__file__),
-                                                            "download_javascript/jo_cor_table_download.js")).read()))
+                                                            "Download_Javascript/jo_cor_table_download.js")).read()))
 button6.js_on_event("button_click", CustomJS(args=dict(source=kr_pro_gene_cor_source),
                                              code=open(join(dirname(__file__),
-                                                            "download_javascript/kr_cor_table_download.js")).read()))
+                                                            "Download_Javascript/kr_cor_table_download.js")).read()))
 button6.js_on_event("button_click", CustomJS(args=dict(source=me_pro_gene_cor_source),
                                              code=open(join(dirname(__file__),
-                                                            "download_javascript/me_cor_table_download.js")).read()))
+                                                            "Download_Javascript/me_cor_table_download.js")).read()))
 
 formatted_button5 = row(column(Spacer(height=19),button5))
 formatted_button6 = row(column(Spacer(height=19),button6))
