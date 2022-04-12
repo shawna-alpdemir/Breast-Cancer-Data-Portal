@@ -354,7 +354,7 @@ def Mertins_Subtype_Plot_update():
                                 'upper': upper_bar_mrna, 'lower': lower_bar_mrna}
 
 def All_Subtype_Plot_Update(attrname, old, new):
-    global TICKER_GENE_LIST
+    #global TICKER_GENE_LIST
     TICKER_GENE_LIST[TICKER_INDEX] = new
     Johansson_Subtype_Plot_update()
     Krug_Subtype_Plot_update()
