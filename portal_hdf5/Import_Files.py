@@ -28,13 +28,13 @@ def Import_Static_Correlation_Table():
     return jo_mrna_ERBB2, jo_protein_ERBB2, kr_mrna_ERBB2, kr_protein_ERBB2, me_mrna_ERBB2, me_protein_ERBB2
 
 def Import_Cor_Matrix_HDF5():
-    jo_protein_cormat = 'home/ec2-user/hdf5_cormat/jo_protein_cormat.hdf5'
-    jo_mrna_cormat = 'home/ec2-user/hdf5_cormat/jo_mrna_cormat.hdf5'
+    jo_protein_cormat = '~/hdf5_cormat/jo_protein_cormat.hdf5'
+    jo_mrna_cormat = '~/hdf5_cormat/jo_mrna_cormat.hdf5'
 
-    kr_protein_cormat = 'home/ec2-user/hdf5_cormat/kr_protein_cormat.hdf5'
-    kr_mrna_cormat = 'home/ec2-user/hdf5_cormat/kr_mrna_cormat.hdf5'
+    kr_protein_cormat = '~/hdf5_cormat/kr_protein_cormat.hdf5'
+    kr_mrna_cormat = '~/hdf5_cormat/kr_mrna_cormat.hdf5'
 
-    me_protein_cormat = 'home/ec2-user/hdf5_cormat/me_protein_cormat.hdf5'
-    me_mrna_cormat = 'home/ec2-user/hdf5_cormat/me_mrna_cormat.hdf5'
+    me_protein_cormat = '~/hdf5_cormat/me_protein_cormat.hdf5'
+    me_mrna_cormat = '~/hdf5_cormat/me_mrna_cormat.hdf5'
 
     return jo_protein_cormat, jo_mrna_cormat, kr_protein_cormat, kr_mrna_cormat, me_protein_cormat, me_mrna_cormat
