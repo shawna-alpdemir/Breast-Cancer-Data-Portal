@@ -40,36 +40,36 @@ def Johansson_CDS():
         johansson_subtype_tumor_tuple = tuple(zip(subtype_list, tumor_list))
 
         # Create the dictionaries for each line on the protein plot and fill them with values
-        dict1 = {subtype_tuple: johansson_subtype_tumor_tuple,
+        jo_dict1 = {subtype_tuple: johansson_subtype_tumor_tuple,
                  subtype: subtype_list,
                  protein_data: np.array(a.get('NDUFS2')),
                  mRNA_data: np.array(b.get('NDUFS2')),
                  gene: np.repeat('NDUFS2', len(tumor_list))}
-        dict2 = {subtype_tuple: johansson_subtype_tumor_tuple,
+        jo_dict2 = {subtype_tuple: johansson_subtype_tumor_tuple,
                  subtype: subtype_list,
                  protein_data: np.array(a.get('NDUFS3')),
                  mRNA_data: np.array(b.get('NDUFS3')),
                  gene: np.repeat('NDUFS3', len(tumor_list))}
-        dict3 = {subtype_tuple: johansson_subtype_tumor_tuple,
+        jo_dict3 = {subtype_tuple: johansson_subtype_tumor_tuple,
                  subtype: subtype_list,
                  protein_data: np.array(a.get('NDUFS7')),
                  mRNA_data: np.array(b.get('NDUFS7')),
                  gene: np.repeat('NDUFS7', len(tumor_list))}
-        dict4 = {subtype_tuple: johansson_subtype_tumor_tuple,
+        jo_dict4 = {subtype_tuple: johansson_subtype_tumor_tuple,
                  subtype: subtype_list,
                  protein_data: np.array(a.get('NDUFS8')),
                  mRNA_data: np.array(b.get('NDUFS8')),
                  gene: np.repeat('NDUFS8', len(tumor_list))}
-        dict5 = {subtype_tuple: johansson_subtype_tumor_tuple,
+        jo_dict5 = {subtype_tuple: johansson_subtype_tumor_tuple,
                  subtype: subtype_list,
                  'x_protein_data': np.array(a.get('NDUFS2')),
                  'y_protein_data': np.array(a.get('NDUFS3'))}
-        dict6 = {subtype_tuple: johansson_subtype_tumor_tuple,
+        jo_dict6 = {subtype_tuple: johansson_subtype_tumor_tuple,
                  subtype: subtype_list,
                  'x_mRNA_data': np.array(b.get('NDUFS2')),
                  'y_mRNA_data': np.array(b.get('NDUFS3'))}
         johansson_cds = []
-        for i in [dict1, dict2, dict3, dict4, dict5, dict6]:
+        for i in [jo_dict1, jo_dict2, jo_dict3, jo_dict4, jo_dict5, jo_dict6]:
             johansson_cds.append(ColumnDataSource(data=i))
 
     return johansson_cds, johansson_subtype_tumor_tuple, jo_unique_gene_list
@@ -99,36 +99,36 @@ def Krug_CDS():
         # create tuple containing subtype and tumor; for x_range in plotting
 
         # Create the dictionaries for each line on the protein plot and fill them with values
-        dict1 = {subtype_tuple: krug_subtype_tumor_tuple,
+        kr_dict1 = {subtype_tuple: krug_subtype_tumor_tuple,
                  subtype: subtype_list,
                  protein_data: np.array(a.get('NDUFS2')),
                  mRNA_data: np.array(b.get('NDUFS2')),
                  gene: np.repeat('NDUFS2', len(tumor_list))}
-        dict2 = {subtype_tuple: krug_subtype_tumor_tuple,
+        kr_dict2 = {subtype_tuple: krug_subtype_tumor_tuple,
                  subtype: subtype_list,
                  protein_data: np.array(a.get('NDUFS3')),
                  mRNA_data: np.array(b.get('NDUFS3')),
                  gene: np.repeat('NDUFS3', len(tumor_list))}
-        dict3 = {subtype_tuple: krug_subtype_tumor_tuple,
+        kr_dict3 = {subtype_tuple: krug_subtype_tumor_tuple,
                  subtype: subtype_list,
                  protein_data: np.array(a.get('NDUFS7')),
                  mRNA_data: np.array(b.get('NDUFS7')),
                  gene: np.repeat('NDUFS7', len(tumor_list))}
-        dict4 = {subtype_tuple: krug_subtype_tumor_tuple,
+        kr_dict4 = {subtype_tuple: krug_subtype_tumor_tuple,
                  subtype: subtype_list,
                  protein_data: np.array(a.get('NDUFS8')),
                  mRNA_data: np.array(b.get('NDUFS8')),
                  gene: np.repeat('NDUFS8', len(tumor_list))}
-        dict5 = {subtype_tuple: krug_subtype_tumor_tuple,
+        kr_dict5 = {subtype_tuple: krug_subtype_tumor_tuple,
                  subtype: subtype_list,
                  'x_protein_data': np.array(a.get('NDUFS2')),
                  'y_protein_data': np.array(a.get('NDUFS3'))}
-        dict6 = {subtype_tuple: krug_subtype_tumor_tuple,
+        kr_dict6 = {subtype_tuple: krug_subtype_tumor_tuple,
                  subtype: subtype_list,
                  'x_mRNA_data': np.array(b.get('NDUFS2')),
                  'y_mRNA_data': np.array(b.get('NDUFS3'))}
         krug_cds = []
-        for i in [dict1, dict2, dict3, dict4, dict5, dict6]:
+        for i in [kr_dict1, kr_dict2, kr_dict3, kr_dict4, kr_dict5, kr_dict6]:
             krug_cds.append(ColumnDataSource(data=i))
 
     return krug_cds, krug_subtype_tumor_tuple, kr_unique_gene_list
@@ -158,36 +158,36 @@ def Mertins_CDS():
         # create tuple containing subtype and tumor; for x_range in plotting
 
         # Create the dictionaries for each line on the protein plot and fill them with values
-        dict1 = {subtype_tuple: mertins_subtype_tumor_tuple,
+        me_dict1 = {subtype_tuple: mertins_subtype_tumor_tuple,
                  subtype: subtype_list,
                  protein_data: np.array(a.get('NDUFS2')),
                  mRNA_data: np.array(b.get('NDUFS2')),
                  gene: np.repeat('NDUFS2', len(tumor_list))}
-        dict2 = {subtype_tuple: mertins_subtype_tumor_tuple,
+        me_dict2 = {subtype_tuple: mertins_subtype_tumor_tuple,
                  subtype: subtype_list,
                  protein_data: np.array(a.get('NDUFS3')),
                  mRNA_data: np.array(b.get('NDUFS3')),
                  gene: np.repeat('NDUFS3', len(tumor_list))}
-        dict3 = {subtype_tuple: mertins_subtype_tumor_tuple,
+        me_dict3 = {subtype_tuple: mertins_subtype_tumor_tuple,
                  subtype: subtype_list,
                  protein_data: np.array(a.get('NDUFS7')),
                  mRNA_data: np.array(b.get('NDUFS7')),
                  gene: np.repeat('NDUFS7', len(tumor_list))}
-        dict4 = {subtype_tuple: mertins_subtype_tumor_tuple,
+        me_dict4 = {subtype_tuple: mertins_subtype_tumor_tuple,
                  subtype: subtype_list,
                  protein_data: np.array(a.get('NDUFS8')),
                  mRNA_data: np.array(b.get('NDUFS8')),
                  gene: np.repeat('NDUFS8', len(tumor_list))}
-        dict5 = {subtype_tuple: mertins_subtype_tumor_tuple,
+        me_dict5 = {subtype_tuple: mertins_subtype_tumor_tuple,
                  subtype: subtype_list,
                  'x_protein_data': np.array(a.get('NDUFS2')),
                  'y_protein_data': np.array(a.get('NDUFS3'))}
-        dict6 = {subtype_tuple: mertins_subtype_tumor_tuple,
+        me_dict6 = {subtype_tuple: mertins_subtype_tumor_tuple,
                  subtype: subtype_list,
                  'x_mRNA_data': np.array(b.get('NDUFS2')),
                  'y_mRNA_data': np.array(b.get('NDUFS3'))}
         mertins_cds = []
-        for i in [dict1, dict2, dict3, dict4, dict5, dict6]:
+        for i in [me_dict1, me_dict2, me_dict3, me_dict4, me_dict5, me_dict6]:
             mertins_cds.append(ColumnDataSource(data=i))
 
     return mertins_cds, mertins_subtype_tumor_tuple, me_unique_gene_list
