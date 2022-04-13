@@ -10,7 +10,6 @@ from bokeh.models import Spacer, Tabs, Panel, AutocompleteInput, ColumnDataSourc
 from bokeh.transform import factor_cmap
 
 from Correlation_Table import Get_Protein_Correlation_Table, Get_mRNA_Correlation_Table
-from Download_Buttons import Download_Buttons
 from Gene_List import Gene_List
 from Import_Files import Import_HDF5, Import_Static_Correlation_Table
 from Plot_All_Styling import StylePlots
@@ -354,7 +353,7 @@ def Mertins_Subtype_Plot_update():
                                 'upper': upper_bar_mrna, 'lower': lower_bar_mrna}
 
 def All_Subtype_Plot_Update(attrname, old, new):
-    #global TICKER_GENE_LIST
+    global TICKER_GENE_LIST
     TICKER_GENE_LIST[TICKER_INDEX] = new
     Johansson_Subtype_Plot_update()
     Krug_Subtype_Plot_update()
@@ -465,7 +464,37 @@ line_plot_tab = Tabs(tabs=[Panel(child=line_plot_jo_layout, title="Johansson"),
                      Panel(child=line_plot_me_layout, title="Mertins")])
 
 #Download data
-[button1, button2, button3, button4] = Download_Buttons()
+button1 = Button(label="Download", button_type="success", width=150)  # Gene 1 Data
+button1.js_on_event("button_click", CustomJS(args=dict(source=johansson_cds[0]), code=open(join(dirname(__file__),
+                                                                                                "Download_Javascript/jo_download.js")).read()))
+button1.js_on_event("button_click", CustomJS(args=dict(source=krug_cds[0]), code=open(join(dirname(__file__),
+                                                                                           "Download_Javascript/kr_download.js")).read()))
+button1.js_on_event("button_click", CustomJS(args=dict(source=mertins_cds[0]), code=open(join(dirname(__file__),
+                                                                                              "Download_Javascript/me_download.js")).read()))
+####
+button2 = Button(label="Download", button_type="success", width=150)  # Gene 2 Data
+button2.js_on_event("button_click", CustomJS(args=dict(source=johansson_cds[1]), code=open(join(dirname(__file__),
+                                                                                                "Download_Javascript/jo_download.js")).read()))
+button2.js_on_event("button_click", CustomJS(args=dict(source=krug_cds[1]), code=open(join(dirname(__file__),
+                                                                                           "Download_Javascript/kr_download.js")).read()))
+button2.js_on_event("button_click", CustomJS(args=dict(source=mertins_cds[1]), code=open(join(dirname(__file__),
+                                                                                              "Download_Javascript/me_download.js")).read()))
+####
+button3 = Button(label="Download", button_type="success", width=150)  # Gene 3 Data
+button3.js_on_event("button_click", CustomJS(args=dict(source=johansson_cds[2]), code=open(join(dirname(__file__),
+                                                                                                "Download_Javascript/jo_download.js")).read()))
+button3.js_on_event("button_click", CustomJS(args=dict(source=krug_cds[2]), code=open(join(dirname(__file__),
+                                                                                           "Download_Javascript/kr_download.js")).read()))
+button3.js_on_event("button_click", CustomJS(args=dict(source=mertins_cds[2]), code=open(join(dirname(__file__),
+                                                                                              "Download_Javascript/me_download.js")).read()))
+####
+button4 = Button(label="Download", button_type="success", width=150)  # Gene 4 Data
+button4.js_on_event("button_click", CustomJS(args=dict(source=johansson_cds[3]), code=open(join(dirname(__file__),
+                                                                                                "Download_Javascript/jo_download.js")).read()))
+button4.js_on_event("button_click", CustomJS(args=dict(source=krug_cds[3]), code=open(join(dirname(__file__),
+                                                                                           "Download_Javascript/kr_download.js")).read()))
+button4.js_on_event("button_click", CustomJS(args=dict(source=mertins_cds[3]), code=open(join(dirname(__file__),
+                                                                                              "Download_Javascript/me_download.js")).read()))
 
 # textbox and download buttons next to line plot --> TextBox_and_buttons
 formatted_button1 = row(column(Spacer(height=19),button1))
