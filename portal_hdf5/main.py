@@ -681,20 +681,20 @@ me_mrna_gene_cor_source = ColumnDataSource(data=me_mrna_ERBB2)
 #mRNA_table_gene_col_name = TableColumn(field='Gene', title=f'Genes correlated with {mrna_correlation_textbox.value}')
 
 protein_table_columns = [TableColumn(field='Gene', title='Gene'),  # set up mRNA_table_columns
-                         TableColumn(field='r', title='Coefficient',formatter=ScientificFormatter(precision=3)),
+                         TableColumn(field='r', title='Coefficient', formatter=ScientificFormatter(precision=3)),
                          TableColumn(field='p', title='p value', formatter=ScientificFormatter(precision=3))]
 mRNA_table_columns = [TableColumn(field='Gene', title='Gene'),  # set up mRNA_table_columns
                       TableColumn(field='r', title='Coefficient', formatter=ScientificFormatter(precision=3)),
                       TableColumn(field='p', title='p value', formatter=ScientificFormatter(precision=3))]
 
 # create table widget by assembling columndatasource and mRNA_table_columns
-jo_mrna_cor_data_table = DataTable(source=jo_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=True, index_position=None)
-kr_mrna_cor_data_table = DataTable(source=kr_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=True, index_position=None)
-me_mrna_cor_data_table = DataTable(source=me_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=True, index_position=None)
+jo_mrna_cor_data_table = DataTable(source=jo_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None)
+kr_mrna_cor_data_table = DataTable(source=kr_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None)
+me_mrna_cor_data_table = DataTable(source=me_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None)
 
-jo_pro_cor_data_table = DataTable(source=jo_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=True, index_position=None)
-kr_pro_cor_data_table = DataTable(source=kr_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=True, index_position=None)
-me_pro_cor_data_table = DataTable(source=me_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=True, index_position=None)
+jo_pro_cor_data_table = DataTable(source=jo_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None)
+kr_pro_cor_data_table = DataTable(source=kr_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None)
+me_pro_cor_data_table = DataTable(source=me_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None)
 
 # combine tables into tabs
 cor_pro_table_tab = Tabs(tabs=[Panel(child=jo_pro_cor_data_table, title ="Johansson"),

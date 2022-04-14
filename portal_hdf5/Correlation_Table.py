@@ -43,8 +43,8 @@ def Get_Protein_Correlation_Table(gene_name):
 
         except ValueError:
             jo_Correlation_table_df = pd.DataFrame({"Gene": [f"No data for {gene_name}"],
-                                                    "r": ["NA"],
-                                                    "p": ["NA"]}, index=None)
+                                                    "r": [0],
+                                                    "p": [0]}, index=None)
 
     with h5py.File(kr_protein_cormat, "r") as a:
 
@@ -75,8 +75,9 @@ def Get_Protein_Correlation_Table(gene_name):
 
         except ValueError:
             kr_Correlation_table_df = pd.DataFrame({"Gene": [f"No data for {gene_name}"],
-                                                    "r": ["NA"],
-                                                    "p": ["NA"]}, index=None)
+                                                    "r": [0],
+                                                    "p": [0]}, index=None)
+
     with h5py.File(me_protein_cormat, "r") as a:
 
         try:
@@ -106,8 +107,8 @@ def Get_Protein_Correlation_Table(gene_name):
 
         except ValueError:
             me_Correlation_table_df = pd.DataFrame({"Gene": [f"No data for {gene_name}"],
-                                                    "r": ["NA"],
-                                                    "p": ["NA"]}, index=None)
+                                                    "r": [0],
+                                                    "p": [0]}, index=None)
 
     return jo_Correlation_table_df, kr_Correlation_table_df, me_Correlation_table_df
 
@@ -143,8 +144,8 @@ def Get_mRNA_Correlation_Table(gene_name):
 
         except ValueError:
             jo_m_Correlation_table_df = pd.DataFrame({"Gene": [f"No data for {gene_name}"],
-                                                    "r": ["NA"],
-                                                    "p": ["NA"]}, index=None)
+                                                    "r": [0],
+                                                    "p": [0]}, index=None)
 
     with h5py.File(kr_mrna_cormat, "r") as a:
 
@@ -175,8 +176,8 @@ def Get_mRNA_Correlation_Table(gene_name):
 
         except ValueError:
             kr_m_Correlation_table_df = pd.DataFrame({"Gene": [f"No data for {gene_name}"],
-                                                    "r": ["NA"],
-                                                    "p": ["NA"]}, index=None)
+                                                    "r": [0],
+                                                    "p": [0]}, index=None)
 
     with h5py.File(me_mrna_cormat, "r") as a:
 
@@ -207,7 +208,7 @@ def Get_mRNA_Correlation_Table(gene_name):
 
         except ValueError:
             me_m_Correlation_table_df = pd.DataFrame({"Gene": [f"No data for {gene_name}"],
-                                                    "r": ["NA"],
-                                                    "p": ["NA"]}, index=None)
+                                                    "r": [0],
+                                                    "p": [0]}, index=None)
 
     return jo_m_Correlation_table_df, kr_m_Correlation_table_df, me_m_Correlation_table_df
