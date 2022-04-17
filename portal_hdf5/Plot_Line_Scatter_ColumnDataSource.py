@@ -74,7 +74,32 @@ def Johansson_CDS():
 
     return johansson_cds, johansson_subtype_tumor_tuple, jo_unique_gene_list
 
+def Johansson_Scatter_CDS():
+    """Create ColumnDataSource for subtype, subtype_tumor_tuple, mRNA, protein, gene list for plots with initial default genes
+    This one changes NA to zeros"""
+    with h5py.File(JohanssonProteome, "r") as a, h5py.File(JohanssonTranscriptome, "r") as b:
+        subtype_list = np.array(a.get('subtypes'))
+        subtype_list = [x.decode('utf-8') for x in subtype_list]
 
+        # Create the dictionaries for each line on the protein plot and fill them with values
+        jo_dict1 = {subtype: subtype_list,
+                 protein_data: np.array(a.get('NDUFS2')),
+                 mRNA_data: np.array(b.get('NDUFS2'))}
+        jo_dict2 = {subtype: subtype_list,
+                 protein_data: np.array(a.get('NDUFS3')),
+                 mRNA_data: np.array(b.get('NDUFS3'))}
+        jo_dict3 = {subtype: subtype_list,
+                 protein_data: np.array(a.get('NDUFS7')),
+                 mRNA_data: np.array(b.get('NDUFS7'))}
+        jo_dict4 = {subtype: subtype_list,
+                 protein_data: np.array(a.get('NDUFS8')),
+                 mRNA_data: np.array(b.get('NDUFS8'))}
+
+        johansson_scatter_cds = []
+        for i in [jo_dict1, jo_dict2, jo_dict3, jo_dict4]:
+            johansson_scatter_cds.append(ColumnDataSource(data=i))
+
+    return johansson_scatter_cds
 ########################################################################################################################
 ##################################################### Krug #############################################################
 def Krug_CDS():
@@ -133,7 +158,33 @@ def Krug_CDS():
 
     return krug_cds, krug_subtype_tumor_tuple, kr_unique_gene_list
 
+def Krug_Scatter_CDS():
+    """Create ColumnDataSource for mRNA and protein correlation line plot with initial default genes"""
 
+    with h5py.File(KrugProteome, "r") as a, h5py.File(KrugTranscriptome, "r") as b:
+        subtype_list = np.array(a.get('subtypes'))
+        subtype_list = [x.decode('utf-8') for x in subtype_list]
+        # create tuple containing subtype and tumor; for x_range in plotting
+
+        # Create the dictionaries for each line on the protein plot and fill them with values
+        kr_dict1 = {subtype: subtype_list,
+                 protein_data: np.array(a.get('NDUFS2')),
+                 mRNA_data: np.array(b.get('NDUFS2'))}
+        kr_dict2 = {subtype: subtype_list,
+                 protein_data: np.array(a.get('NDUFS3')),
+                 mRNA_data: np.array(b.get('NDUFS3'))}
+        kr_dict3 = {subtype: subtype_list,
+                 protein_data: np.array(a.get('NDUFS7')),
+                 mRNA_data: np.array(b.get('NDUFS7'))}
+        kr_dict4 = {subtype: subtype_list,
+                 protein_data: np.array(a.get('NDUFS8')),
+                 mRNA_data: np.array(b.get('NDUFS8'))}
+
+        krug_scatter_cds = []
+        for i in [kr_dict1, kr_dict2, kr_dict3, kr_dict4]:
+            krug_scatter_cds.append(ColumnDataSource(data=i))
+
+    return krug_scatter_cds
 ########################################################################################################################
 ##################################################### Mertins ##########################################################
 def Mertins_CDS():
@@ -191,3 +242,30 @@ def Mertins_CDS():
             mertins_cds.append(ColumnDataSource(data=i))
 
     return mertins_cds, mertins_subtype_tumor_tuple, me_unique_gene_list
+
+def Mertins_Scatter_CDS():
+    """Create ColumnDataSource for mRNA and protein correlation line plot with initial default genes"""
+
+    with h5py.File(MertinsProteome, "r") as a, h5py.File(MertinsTranscriptome, "r") as b:
+        subtype_list = np.array(a.get('subtypes'))
+        subtype_list = [x.decode('utf-8') for x in subtype_list]
+
+        # Create the dictionaries for each line on the protein plot and fill them with values
+        me_dict1 = {subtype: subtype_list,
+                 protein_data: np.array(a.get('NDUFS2')),
+                 mRNA_data: np.array(b.get('NDUFS2'))}
+        me_dict2 = {subtype: subtype_list,
+                 protein_data: np.array(a.get('NDUFS3')),
+                 mRNA_data: np.array(b.get('NDUFS3'))}
+        me_dict3 = {subtype: subtype_list,
+                 protein_data: np.array(a.get('NDUFS7')),
+                 mRNA_data: np.array(b.get('NDUFS7'))}
+        me_dict4 = {subtype: subtype_list,
+                 protein_data: np.array(a.get('NDUFS8')),
+                 mRNA_data: np.array(b.get('NDUFS8'))}
+
+        mertins_scatter_cds = []
+        for i in [me_dict1, me_dict2, me_dict3, me_dict4]:
+            mertins_scatter_cds.append(ColumnDataSource(data=i))
+
+    return mertins_scatter_cds
