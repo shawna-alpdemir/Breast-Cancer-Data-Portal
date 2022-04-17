@@ -7,7 +7,7 @@ from Import_Files import Import_Static_Correlation_Table
 [jo_mrna_ERBB2, jo_protein_ERBB2, kr_mrna_ERBB2, kr_protein_ERBB2, me_mrna_ERBB2, me_protein_ERBB2] = Import_Static_Correlation_Table()
 
 # constant
-TABLE_WIDTH = 500
+TABLE_WIDTH = 375
 TABLE_HEIGHT = 250
 
 # aesthetic --  static tables
