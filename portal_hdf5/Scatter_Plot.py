@@ -1,14 +1,13 @@
 # function that initiates scatter plots
 
 from bokeh.plotting import figure
-from Plot_Line_Scatter_ColumnDataSource import Johansson_CDS, Krug_CDS, Mertins_CDS
 
 #################################### protein-protein/RNA-RNA scatter plot ##############################################
 # this plot is make from dict 5 and dict 6 from Plot_ColumnDataSource
 
 # constants
-SCATTER_PLOT_WIDTH = 333
-SCATTER_PLOT_HEIGHT = 200
+SCATTER_PLOT_WIDTH = 230
+SCATTER_PLOT_HEIGHT = 230
 GENE1 = 'NDUFS2'
 GENE2 = 'NDUFS3'
 GENE3 = 'NDUFS7'
@@ -24,10 +23,6 @@ protein_data = 'protein_data'
 mRNA_data = 'mRNA_data'
 gene = 'gene'
 
-# function calls
-[johansson_cds, johansson_subtype_tumor_tuple, jo_unique_gene_list] = Johansson_CDS()
-[krug_cds, krug_subtype_tumor_tuple, kr_unique_gene_list] = Krug_CDS()
-[mertins_cds, mertins_subtype_tumor_tuple, me_unique_gene_list] = Mertins_CDS()
 
 def Pro_Pro_Scatter_Plot():
     """protein-protein for gene 1 and gene 2 scatter plot for Johansson, Krug and Mertins"""
