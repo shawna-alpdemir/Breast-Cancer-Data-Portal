@@ -17,7 +17,7 @@ mRNA_data = 'mRNA_data'
 gene = 'gene'
 
 # figure size and other constants
-LINE_PLOT_WIDTH = 1000
+LINE_PLOT_WIDTH = 750
 LINE_PLOT_HEIGHT = 125
 
 def Johansson_Line_Plot():
