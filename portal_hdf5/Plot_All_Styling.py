@@ -22,16 +22,16 @@ def StylePlots(plot, PlotID):
         plot.title.align = 'center'
         plot.toolbar.autohide = True
 
-        plot.legend.label_text_font_size = '8pt'
-        plot.legend.location = "top_center"
-        plot.legend.orientation = "horizontal"
-        plot.legend.background_fill_alpha = 0
-        plot.legend.border_line_alpha = 0
-        plot.legend.spacing = 5
-        plot.legend.margin = -10
-        plot.legend.label_standoff = 3
-        plot.legend.glyph_width = 10
-        plot.add_layout(plot.legend[0], 'above')
+        # plot.legend.label_text_font_size = '8pt'
+        # plot.legend.location = "top_center"
+        # plot.legend.orientation = "horizontal"
+        # plot.legend.background_fill_alpha = 0
+        # plot.legend.border_line_alpha = 0
+        # plot.legend.spacing = 5
+        # plot.legend.margin = -10
+        # plot.legend.label_standoff = 3
+        # plot.legend.glyph_width = 10
+        # plot.add_layout(plot.legend[0], 'above')
 
         plot.xaxis.major_label_text_font_size = '8pt'
         plot.xaxis.minor_tick_line_color = None
@@ -45,17 +45,17 @@ def StylePlots(plot, PlotID):
     elif PlotID == 'Subtype':
         plot.toolbar.autohide = True
 
-        plot.legend.label_text_font_size = '8pt'
-        plot.legend.location = "top_center"
-        plot.legend.orientation = "horizontal"
-        plot.legend.background_fill_alpha = 0
-        plot.legend.border_line_alpha = 0
-        plot.legend.spacing = 5
-        plot.legend.margin = -5
-        plot.legend.label_standoff = 3
-        plot.legend.glyph_width = 10
-        plot.legend.label_standoff = 0
-        plot.add_layout(plot.legend[0], 'above')
+        # plot.legend.label_text_font_size = '8pt'
+        # plot.legend.location = "top_center"
+        # plot.legend.orientation = "horizontal"
+        # plot.legend.background_fill_alpha = 0
+        # plot.legend.border_line_alpha = 0
+        # plot.legend.spacing = 5
+        # plot.legend.margin = -5
+        # plot.legend.label_standoff = 3
+        # plot.legend.glyph_width = 10
+        # plot.legend.label_standoff = 0
+        # plot.add_layout(plot.legend[0], 'above')
 
         plot.x_range.range_padding = 0.05
         plot.xaxis.major_tick_line_color = None
