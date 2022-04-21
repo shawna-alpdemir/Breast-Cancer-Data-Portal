@@ -879,7 +879,7 @@ gene_entry_section = column(tickers_buttons_layout)
 line_plot_section = column(line_plot_div, row(line_plot_tab, column(gene_entry_section, gene_hide_text_div)))
 select_widget_section = column(select_widget_layout)
 scatter_plot_section = column(scatter_plot_div, row(scatter_plot_tab, Spacer(width=60), pprr_scatter_plot_tab, column(select_widget_section, legend_pic)))
-subtype_plot_section = column(subtype_plot_div, subtype_plot_tab)
+subtype_plot_section = row(column(subtype_plot_div, subtype_plot_tab),column(Spacer(height=60),legend_pic))
 correlation_table_section = column(row(column(protein_cor_table_title_div, row(protein_correlation_textbox, formatted_button6), cor_pro_table_tab),
                           column(mRNA_cor_table_title_div, row(mrna_correlation_textbox,formatted_button5), cor_mrna_table_tab)))
 
