@@ -29,17 +29,17 @@ def Get_Protein_Correlation_Table(gene_name):
             DF.index.name = 'Gene'
             DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
 
-            # only select observation 2 to 101, because first obs is itself.
-            top_hundred = DF.iloc[1:101]
+            # only select observation 2 to 1001, because first obs is itself.
+            top_thousand = DF.iloc[1:1001]
 
             # calculate p values
-            TestStat = (top_hundred * (45 - 2) ** 0.5) / (1 - top_hundred ** 2) ** 0.5  # calculate t score
+            TestStat = (top_thousand * (45 - 2) ** 0.5) / (1 - top_thousand ** 2) ** 0.5  # calculate t score
             Sig = sc.t.sf(abs(TestStat),df=45 - 2) * 2  # using the survival function to compute one-sided p-value, then doubled it to make it two-side
 
             # assemble final DF
-            top_hundred.insert(1, 'p', Sig, True)
-            top_hundred.reset_index(inplace=True)
-            jo_Correlation_table_df = top_hundred
+            top_thousand.insert(1, 'p', Sig, True)
+            top_thousand.reset_index(inplace=True)
+            jo_Correlation_table_df = top_thousand
 
         except ValueError:
             jo_Correlation_table_df = pd.DataFrame({"Gene": [f"No data for {gene_name}"],
@@ -61,17 +61,17 @@ def Get_Protein_Correlation_Table(gene_name):
             DF.index.name = 'Gene'
             DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
 
-            # only select observation 2 to 101, because first obs is itself.
-            top_hundred = DF.iloc[1:101]
+            # only select observation 2 to 1001, because first obs is itself.
+            top_thousand = DF.iloc[1:1001]
 
             # calculate p values
-            TestStat = (top_hundred * (122 - 2) ** 0.5) / (1 - top_hundred ** 2) ** 0.5  # calculate t score
+            TestStat = (top_thousand * (122 - 2) ** 0.5) / (1 - top_thousand ** 2) ** 0.5  # calculate t score
             Sig = sc.t.sf(abs(TestStat),df=122 - 2) * 2  # using the survival function to compute one-sided p-value, then doubled it to make it two-side
 
             # assemble final DF
-            top_hundred.insert(1, 'p', Sig, True)
-            top_hundred.reset_index(inplace=True)
-            kr_Correlation_table_df = top_hundred
+            top_thousand.insert(1, 'p', Sig, True)
+            top_thousand.reset_index(inplace=True)
+            kr_Correlation_table_df = top_thousand
 
         except ValueError:
             kr_Correlation_table_df = pd.DataFrame({"Gene": [f"No data for {gene_name}"],
@@ -93,17 +93,17 @@ def Get_Protein_Correlation_Table(gene_name):
             DF.index.name = 'Gene'
             DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
 
-            # only select observation 2 to 101, because first obs is itself.
-            top_hundred = DF.iloc[1:101]
+            # only select observation 2 to 1001, because first obs is itself.
+            top_thousand = DF.iloc[1:1001]
 
             # calculate p values
-            TestStat = (top_hundred * (77 - 2) ** 0.5) / (1 - top_hundred ** 2) ** 0.5  # calculate t score
+            TestStat = (top_thousand * (77 - 2) ** 0.5) / (1 - top_thousand ** 2) ** 0.5  # calculate t score
             Sig = sc.t.sf(abs(TestStat),df=77 - 2) * 2  # using the survival function to compute one-sided p-value, then doubled it to make it two-side
 
             # assemble final DF
-            top_hundred.insert(1, 'p', Sig, True)
-            top_hundred.reset_index(inplace=True)
-            me_Correlation_table_df = top_hundred
+            top_thousand.insert(1, 'p', Sig, True)
+            top_thousand.reset_index(inplace=True)
+            me_Correlation_table_df = top_thousand
 
         except ValueError:
             me_Correlation_table_df = pd.DataFrame({"Gene": [f"No data for {gene_name}"],
@@ -129,8 +129,8 @@ def Get_mRNA_Correlation_Table(gene_name):
             DF.index.name = 'Gene'
             DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
 
-            # only select observation 2 to 101, because first obs is itself.
-            top_hundred = DF.iloc[1:101]
+            # only select observation 2 to 1001, because first obs is itself.
+            top_hundred = DF.iloc[1:1001]
 
             # calculate p values
             TestStat = (top_hundred * (45 - 2) ** 0.5) / (1 - top_hundred ** 2) ** 0.5  # calculate t score
@@ -162,8 +162,8 @@ def Get_mRNA_Correlation_Table(gene_name):
             DF.index.name = 'Gene'
             DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
 
-            # only select observation 2 to 101, because first obs is itself.
-            top_hundred = DF.iloc[1:101]
+            # only select observation 2 to 1001, because first obs is itself.
+            top_hundred = DF.iloc[1:1001]
 
             # calculate p values
             TestStat = (top_hundred * (122 - 2) ** 0.5) / (1 - top_hundred ** 2) ** 0.5  # calculate t score
@@ -194,8 +194,8 @@ def Get_mRNA_Correlation_Table(gene_name):
             DF.index.name = 'Gene'
             DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
 
-            # only select observation 2 to 101, because first obs is itself.
-            top_hundred = DF.iloc[1:101]
+            # only select observation 2 to 1001, because first obs is itself.
+            top_hundred = DF.iloc[1:1001]
 
             # calculate p values
             TestStat = (top_hundred * (77 - 2) ** 0.5) / (1 - top_hundred ** 2) ** 0.5  # calculate t score
