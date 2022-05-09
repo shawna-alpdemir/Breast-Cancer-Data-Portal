@@ -6,7 +6,7 @@ from os.path import join, dirname
 from bokeh.io import curdoc
 from bokeh.layouts import layout, column, row
 from bokeh.models import Spacer, Tabs, Panel, AutocompleteInput, ColumnDataSource, TableColumn, DataTable, Button, \
-    Select, Div, CustomJS, ScientificFormatter
+    Select, Div, CustomJS, ScientificFormatter, PreText
 from bokeh.transform import factor_cmap
 
 from Correlation_Table import Get_Protein_Correlation_Table, Get_mRNA_Correlation_Table
@@ -42,36 +42,36 @@ def Nix(val, lst):
 
 def Ticker1_Change(attrname, old, new):
     """ change function that triggers the update"""
-    print(f"ticker 1 changes to {new}")
     global TICKER_INDEX
     TICKER_INDEX = 0
     TICKER[1].completions = Nix(new, all_unique_genes)
     TICKER[2].completions = Nix(new, all_unique_genes)
     TICKER[3].completions = Nix(new, all_unique_genes)
+    gene_hide_text_div.text = f"Gene 1 has been changed to {new}"
 
 def Ticker2_Change(attrname, old, new):
-    print(f"ticker 2 changes to {new}")
     global TICKER_INDEX
     TICKER_INDEX = 1
     TICKER[0].completions = Nix(new, all_unique_genes)
     TICKER[2].completions = Nix(new, all_unique_genes)
     TICKER[3].completions = Nix(new, all_unique_genes)
+    gene_hide_text_div.text = f"Gene 2 has been changed to {new}"
 
 def Ticker3_Change(attrname, old, new):
-    print(f"ticker 3 changes to {new}")
     global TICKER_INDEX
     TICKER_INDEX = 2
     TICKER[0].completions = Nix(new, all_unique_genes)
     TICKER[1].completions = Nix(new, all_unique_genes)
     TICKER[3].completions = Nix(new, all_unique_genes)
+    gene_hide_text_div.text = f"Gene 3 has been changed to {new}"
 
 def Ticker4_Change(attrname, old, new):
-    print(f"ticker 4 changes to {new}")
     global TICKER_INDEX
     TICKER_INDEX = 3
     TICKER[0].completions = Nix(new, all_unique_genes)
     TICKER[1].completions = Nix(new, all_unique_genes)
     TICKER[2].completions = Nix(new, all_unique_genes)
+    gene_hide_text_div.text = f"Gene 4 has been changed to {new}"
 
 TICKER_FUNCTION_LIST = [Ticker1_Change, Ticker2_Change, Ticker3_Change, Ticker4_Change]
 
@@ -125,7 +125,7 @@ def Line_Plot_Update(attrname, old, new):
                  subtype: list(zip(*mertins_subtype_tumor_tuple))[0], # extract first element of the list of subtype_tumor_tuple
                  protein_data: protein_data_new_gene,
                  mRNA_data: mRNA_data_new_gene,
-                 gene: np.repeat(gene, 77)}
+                 gene: np.repeat(new, 77)}
 
     end = time.time()
     print(f"line plots updated: {end-start}")
@@ -873,7 +873,7 @@ mRNA_cor_table_title_div = column(Div(text="Correlation Table - mRNA:",
 #                     Div(text=download_text, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'}, width=300))
 
 gene_hide_text_div = Div(text="If you wish to hide certain genes, please click on the interactive legend.",
-                         style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'}, width=200, width_policy='fixed')
+                         style={'font-size': '100%', 'color': 'red'}, width=200, width_policy='fixed')
 
 gene_entry_section = column(tickers_buttons_layout)
 line_plot_section = column(line_plot_div, row(line_plot_tab, column(gene_entry_section, gene_hide_text_div)))
