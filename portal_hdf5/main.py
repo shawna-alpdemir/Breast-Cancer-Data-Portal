@@ -47,6 +47,8 @@ def Ticker1_Change(attrname, old, new):
     TICKER[1].completions = Nix(new, all_unique_genes)
     TICKER[2].completions = Nix(new, all_unique_genes)
     TICKER[3].completions = Nix(new, all_unique_genes)
+
+def Status1_Change(attrname, old, new):
     gene_hide_text_div.text = f"Gene 1 has been changed to {new}"
 
 def Ticker2_Change(attrname, old, new):
@@ -55,6 +57,8 @@ def Ticker2_Change(attrname, old, new):
     TICKER[0].completions = Nix(new, all_unique_genes)
     TICKER[2].completions = Nix(new, all_unique_genes)
     TICKER[3].completions = Nix(new, all_unique_genes)
+
+def Status2_Change(attrname, old, new):
     gene_hide_text_div.text = f"Gene 2 has been changed to {new}"
 
 def Ticker3_Change(attrname, old, new):
@@ -63,6 +67,8 @@ def Ticker3_Change(attrname, old, new):
     TICKER[0].completions = Nix(new, all_unique_genes)
     TICKER[1].completions = Nix(new, all_unique_genes)
     TICKER[3].completions = Nix(new, all_unique_genes)
+
+def Status3_Change(attrname, old, new):
     gene_hide_text_div.text = f"Gene 3 has been changed to {new}"
 
 def Ticker4_Change(attrname, old, new):
@@ -71,9 +77,12 @@ def Ticker4_Change(attrname, old, new):
     TICKER[0].completions = Nix(new, all_unique_genes)
     TICKER[1].completions = Nix(new, all_unique_genes)
     TICKER[2].completions = Nix(new, all_unique_genes)
+
+def Status4_Change(attrname, old, new):
     gene_hide_text_div.text = f"Gene 4 has been changed to {new}"
 
 TICKER_FUNCTION_LIST = [Ticker1_Change, Ticker2_Change, Ticker3_Change, Ticker4_Change]
+STATUS_FUNCTION_LIST = [Status1_Change, Status2_Change, Status3_Change, Status4_Change]
 
 def Line_Plot_Update(attrname, old, new):
     """Update function for text entries call back targeting line plot"""
@@ -479,6 +488,7 @@ for j in range(4):
     TICKER[j].on_change('value', Line_Plot_Update)
     TICKER[j].on_change('value', Scatter_Plot_Update)
     TICKER[j].on_change('value', All_Subtype_Plot_Update)
+    TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
 
 for j in range(4):
     kr_plot_p.line(subtype_tuple, protein_data, source=krug_cds[j], color=GENE_COLORS[j], legend_label=GENE_NUMBER[j])
@@ -494,6 +504,7 @@ for j in range(4):
     TICKER[j].on_change('value', Line_Plot_Update)
     TICKER[j].on_change('value', Scatter_Plot_Update)
     TICKER[j].on_change('value', All_Subtype_Plot_Update)
+    TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
 
 for j in range(4):
     me_plot_p.line(subtype_tuple, protein_data, source=mertins_cds[j], color=GENE_COLORS[j], legend_label=GENE_NUMBER[j])
@@ -509,6 +520,7 @@ for j in range(4):
     TICKER[j].on_change('value', Line_Plot_Update)
     TICKER[j].on_change('value', Scatter_Plot_Update)
     TICKER[j].on_change('value', All_Subtype_Plot_Update)
+    TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
 
 # styling plots
 for i in [jo_plot_p, jo_plot_m, kr_plot_p, kr_plot_m, me_plot_p, me_plot_m]:
