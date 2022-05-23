@@ -25,11 +25,11 @@ def Johansson_Subtype_Plot(jo_subtype_protein_CDS, jo_subtype_mRNA_CDS):
     # Initialize the figure object
     jo_protein_subtype_plot = figure(x_range=FactorRange(*jo_subtype_protein_CDS.data["x"]),
                                      title='', x_axis_label='', y_axis_label='protein z-score',
-                                     plot_height=SUBTYPE_PLOT_HEIGHT, plot_width=SUBTYPE_PLOT_WIDTH)
+                                     plot_height=SUBTYPE_PLOT_HEIGHT, plot_width=SUBTYPE_PLOT_WIDTH, output_backend="webgl")
 
     jo_mRNA_subtype_plot = figure(x_range=FactorRange(*jo_subtype_mRNA_CDS.data['x']),
                                   title='', x_axis_label='', y_axis_label='mRNA z-score',
-                                  plot_height=SUBTYPE_PLOT_HEIGHT, plot_width=SUBTYPE_PLOT_WIDTH)
+                                  plot_height=SUBTYPE_PLOT_HEIGHT, plot_width=SUBTYPE_PLOT_WIDTH, output_backend="webgl")
 
     # make protein plot
     jo_protein_subtype_plot.circle('x', 'y', source=jo_subtype_protein_CDS,
@@ -73,11 +73,11 @@ def Krug_Subtype_Plot(kr_subtype_protein_CDS, kr_subtype_mRNA_CDS):
     # Initialize the figure object
     kr_protein_subtype_plot = figure(x_range=FactorRange(*kr_subtype_protein_CDS.data["x"]),
                                      title='', x_axis_label='', y_axis_label='protein z-score',
-                                     plot_height=SUBTYPE_PLOT_HEIGHT, plot_width=SUBTYPE_PLOT_WIDTH)
+                                     plot_height=SUBTYPE_PLOT_HEIGHT, plot_width=SUBTYPE_PLOT_WIDTH, output_backend="webgl")
 
     kr_mRNA_subtype_plot = figure(x_range=FactorRange(*kr_subtype_mRNA_CDS.data['x']),
                                   title='', x_axis_label='', y_axis_label='mRNA z-score',
-                                  plot_height=SUBTYPE_PLOT_HEIGHT, plot_width=SUBTYPE_PLOT_WIDTH)
+                                  plot_height=SUBTYPE_PLOT_HEIGHT, plot_width=SUBTYPE_PLOT_WIDTH, output_backend="webgl")
 
     # make protein plot
     kr_protein_subtype_plot.circle('x', 'y', source=kr_subtype_protein_CDS,
@@ -121,11 +121,11 @@ def Mertins_Subtype_Plot(me_subtype_protein_CDS, me_subtype_mRNA_CDS):
     # Initialize the figure object
     me_protein_subtype_plot = figure(x_range=FactorRange(*me_subtype_protein_CDS.data["x"]),
                                      title='', x_axis_label='', y_axis_label='protein z-score',
-                                     plot_height=SUBTYPE_PLOT_HEIGHT, plot_width=SUBTYPE_PLOT_WIDTH)
+                                     plot_height=SUBTYPE_PLOT_HEIGHT, plot_width=SUBTYPE_PLOT_WIDTH, output_backend="webgl")
 
     me_mRNA_subtype_plot = figure(x_range=FactorRange(*me_subtype_mRNA_CDS.data['x']),
                                   title='', x_axis_label='', y_axis_label='mRNA z-score',
-                                  plot_height=SUBTYPE_PLOT_HEIGHT, plot_width=SUBTYPE_PLOT_WIDTH)
+                                  plot_height=SUBTYPE_PLOT_HEIGHT, plot_width=SUBTYPE_PLOT_WIDTH, output_backend="webgl")
 
     # make protein plot
     me_protein_subtype_plot.circle('x', 'y', source=me_subtype_protein_CDS,
