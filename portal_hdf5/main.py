@@ -84,9 +84,9 @@ def Status4_Change(attrname, old, new):
 TICKER_FUNCTION_LIST = [Ticker1_Change, Ticker2_Change, Ticker3_Change, Ticker4_Change]
 STATUS_FUNCTION_LIST = [Status1_Change, Status2_Change, Status3_Change, Status4_Change]
 
+##### Line and scatter plot (same CDS)
 def Line_Plot_Update(attrname, old, new):
     """Update function for text entries call back targeting line plot"""
-    start = time.time()
 
     with h5py.File(JohanssonProteome, "r") as a, h5py.File(JohanssonTranscriptome, "r") as b:
         protein_data_new_gene = np.array(a.get(new))
@@ -136,12 +136,13 @@ def Line_Plot_Update(attrname, old, new):
                  mRNA_data: mRNA_data_new_gene,
                  gene: np.repeat(new, 77)}
 
-    end = time.time()
-    print(f"line plots updated: {end-start}")
+    print(f"line plots updated")
 
 def Scatter_Plot_Update(attrname, old, new):
     """Update function for text entries call back targeting line plot"""
-    start = time.time()
+    jo_plot_mRNA_prot[TICKER_INDEX].title.text = new
+    kr_plot_mRNA_prot[TICKER_INDEX].title.text = new
+    me_plot_mRNA_prot[TICKER_INDEX].title.text = new
 
     with h5py.File(JohanssonProteome, "r") as a, h5py.File(JohanssonTranscriptome, "r") as b:
         protein_data_new_gene = np.array(a.get(new))
@@ -185,13 +186,9 @@ def Scatter_Plot_Update(attrname, old, new):
                  protein_data: protein_data_new_gene,
                  mRNA_data: mRNA_data_new_gene}
 
-    jo_plot_mRNA_prot[TICKER_INDEX].title.text = new
-    kr_plot_mRNA_prot[TICKER_INDEX].title.text = new
-    me_plot_mRNA_prot[TICKER_INDEX].title.text = new
+    print(f"scatter plot updated")
 
-    end = time.time()
-    print(f"scatter plot updated {end-start}")
-
+##### Scatter plot update button
 def Scatter_Select_Update(event):
     """ Update function for select menu; it locates the value in textbox and return """
     option_list = ['Gene 1', 'Gene 2', 'Gene 3', 'Gene 4']
@@ -281,6 +278,7 @@ def Scatter_Select_Update(event):
     kr_rna_rna_scatter_plot.title.text = f"{x_gene_name}-{y_gene_name}"
     me_rna_rna_scatter_plot.title.text = f"{x_gene_name}-{y_gene_name}"
 
+###### Subtype Plot
 def Johansson_Subtype_Plot_update():
     x_axis_subtype = []
 
@@ -414,14 +412,23 @@ def Mertins_Subtype_Plot_update():
                                 'upper': upper_bar_mrna, 'lower': lower_bar_mrna}
 
 def All_Subtype_Plot_Update(attrname, old, new):
-    start = time.time()
     global TICKER_GENE_LIST
     TICKER_GENE_LIST[TICKER_INDEX] = new
     Johansson_Subtype_Plot_update()
     Krug_Subtype_Plot_update()
     Mertins_Subtype_Plot_update()
+    print(f'Subtype plot updated: {TICKER_GENE_LIST}')
+
+##### Master update that for text boxes
+def Master_Textbox_Update(attrname, old, new):
+    start = time.time()
+
+    Line_Plot_Update(attrname, old, new)
+    Scatter_Plot_Update(attrname, old, new)
+    #All_Subtype_Plot_Update(attrname, old, new)
+
     end = time.time()
-    print(f'Current subtype plot gene list is: {TICKER_GENE_LIST}, {end-start}')
+    print(f"Everything updated: {end-start}")
 
 def Correlation_Table_Protein_Update(attrname, old, new):
     start = time.time()
@@ -485,9 +492,10 @@ for j in range(4):
                                   min_characters=3, completions=Nix(INITIAL_GENE[j], all_unique_genes),
                                   case_sensitive=False)
     TICKER[j].on_change('value', TICKER_FUNCTION_LIST[j])
-    TICKER[j].on_change('value', Line_Plot_Update)
-    TICKER[j].on_change('value', Scatter_Plot_Update)
-    TICKER[j].on_change('value', All_Subtype_Plot_Update)
+    TICKER[j].on_change('value', Master_Textbox_Update)
+# TICKER[j].on_change('value', Line_Plot_Update)
+# TICKER[j].on_change('value', Scatter_Plot_Update)
+# TICKER[j].on_change('value', All_Subtype_Plot_Update)
     TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
 
 for j in range(4):
@@ -501,9 +509,10 @@ for j in range(4):
                                   min_characters=3, completions=Nix(INITIAL_GENE[j], all_unique_genes),
                                   case_sensitive=False)
     TICKER[j].on_change('value', TICKER_FUNCTION_LIST[j])
-    TICKER[j].on_change('value', Line_Plot_Update)
-    TICKER[j].on_change('value', Scatter_Plot_Update)
-    TICKER[j].on_change('value', All_Subtype_Plot_Update)
+    TICKER[j].on_change('value', Master_Textbox_Update)
+# TICKER[j].on_change('value', Line_Plot_Update)
+# TICKER[j].on_change('value', Scatter_Plot_Update)
+# TICKER[j].on_change('value', All_Subtype_Plot_Update)
     TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
 
 for j in range(4):
@@ -517,9 +526,10 @@ for j in range(4):
                                   min_characters=3, completions=Nix(INITIAL_GENE[j], all_unique_genes),
                                   case_sensitive=False)
     TICKER[j].on_change('value', TICKER_FUNCTION_LIST[j])
-    TICKER[j].on_change('value', Line_Plot_Update)
-    TICKER[j].on_change('value', Scatter_Plot_Update)
-    TICKER[j].on_change('value', All_Subtype_Plot_Update)
+    TICKER[j].on_change('value', Master_Textbox_Update)
+# TICKER[j].on_change('value', Line_Plot_Update)
+# TICKER[j].on_change('value', Scatter_Plot_Update)
+# TICKER[j].on_change('value', All_Subtype_Plot_Update)
     TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
 
 # styling plots
@@ -731,6 +741,11 @@ subtype_plot_tab = Tabs(tabs=[Panel(child=subtype_plot_jo_layout, title="Johanss
                               Panel(child=subtype_plot_kr_layout, title="Krug"),
                               Panel(child=subtype_plot_me_layout, title="Mertins")])
 
+# button to update subtype plot (beta)
+subtype_update_button = Button(label='Update', button_type='default', width=100, width_policy='fixed')
+subtype_update_button.on_click(All_Subtype_Plot_Update())
+
+
 ################################################### Row 4: GxG Correlation #############################################
 # function call
 [jo_mrna_ERBB2, jo_protein_ERBB2, kr_mrna_ERBB2, kr_protein_ERBB2, me_mrna_ERBB2, me_protein_ERBB2] = Import_Static_Correlation_Table()
@@ -911,5 +926,5 @@ curdoc().title="Breast Cancer Data Portal"
 
 end_time=time.time()
 elapsed=end_time-start_time
-print(f'total response time: {elapsed}')
+print(f'Total response time: {elapsed}')
 
