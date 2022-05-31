@@ -24,7 +24,8 @@ from Subtype_Plot import Johansson_Subtype_Plot, Krug_Subtype_Plot, Mertins_Subt
 # constants
 TICKER = {}
 TICKER_INDEX = None
-TICKER_GENE_LIST = ['ESR1', 'PGR', 'ERBB2', 'MKI67']
+SUBTYPE_PLOT_GENE_LIST = ['ESR1', 'PGR', 'ERBB2', 'MKI67']
+TEXTBOX_GENE_LIST = ['NDUFS2', 'NDUFS3', 'NDUFS7', 'NDUFS8']
 
 # dictionary key name
 subtype_tuple = 'subtype, tumor'
@@ -136,60 +137,72 @@ def Line_Plot_Update(attrname, old, new):
                  mRNA_data: mRNA_data_new_gene,
                  gene: np.repeat(new, 77)}
 
-    print(f"line plots updated")
-
-def Scatter_Plot_Update(attrname, old, new):
-    """Update function for text entries call back targeting line plot"""
-    jo_plot_mRNA_prot[TICKER_INDEX].title.text = new
-    kr_plot_mRNA_prot[TICKER_INDEX].title.text = new
-    me_plot_mRNA_prot[TICKER_INDEX].title.text = new
-
-    with h5py.File(JohanssonProteome, "r") as a, h5py.File(JohanssonTranscriptome, "r") as b:
-        protein_data_new_gene = np.array(a.get(new))
-        mRNA_data_new_gene = np.array(b.get(new))
-
-        if not np.all(protein_data_new_gene):
-            protein_data_new_gene = np.zeros(45)
-
-        if not np.all(mRNA_data_new_gene):
-            mRNA_data_new_gene = np.zeroes(45)
-
-        johansson_scatter_cds[TICKER_INDEX].data = {subtype: list(zip(*johansson_subtype_tumor_tuple))[0], # extract first element of the list of subtype_tumor_tuple, which is the subtype
-                 protein_data: protein_data_new_gene,
-                 mRNA_data: mRNA_data_new_gene}
-
-    with h5py.File(KrugProteome, "r") as a, h5py.File(KrugTranscriptome, "r") as b:
-        protein_data_new_gene = np.array(a.get(new))
-        mRNA_data_new_gene = np.array(b.get(new))
-
-        if not np.all(protein_data_new_gene):
-            protein_data_new_gene = np.zeros(122)
-
-        if not np.all(mRNA_data_new_gene):
-            mRNA_data_new_gene = np.zeros(122)
-
-        krug_scatter_cds[TICKER_INDEX].data = {subtype: list(zip(*krug_subtype_tumor_tuple))[0], # extract first element of the list of subtype_tumor_tuple
-                 protein_data: protein_data_new_gene,
-                 mRNA_data: mRNA_data_new_gene}
-
-    with h5py.File(MertinsProteome, "r") as a, h5py.File(MertinsTranscriptome, "r") as b:
-        protein_data_new_gene = np.array(a.get(new))
-        mRNA_data_new_gene = np.array(b.get(new))
-
-        if not np.all(protein_data_new_gene):
-            protein_data_new_gene = np.zeros(77)
-
-        if not np.all(mRNA_data_new_gene):
-            mRNA_data_new_gene = np.zeros(77)
-
-        mertins_scatter_cds[TICKER_INDEX].data = {subtype: list(zip(*mertins_subtype_tumor_tuple))[0], # extract first element of the list of subtype_tumor_tuple
-                 protein_data: protein_data_new_gene,
-                 mRNA_data: mRNA_data_new_gene}
-
-    print(f"scatter plot updated")
+    print(f"Line plots updated...")
 
 ##### Scatter plot update button
-def Scatter_Select_Update(event):
+def Textbox_GeneList_Update(attrname, old, new):
+    global TEXTBOX_GENE_LIST
+    TEXTBOX_GENE_LIST[TICKER_INDEX] = new
+    print(f'Textbox gene list updated: {TEXTBOX_GENE_LIST}...')
+
+def Scatter_Plot_Update(event):
+    """Update function for text entries call back targeting line plot"""
+    # jo_plot_mRNA_prot[TICKER_INDEX].title.text = new
+    # kr_plot_mRNA_prot[TICKER_INDEX].title.text = new
+    # me_plot_mRNA_prot[TICKER_INDEX].title.text = new
+
+    for j, k in zip(TEXTBOX_GENE_LIST, range(4)):
+        with h5py.File(JohanssonProteome, "r") as a, h5py.File(JohanssonTranscriptome, "r") as b:
+            protein_data_new_gene = np.array(a.get(j))
+            mRNA_data_new_gene = np.array(b.get(j))
+
+            if not np.all(protein_data_new_gene):
+                protein_data_new_gene = np.zeros(45)
+
+            if not np.all(mRNA_data_new_gene):
+                mRNA_data_new_gene = np.zeroes(45)
+
+            johansson_scatter_cds[k].data = {subtype: list(zip(*johansson_subtype_tumor_tuple))[0],
+                                             # extract first element of the list of subtype_tumor_tuple, which is the subtype
+                                             protein_data: protein_data_new_gene,
+                                             mRNA_data: mRNA_data_new_gene}
+            jo_plot_mRNA_prot[k].title.text = j
+
+        with h5py.File(KrugProteome, "r") as a, h5py.File(KrugTranscriptome, "r") as b:
+            protein_data_new_gene = np.array(a.get(j))
+            mRNA_data_new_gene = np.array(b.get(j))
+
+            if not np.all(protein_data_new_gene):
+                protein_data_new_gene = np.zeros(122)
+
+            if not np.all(mRNA_data_new_gene):
+                mRNA_data_new_gene = np.zeros(122)
+
+            krug_scatter_cds[k].data = {subtype: list(zip(*krug_subtype_tumor_tuple))[0],
+                                        # extract first element of the list of subtype_tumor_tuple
+                                        protein_data: protein_data_new_gene,
+                                        mRNA_data: mRNA_data_new_gene}
+            kr_plot_mRNA_prot[k].title.text = j
+
+        with h5py.File(MertinsProteome, "r") as a, h5py.File(MertinsTranscriptome, "r") as b:
+            protein_data_new_gene = np.array(a.get(j))
+            mRNA_data_new_gene = np.array(b.get(j))
+
+            if not np.all(protein_data_new_gene):
+                protein_data_new_gene = np.zeros(77)
+
+            if not np.all(mRNA_data_new_gene):
+                mRNA_data_new_gene = np.zeros(77)
+
+            mertins_scatter_cds[TICKER_INDEX].data = {subtype: list(zip(*mertins_subtype_tumor_tuple))[0],
+                                                      # extract first element of the list of subtype_tumor_tuple
+                                                      protein_data: protein_data_new_gene,
+                                                      mRNA_data: mRNA_data_new_gene}
+            me_plot_mRNA_prot[k].title.text = j
+
+    print(f"Scatter plot updated...")
+
+def Scatter_Select_Button_Update(event):
     """ Update function for select menu; it locates the value in textbox and return """
     option_list = ['Gene 1', 'Gene 2', 'Gene 3', 'Gene 4']
     x_index = option_list.index(x_axis_select.value) # get the index of which gene users selected
@@ -292,7 +305,7 @@ def Johansson_Subtype_Plot_update():
 
     jo_subtype = []
 
-    for gene in TICKER_GENE_LIST:
+    for gene in SUBTYPE_PLOT_GENE_LIST:
         [jo_avg_protein_DF, jo_sem_protein_DF, jo_avg_mRNA_DF, jo_sem_mRNA_DF] = Johansson_Subtype_Avg_SEM_DFs(gene)
 
         x_axis_subtype.extend([(gene,x) for x in ['Basal', 'Her2', 'LumA', 'LumB', 'Norm']])
@@ -337,7 +350,7 @@ def Krug_Subtype_Plot_update():
 
     kr_subtype = []
 
-    for gene in TICKER_GENE_LIST:
+    for gene in SUBTYPE_PLOT_GENE_LIST:
         [kr_avg_protein_DF, kr_sem_protein_DF, kr_avg_mRNA_DF, kr_sem_mRNA_DF] = Krug_Subtype_Avg_SEM_DFs(gene)
 
         x_axis_subtype.extend([(gene,x) for x in ['Basal', 'Her2', 'LumA', 'LumB', 'Norm']])
@@ -381,7 +394,7 @@ def Mertins_Subtype_Plot_update():
 
     me_subtype = []
 
-    for gene in TICKER_GENE_LIST:
+    for gene in SUBTYPE_PLOT_GENE_LIST:
         [me_avg_protein_DF, me_sem_protein_DF, me_avg_mRNA_DF, me_sem_mRNA_DF] = Mertins_Subtype_Avg_SEM_DFs(gene)
 
         x_axis_subtype.extend([(gene,x) for x in ['Basal', 'Her2', 'LumA', 'LumB']])
@@ -411,25 +424,31 @@ def Mertins_Subtype_Plot_update():
     me_subtype_mRNA_CDS.data = {'x': x_axis_subtype, 'y': y_axis_subtype_mrna,
                                 'upper': upper_bar_mrna, 'lower': lower_bar_mrna}
 
-def All_Subtype_Plot_Update(attrname, old, new):
-    global TICKER_GENE_LIST
-    TICKER_GENE_LIST[TICKER_INDEX] = new
+def Subtype_Plot_GeneList_Update(attrname, old, new):
+    global SUBTYPE_PLOT_GENE_LIST
+    SUBTYPE_PLOT_GENE_LIST[TICKER_INDEX] = new
+    print(f'Subtype gene list updated: {SUBTYPE_PLOT_GENE_LIST}...')
+
+def Master_Subtype_Plot_Button_Update(event):
     Johansson_Subtype_Plot_update()
     Krug_Subtype_Plot_update()
     Mertins_Subtype_Plot_update()
-    print(f'Subtype plot updated: {TICKER_GENE_LIST}')
+    print(f"Subtype plot updated...")
 
 ##### Master update that for text boxes
 def Master_Textbox_Update(attrname, old, new):
     start = time.time()
 
     Line_Plot_Update(attrname, old, new)
-    Scatter_Plot_Update(attrname, old, new)
-    #All_Subtype_Plot_Update(attrname, old, new)
+    #Scatter_Plot_Update(attrname, old, new)
+    Subtype_Plot_GeneList_Update(attrname, old, new)
+    Textbox_GeneList_Update(attrname, old, new)
+    STATUS_FUNCTION_LIST[TICKER_INDEX](attrname, old, new)
 
     end = time.time()
-    print(f"Everything updated: {end-start}")
+    print(f"It takes {round(end-start, 6)} ms")
 
+#### Correlation tables
 def Correlation_Table_Protein_Update(attrname, old, new):
     start = time.time()
     [jo_Correlation_table_df, kr_Correlation_table_df, me_Correlation_table_df] = Get_Protein_Correlation_Table(new)
@@ -496,7 +515,7 @@ for j in range(4):
 # TICKER[j].on_change('value', Line_Plot_Update)
 # TICKER[j].on_change('value', Scatter_Plot_Update)
 # TICKER[j].on_change('value', All_Subtype_Plot_Update)
-    TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
+    #TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
 
 for j in range(4):
     kr_plot_p.line(subtype_tuple, protein_data, source=krug_cds[j], color=GENE_COLORS[j], legend_label=GENE_NUMBER[j])
@@ -510,10 +529,10 @@ for j in range(4):
                                   case_sensitive=False)
     TICKER[j].on_change('value', TICKER_FUNCTION_LIST[j])
     TICKER[j].on_change('value', Master_Textbox_Update)
-# TICKER[j].on_change('value', Line_Plot_Update)
-# TICKER[j].on_change('value', Scatter_Plot_Update)
-# TICKER[j].on_change('value', All_Subtype_Plot_Update)
-    TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
+    # TICKER[j].on_change('value', Line_Plot_Update)
+    # TICKER[j].on_change('value', Scatter_Plot_Update)
+    # TICKER[j].on_change('value', All_Subtype_Plot_Update)
+    #TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
 
 for j in range(4):
     me_plot_p.line(subtype_tuple, protein_data, source=mertins_cds[j], color=GENE_COLORS[j], legend_label=GENE_NUMBER[j])
@@ -530,7 +549,7 @@ for j in range(4):
 # TICKER[j].on_change('value', Line_Plot_Update)
 # TICKER[j].on_change('value', Scatter_Plot_Update)
 # TICKER[j].on_change('value', All_Subtype_Plot_Update)
-    TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
+    #TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
 
 # styling plots
 for i in [jo_plot_p, jo_plot_m, kr_plot_p, kr_plot_m, me_plot_p, me_plot_m]:
@@ -634,13 +653,16 @@ pprr_scatter_plot_tab = Tabs(tabs=[Panel(child=scatter_plot_jo_layout, title="Jo
 x_axis_select = Select(title="X axis", value="Gene 1", options=['Gene 1', 'Gene 2', 'Gene 3', 'Gene 4'], width = 100, width_policy='fixed')
 y_axis_select = Select(title="Y axis", value="Gene 2", options=['Gene 1', 'Gene 2', 'Gene 3', 'Gene 4'], width = 100, width_policy='fixed')
 selection_update_button = Button(label='Update', button_type='default', width=100, width_policy='fixed')
-selection_update_button.on_click(Scatter_Select_Update)
+selection_update_button.on_click(Scatter_Select_Button_Update)
 
 # select widget next to pro-pro/rna-rna scatter plot
 select_widget_layout = column(x_axis_select, y_axis_select, selection_update_button)
 
 # static legend under selection dropdown
 legend_pic = Div(text="<img src='portal_hdf5/static/Legend pic.png'>")
+
+# static divider
+divider_pic = Div(text="<img src='portal_hdf5/static/Divider.png'>")
 
 ################################# Row 2: mRNA-Protein Correlation Scatter Plot #########################################
 # function calls
@@ -711,6 +733,10 @@ scatter_plot_tab = Tabs(tabs=[Panel(child=scatter_plot_jo_layout, title="Johanss
                               Panel(child=scatter_plot_kr_layout, title="Krug"),
                               Panel(child=scatter_plot_me_layout, title="Mertins")])
 
+# scatter plots update button
+scatter_update_button = Button(label='Update', button_type='default', width=50, width_policy='fixed')
+scatter_update_button.on_click(Scatter_Plot_Update)
+
 ########################################  Row 3: Subtype Mean and SEM plot #############################################
 # function call
 [jo_subtype_protein_CDS, jo_subtype_mRNA_CDS] = Johansson_Subtype_Avg_Plot_CDS(['ESR1', 'PGR', 'ERBB2', 'MKI67'])
@@ -742,8 +768,8 @@ subtype_plot_tab = Tabs(tabs=[Panel(child=subtype_plot_jo_layout, title="Johanss
                               Panel(child=subtype_plot_me_layout, title="Mertins")])
 
 # button to update subtype plot (beta)
-subtype_update_button = Button(label='Update', button_type='default', width=100, width_policy='fixed')
-subtype_update_button.on_click(All_Subtype_Plot_Update())
+subtype_update_button = Button(label='Update', button_type='default', width=50, width_policy='fixed')
+subtype_update_button.on_click(Master_Subtype_Plot_Button_Update)
 
 
 ################################################### Row 4: GxG Correlation #############################################
@@ -751,7 +777,7 @@ subtype_update_button.on_click(All_Subtype_Plot_Update())
 [jo_mrna_ERBB2, jo_protein_ERBB2, kr_mrna_ERBB2, kr_protein_ERBB2, me_mrna_ERBB2, me_protein_ERBB2] = Import_Static_Correlation_Table()
 
 # constant
-TABLE_WIDTH = 375
+TABLE_WIDTH = 750
 TABLE_HEIGHT = 250
 
 # textbox widget and on_change
@@ -777,19 +803,21 @@ me_mrna_gene_cor_source = ColumnDataSource(data=me_mrna_ERBB2)
 
 protein_table_columns = [TableColumn(field='Gene', title='Gene'),  # set up mRNA_table_columns
                          TableColumn(field='r', title='Coefficient', formatter=ScientificFormatter(precision=3)),
-                         TableColumn(field='p', title='p value', formatter=ScientificFormatter(precision=3))]
+                         TableColumn(field='p', title='p value', formatter=ScientificFormatter(precision=3)),
+                         TableColumn(field='Name', title='Name')]
 mRNA_table_columns = [TableColumn(field='Gene', title='Gene'),  # set up mRNA_table_columns
                       TableColumn(field='r', title='Coefficient', formatter=ScientificFormatter(precision=3)),
-                      TableColumn(field='p', title='p value', formatter=ScientificFormatter(precision=3))]
+                      TableColumn(field='p', title='p value', formatter=ScientificFormatter(precision=3)),
+                      TableColumn(field='Name', title='Name')]
 
 # create table widget by assembling columndatasource and mRNA_table_columns
-jo_mrna_cor_data_table = DataTable(source=jo_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None)
-kr_mrna_cor_data_table = DataTable(source=kr_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None)
-me_mrna_cor_data_table = DataTable(source=me_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None)
+jo_mrna_cor_data_table = DataTable(source=jo_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None, autosize_mode = 'fit_columns')
+kr_mrna_cor_data_table = DataTable(source=kr_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None, autosize_mode = 'fit_columns')
+me_mrna_cor_data_table = DataTable(source=me_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None, autosize_mode = 'fit_columns')
 
-jo_pro_cor_data_table = DataTable(source=jo_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None)
-kr_pro_cor_data_table = DataTable(source=kr_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None)
-me_pro_cor_data_table = DataTable(source=me_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None)
+jo_pro_cor_data_table = DataTable(source=jo_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None, autosize_mode = 'fit_columns')
+kr_pro_cor_data_table = DataTable(source=kr_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None, autosize_mode = 'fit_columns')
+me_pro_cor_data_table = DataTable(source=me_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None, autosize_mode = 'fit_columns')
 
 # combine tables into tabs
 cor_pro_table_tab = Tabs(tabs=[Panel(child=jo_pro_cor_data_table, title ="Johansson"),
@@ -801,7 +829,7 @@ cor_mrna_table_tab = Tabs(tabs=[Panel(child=jo_mrna_cor_data_table, title ="Joha
                            Panel(child=me_mrna_cor_data_table, title = "Mertins")])
 
 # button and call back
-button5 = Button(label="Download", button_type="success", width=180, width_policy='fixed') #mRNA Correlation Table
+button5 = Button(label="Download", button_type="success", width=100, width_policy='fixed') #mRNA Correlation Table
 button5.js_on_event("button_click", CustomJS(args=dict(source=jo_mrna_gene_cor_source),
                                              code=open(join(dirname(__file__),
                                                             "Download_Javascript/jo_cor_table_download.js")).read()))
@@ -812,7 +840,7 @@ button5.js_on_event("button_click", CustomJS(args=dict(source=me_mrna_gene_cor_s
                                              code=open(join(dirname(__file__),
                                                             "Download_Javascript/me_cor_table_download.js")).read()))
 
-button6 = Button(label="Download", button_type="success", width=180, width_policy='fixed') #Protein Correlation Table
+button6 = Button(label="Download", button_type="success", width=100, width_policy='fixed') #Protein Correlation Table
 button6.js_on_event("button_click", CustomJS(args=dict(source=jo_pro_gene_cor_source),
                                              code=open(join(dirname(__file__),
                                                             "Download_Javascript/jo_cor_table_download.js")).read()))
@@ -878,9 +906,9 @@ subtype_plot_div = column(Div(text="Abundances by Subtype:",
 
 
 protein_cor_table_title_div = column(Div(text="Correlation Table - Protein:",
-                                    style={'font-size': '120%', 'color': 'black', 'font-weight': 'bold'}))
+                                    style={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}))
 mRNA_cor_table_title_div = column(Div(text="Correlation Table - mRNA:",
-                                 style={'font-size': '120%', 'color': 'black', 'font-weight': 'bold'}))
+                                 style={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}))
 # correlation_table_text = "The gene-gene correlation is calculated from protein and mRNA expression data using the pearson correlation. " \
 #                "The table shows the top 100 genes that are correlated with the input gene based on the p-value. " \
 #                "The computation roughly takes 30 seconds, please be patient."
@@ -900,15 +928,16 @@ mRNA_cor_table_title_div = column(Div(text="Correlation Table - mRNA:",
 #                     Div(text=download_text, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'}, width=300))
 
 gene_hide_text_div = Div(text="If you wish to hide certain genes, please click on the interactive legend.",
-                         style={'font-size': '100%', 'color': 'red'}, width=200, width_policy='fixed')
+                         style={'font-size': '100%', 'color': 'red'}, width=200, width_policy='auto', height_policy='auto')
 
 gene_entry_section = column(tickers_buttons_layout)
 line_plot_section = column(line_plot_div, row(line_plot_tab, column(gene_entry_section, gene_hide_text_div)))
 select_widget_section = column(select_widget_layout)
-scatter_plot_section = column(scatter_plot_div, row(scatter_plot_tab, Spacer(width=60), pprr_scatter_plot_tab, column(select_widget_section, legend_pic)))
-subtype_plot_section = row(column(subtype_plot_div, subtype_plot_tab),column(Spacer(height=60),legend_pic))
-correlation_table_section = column(row(column(protein_cor_table_title_div, row(protein_correlation_textbox, formatted_button6), cor_pro_table_tab),
-                          column(mRNA_cor_table_title_div, row(mrna_correlation_textbox,formatted_button5), cor_mrna_table_tab)))
+scatter_plot_section = column(row(scatter_plot_div, scatter_update_button), row(scatter_plot_tab, Spacer(width=120), pprr_scatter_plot_tab, column(select_widget_section, legend_pic)))
+subtype_plot_section = row(column(row(subtype_plot_div, subtype_update_button), subtype_plot_tab),column(Spacer(height=60),legend_pic))
+correlation_table_section = column(row(column(protein_cor_table_title_div, row(protein_correlation_textbox, formatted_button6), cor_pro_table_tab, Spacer(height=30),
+                                              mRNA_cor_table_title_div, row(mrna_correlation_textbox,formatted_button5), cor_mrna_table_tab)))
+
 
 l = layout([
     [PageMargin, tool_title_div],
