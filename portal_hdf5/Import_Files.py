@@ -37,4 +37,6 @@ def Import_Cor_Matrix_HDF5():
     me_protein_cormat = 'portal_hdf5/Data/HDF5_Cormat/me_protein_cormat.hdf5'
     me_mrna_cormat = 'portal_hdf5/Data/HDF5_Cormat/me_mrna_cormat.hdf5'
 
-    return jo_protein_cormat, jo_mrna_cormat, kr_protein_cormat, kr_mrna_cormat, me_protein_cormat, me_mrna_cormat
+    annotate = pd.read_csv('portal_hdf5/Data/Gene name annotation.csv', index_col='Gene')
+
+    return jo_protein_cormat, jo_mrna_cormat, kr_protein_cormat, kr_mrna_cormat, me_protein_cormat, me_mrna_cormat, annotate
