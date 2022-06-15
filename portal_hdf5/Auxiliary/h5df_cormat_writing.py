@@ -5,37 +5,51 @@ import time
 
 # replace ~ with your directory
 def Import_Correlation_Data():
-    jo_protein_for_cor = pd.read_csv('~/jo_data_p.txt',index_col='Gene', sep='\t')
-    jo_mrna_for_cor = pd.read_csv('~/jo_data_m.txt',index_col='Gene', sep='\t')
+    jo_protein_for_cor = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/jo_pro_z.csv',index_col='Gene')
+    jo_mrna_for_cor = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/jo_mrna_z.csv',index_col='Gene')
 
-    kr_protein_for_cor = pd.read_csv('~/kr_data_p.txt',index_col='Gene', sep='\t')
-    kr_mrna_for_cor = pd.read_csv('~/kr_data_m.txt',index_col='Gene', sep='\t')
+    kr_protein_for_cor = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/kr_pro_z.csv',index_col='Gene')
+    kr_mrna_for_cor = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/kr_rna_z.csv',index_col='Gene')
 
-    me_protein_for_cor = pd.read_csv('~/me_data_p.txt',index_col='Gene', sep='\t')
-    me_mrna_for_cor = pd.read_csv('~/me_data_m.txt',index_col='Gene', sep='\t')
+    me_protein_for_cor = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/me_pro_z.csv',index_col='Gene')
+    me_mrna_for_cor = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/me_rna_z.csv',index_col='Gene')
 
     return jo_mrna_for_cor, kr_mrna_for_cor, me_mrna_for_cor, jo_protein_for_cor, kr_protein_for_cor, me_protein_for_cor
 
 [jo_mrna_for_cor, kr_mrna_for_cor, me_mrna_for_cor, jo_protein_for_cor, kr_protein_for_cor, me_protein_for_cor] = Import_Correlation_Data()
 
+perc = 30.0 # percentage of allowing NA
+jo_min_count =  int(((100-perc)/100)*jo_protein_for_cor.shape[1] + 1)
+jo_protein_for_cor = jo_protein_for_cor.dropna(axis=0,
+                    thresh=jo_min_count)
+
+kr_min_count =  int(((100-perc)/100)*kr_protein_for_cor.shape[1] + 1)
+kr_protein_for_cor = kr_protein_for_cor.dropna(axis=0,
+                    thresh=kr_min_count)
+
+me_min_count =  int(((100-perc)/100)*jo_protein_for_cor.shape[1] + 1)
+mod_df = jo_protein_for_cor.dropna(axis=0,
+                    thresh=me_min_count)
+
+
 start = time.time()
 
 # create matrix
-#jo_protein_cormat = jo_protein_for_cor.transpose().corr()
-#kr_protein_cormat= kr_protein_for_cor.transpose().corr()
-#me_protein_cormat= me_protein_for_cor.transpose().corr()
+jo_protein_cormat = jo_protein_for_cor.transpose().corr()
+kr_protein_cormat= kr_protein_for_cor.transpose().corr()
+me_protein_cormat= me_protein_for_cor.transpose().corr()
 
-#jo_mrna_cormat = jo_mrna_for_cor.transpose().corr()
-#kr_mrna_cormat = kr_mrna_for_cor.transpose().corr()
-#me_mrna_cormat = me_mrna_for_cor.transpose().corr()
+# jo_mrna_cormat = jo_mrna_for_cor.transpose().corr()
+# kr_mrna_cormat = kr_mrna_for_cor.transpose().corr()
+# me_mrna_cormat = me_mrna_for_cor.transpose().corr()
 
 # create hdf5 file
-#jo_protein_cormat_hdf5 = "~/jo_protein_cormat.hdf5"
-#kr_protein_cormat_hdf5 = "~/kr_protein_cormat.hdf5"
-#me_protein_cormat_hdf5 = "~/me_protein_cormat.hdf5"
-#jo_mrna_cormat_hdf5 = "~/jo_mrna_cormat.hdf5"
-#kr_mrna_cormat_hdf5 = "~/kr_mrna_cormat.hdf5"
-#me_mrna_cormat_hdf5 = "~/me_mrna_cormat.hdf5"
+jo_protein_cormat_hdf5 = "/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/Clean HDF5 Cormat/jo_protein_cormat1.hdf5"
+kr_protein_cormat_hdf5 = "/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/Clean HDF5 Cormat/kr_protein_cormat1.hdf5"
+me_protein_cormat_hdf5 = "/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/Clean HDF5 Cormat/me_protein_cormat1.hdf5"
+# jo_mrna_cormat_hdf5 = "/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/Clean HDF5 Cormat/jo_mrna_cormat.hdf5"
+# kr_mrna_cormat_hdf5 = "/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/Clean HDF5 Cormat/kr_mrna_cormat.hdf5"
+# me_mrna_cormat_hdf5 = "/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/Clean HDF5 Cormat/me_mrna_cormat.hdf5"
 
 
 def write_hdf5(hdf5_FileName, DF_quant):
@@ -64,12 +78,12 @@ def write_hdf5(hdf5_FileName, DF_quant):
 
 
 # write the files
-#write_hdf5(jo_protein_cormat_hdf5, jo_protein_cormat)
-#write_hdf5(kr_protein_cormat_hdf5, kr_protein_cormat)
-#write_hdf5(me_protein_cormat_hdf5, me_protein_cormat)
-#write_hdf5(jo_mrna_cormat_hdf5, jo_mrna_cormat)
-#write_hdf5(kr_mrna_cormat_hdf5, kr_mrna_cormat)
-#write_hdf5(me_mrna_cormat_hdf5, me_mrna_cormat)
+write_hdf5(jo_protein_cormat_hdf5, jo_protein_cormat)
+write_hdf5(kr_protein_cormat_hdf5, kr_protein_cormat)
+write_hdf5(me_protein_cormat_hdf5, me_protein_cormat)
+# write_hdf5(jo_mrna_cormat_hdf5, jo_mrna_cormat)
+# write_hdf5(kr_mrna_cormat_hdf5, kr_mrna_cormat)
+# write_hdf5(me_mrna_cormat_hdf5, me_mrna_cormat)
 
 end = time.time()
 print(f"{end-start}")
