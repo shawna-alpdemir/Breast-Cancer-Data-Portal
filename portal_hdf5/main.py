@@ -508,7 +508,7 @@ for j in range(4):
     #jo_plot_m.circle(subtype_tuple, mRNA_data, source=johansson_cds[j], color=GENE_COLORS[j], size=4,
     #                 legend_label=GENE_NUMBER[j])
     TICKER[j] = AutocompleteInput(title=GENE_NUMBER[j], value=INITIAL_GENE[j], width=100, width_policy='fixed',
-                                  min_characters=3, completions=Nix(INITIAL_GENE[j], all_unique_genes),
+                                  min_characters=2, completions=Nix(INITIAL_GENE[j], all_unique_genes),
                                   case_sensitive=False)
     TICKER[j].on_change('value', TICKER_FUNCTION_LIST[j])
     TICKER[j].on_change('value', Master_Textbox_Update)
@@ -525,7 +525,7 @@ for j in range(4):
     # kr_plot_m.circle(subtype_tuple, mRNA_data, source=krug_cds[j], color=GENE_COLORS[j], size=4,
     #                  legend_label=GENE_NUMBER[j])
     TICKER[j] = AutocompleteInput(title=GENE_NUMBER[j], value=INITIAL_GENE[j], width=100, width_policy='fixed',
-                                  min_characters=3, completions=Nix(INITIAL_GENE[j], all_unique_genes),
+                                  min_characters=2, completions=Nix(INITIAL_GENE[j], all_unique_genes),
                                   case_sensitive=False)
     TICKER[j].on_change('value', TICKER_FUNCTION_LIST[j])
     TICKER[j].on_change('value', Master_Textbox_Update)
@@ -542,7 +542,7 @@ for j in range(4):
     # me_plot_m.circle(subtype_tuple, mRNA_data, source=mertins_cds[j], color=GENE_COLORS[j], size=4,
     #                  legend_label=GENE_NUMBER[j])
     TICKER[j] = AutocompleteInput(title=GENE_NUMBER[j], value=INITIAL_GENE[j], width=100, width_policy='fixed',
-                                  min_characters=3, completions=Nix(INITIAL_GENE[j], all_unique_genes),
+                                  min_characters=2, completions=Nix(INITIAL_GENE[j], all_unique_genes),
                                   case_sensitive=False)
     TICKER[j].on_change('value', TICKER_FUNCTION_LIST[j])
     TICKER[j].on_change('value', Master_Textbox_Update)
@@ -782,10 +782,10 @@ TABLE_HEIGHT = 250
 
 # textbox widget and on_change
 protein_correlation_textbox = AutocompleteInput(title='Gene:', value=str('ERBB2'), width=180, width_policy='fixed',
-                                            min_characters=3, completions = all_unique_genes, case_sensitive=False)
+                                            min_characters=2, completions = all_unique_genes, case_sensitive=False)
 protein_correlation_textbox.on_change('value', Correlation_Table_Protein_Update)
 mrna_correlation_textbox = AutocompleteInput(title='Gene:', value=str('ERBB2'), width=180, width_policy='fixed',
-                                            min_characters=3, completions = all_unique_genes, case_sensitive=False)
+                                            min_characters=2, completions = all_unique_genes, case_sensitive=False)
 mrna_correlation_textbox.on_change('value', Correlation_Table_mRNA_Update)
 
 # CDS
