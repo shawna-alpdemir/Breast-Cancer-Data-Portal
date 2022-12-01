@@ -23,9 +23,9 @@ LINE_PLOT_HEIGHT = 125
 def Johansson_Line_Plot():
     """Initializing the line plot"""
     jo_plot_p = figure(x_range=FactorRange(*johansson_subtype_tumor_tuple), title='', x_axis_label='',
-                       y_axis_label='protein z-score', plot_width=LINE_PLOT_WIDTH, plot_height=LINE_PLOT_HEIGHT, output_backend="webgl")
+                       y_axis_label='protein z-score', width=LINE_PLOT_WIDTH, height=LINE_PLOT_HEIGHT, output_backend="webgl")
     jo_plot_m = figure(x_range=FactorRange(*johansson_subtype_tumor_tuple), title='', x_axis_label='',
-                       y_axis_label='mRNA z-score', plot_width=LINE_PLOT_WIDTH, plot_height=LINE_PLOT_HEIGHT, output_backend="webgl")
+                       y_axis_label='mRNA z-score', width=LINE_PLOT_WIDTH, height=LINE_PLOT_HEIGHT, output_backend="webgl")
 
     return jo_plot_p, jo_plot_m
 
@@ -33,9 +33,9 @@ def Johansson_Line_Plot():
 def Krug_Line_Plot():
     """Initializing the line plot"""
     kr_plot_p = figure(x_range=FactorRange(*krug_subtype_tumor_tuple), title='', x_axis_label='',
-                       y_axis_label='protein z-score', plot_width=LINE_PLOT_WIDTH, plot_height=LINE_PLOT_HEIGHT, output_backend="webgl")
+                       y_axis_label='protein z-score', width=LINE_PLOT_WIDTH, height=LINE_PLOT_HEIGHT, output_backend="webgl")
     kr_plot_m = figure(x_range=FactorRange(*krug_subtype_tumor_tuple), title='', x_axis_label='',
-                       y_axis_label='mRNA z-score', plot_width=LINE_PLOT_WIDTH, plot_height=LINE_PLOT_HEIGHT, output_backend="webgl")
+                       y_axis_label='mRNA z-score', width=LINE_PLOT_WIDTH, height=LINE_PLOT_HEIGHT, output_backend="webgl")
 
     return kr_plot_p, kr_plot_m
 
@@ -43,8 +43,8 @@ def Krug_Line_Plot():
 def Mertins_Line_Plot():
     """Initializing the line plot"""
     me_plot_p = figure(x_range=FactorRange(*mertins_subtype_tumor_tuple), title='', x_axis_label='',
-                       y_axis_label='protein z-score', plot_width=LINE_PLOT_WIDTH, plot_height=LINE_PLOT_HEIGHT, output_backend="webgl")
+                       y_axis_label='protein z-score', width=LINE_PLOT_WIDTH, height=LINE_PLOT_HEIGHT, output_backend="webgl")
     me_plot_m = figure(x_range=FactorRange(*mertins_subtype_tumor_tuple), title='', x_axis_label='',
-                       y_axis_label='mRNA z-score', plot_width=LINE_PLOT_WIDTH, plot_height=LINE_PLOT_HEIGHT, output_backend="webgl")
+                       y_axis_label='mRNA z-score', width=LINE_PLOT_WIDTH, height=LINE_PLOT_HEIGHT, output_backend="webgl")
 
     return me_plot_p, me_plot_m
