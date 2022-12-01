@@ -14,4 +14,4 @@ def Gene_List():
     all_unique_genes = np.unique(all_unique_genes)
     all_unique_genes = np.sort(all_unique_genes)
     all_unique_genes = all_unique_genes.tolist()
-    return all_unique_genes # 25894 entries, list type
+    return all_unique_genes # 37997 entries, list type
