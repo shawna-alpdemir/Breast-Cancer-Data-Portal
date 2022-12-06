@@ -3,7 +3,56 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="$APPLICATION_CONFIG_DIR$/scratches/data.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/portal_hdf5/Data/Gene name annotation.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/portal_hdf5/Data/Subtype_avg_sem/jo_pro_subtype.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/portal_hdf5/Data/Subtype_avg_sem/jo_rna_subtype.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/portal_hdf5/Data/Subtype_avg_sem/kr_pro_subtype.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/portal_hdf5/Data/Subtype_avg_sem/kr_rna_subtype.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/portal_hdf5/Data/Subtype_avg_sem/me_pro_subtype.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/portal_hdf5/Data/Subtype_avg_sem/me_rna_subtype.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
