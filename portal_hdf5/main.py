@@ -1,24 +1,26 @@
-##### Import ###########################################################################################################
+##### Import ##############l.#############################################################################################
 import h5py
 import numpy as np
 import time
 from os.path import join, dirname
 from bokeh.io import curdoc
 from bokeh.layouts import layout, column, row
-from bokeh.models import Spacer, Tabs, Panel, AutocompleteInput, ColumnDataSource, TableColumn, DataTable, Button, \
-    Select, Div, CustomJS, ScientificFormatter, PreText
+from bokeh.models import Spacer, Tabs, TabPanel, AutocompleteInput, ColumnDataSource, TableColumn, DataTable, Button, \
+    Select, Div, CustomJS, ScientificFormatter
 from bokeh.transform import factor_cmap
 
 from Correlation_Table import Get_Protein_Correlation_Table, Get_mRNA_Correlation_Table
 from Gene_List import Gene_List
-from Import_Files import Import_HDF5, Import_Static_Correlation_Table
+from Import_Files import Import_HDF5, Import_Static_Correlation_Table, Import_Subtype_DF
 from Plot_All_Styling import StylePlots
 from Plot_Line_Scatter_ColumnDataSource import Johansson_CDS, Krug_CDS, Mertins_CDS, Johansson_Scatter_CDS, Krug_Scatter_CDS, Mertins_Scatter_CDS
 from Line_Plot import Johansson_Line_Plot, Krug_Line_Plot, Mertins_Line_Plot
 from Scatter_Plot import Pro_Pro_Scatter_Plot, RNA_RNA_Scatter_Plot, Johansson_RNA_Pro_Scatter_Plot, Krug_RNA_Pro_Scatter_Plot, Mertins_RNA_Pro_Scatter_Plot
-from Subtype_Average_DF import Johansson_Subtype_Avg_SEM_DFs, Krug_Subtype_Avg_SEM_DFs, Mertins_Subtype_Avg_SEM_DFs
-from Subtype_Average_Plot_CDS import Johansson_Subtype_Avg_Plot_CDS, Krug_Subtype_Avg_Plot_CDS, Mertins_Subtype_Avg_Plot_CDS
+#from Subtype_Average_DF import Johansson_Subtype_Avg_SEM_DFs, Krug_Subtype_Avg_SEM_DFs, Mertins_Subtype_Avg_SEM_DFs
+#from Subtype_Average_Plot_CDS import Johansson_Subtype_Avg_Plot_CDS, Krug_Subtype_Avg_Plot_CDS, Mertins_Subtype_Avg_Plot_CDS
+from Subtype_Plot_CDS_new import Johansson_Subtype_Avg_Plot_CDS, Krug_Subtype_Avg_Plot_CDS, Mertins_Subtype_Avg_Plot_CDS
 from Subtype_Plot import Johansson_Subtype_Plot, Krug_Subtype_Plot, Mertins_Subtype_Plot
+from Heatmap import Get_mRNA_Heatmaps,Get_Protein_Heatmaps
 
 ##### Row 0: Functions Def ##############################3##############################################################
 # constants
@@ -36,6 +38,7 @@ gene = 'gene'
 
 # function call
 [JohanssonProteome, JohanssonTranscriptome, KrugProteome, KrugTranscriptome, MertinsProteome, MertinsTranscriptome] = Import_HDF5()
+[jo_pro, jo_rna, kr_rna, kr_pro, me_rna, me_pro] = Import_Subtype_DF()
 
 def Nix(val, lst):
     """function that prevents user input the same gene in other tickers"""
@@ -292,7 +295,143 @@ def Scatter_Select_Button_Update(event):
     me_rna_rna_scatter_plot.title.text = f"{x_gene_name}-{y_gene_name}"
 
 ###### Subtype Plot
+# old subtype plot update function
+# def Johansson_Subtype_Plot_update():
+#     x_axis_subtype = []
+#
+#     y_axis_subtype_protein = []
+#     upper_bar_protein = []
+#     lower_bar_protein = []
+#
+#     y_axis_subtype_mrna = []
+#     upper_bar_mrna = []
+#     lower_bar_mrna = []
+#
+#     jo_subtype = []
+#
+#     for gene in SUBTYPE_PLOT_GENE_LIST:
+#         [jo_avg_protein_DF, jo_sem_protein_DF, jo_avg_mRNA_DF, jo_sem_mRNA_DF] = Johansson_Subtype_Avg_SEM_DFs(gene)
+#
+#         x_axis_subtype.extend([(gene,x) for x in ['Basal', 'Her2', 'LumA', 'LumB', 'Norm']])
+#
+#         y_axis_subtype_protein.extend(jo_avg_protein_DF['values'].tolist())
+#         y_axis_subtype_mrna.extend(jo_avg_mRNA_DF['values'].tolist())
+#
+#         avg_plus_sem_protein = jo_avg_protein_DF['values'] + jo_sem_protein_DF['values']
+#         avg_minus_sem_protein = jo_avg_protein_DF['values'] - jo_sem_protein_DF['values']
+#
+#         avg_plus_sem_mRNA = jo_avg_mRNA_DF['values'] + jo_sem_mRNA_DF['values']
+#         avg_minus_sem_mRNA = jo_avg_mRNA_DF['values'] - jo_sem_mRNA_DF['values']
+#
+#         upper_bar_protein.extend(avg_plus_sem_protein.tolist())
+#         lower_bar_protein.extend(avg_minus_sem_protein.to_list())
+#
+#         upper_bar_mrna.extend(avg_plus_sem_mRNA.tolist())
+#         lower_bar_mrna.extend(avg_minus_sem_mRNA.to_list())
+#
+#         jo_subtype.extend(['Basal', 'Her2', 'LumA', 'LumB', 'Norm'])
+#
+#     # update plot and CDS
+#     jo_protein_subtype_plot.x_range.factors = x_axis_subtype
+#     jo_subtype_protein_CDS.data={'x': x_axis_subtype, 'y': y_axis_subtype_protein,
+#               'upper': upper_bar_protein, 'lower': lower_bar_protein}
+#
+#     jo_mRNA_subtype_plot.x_range.factors = x_axis_subtype
+#     jo_subtype_mRNA_CDS.data = {'x': x_axis_subtype, 'y': y_axis_subtype_mrna,
+#                                        'upper': upper_bar_mrna, 'lower': lower_bar_mrna}
+#
+# def Krug_Subtype_Plot_update():
+#     # Create empty list to store data iterated from the for loop below
+#     x_axis_subtype = []
+#
+#     y_axis_subtype_protein = []
+#     upper_bar_protein = []
+#     lower_bar_protein = []
+#
+#     y_axis_subtype_mrna = []
+#     upper_bar_mrna = []
+#     lower_bar_mrna = []
+#
+#     kr_subtype = []
+#
+#     for gene in SUBTYPE_PLOT_GENE_LIST:
+#         [kr_avg_protein_DF, kr_sem_protein_DF, kr_avg_mRNA_DF, kr_sem_mRNA_DF] = Krug_Subtype_Avg_SEM_DFs(gene)
+#
+#         x_axis_subtype.extend([(gene,x) for x in ['Basal', 'Her2', 'LumA', 'LumB', 'Norm']])
+#
+#         y_axis_subtype_protein.extend(kr_avg_protein_DF['values'].tolist())
+#         y_axis_subtype_mrna.extend(kr_avg_mRNA_DF['values'].tolist())
+#
+#         avg_plus_sem_protein = kr_avg_protein_DF['values'] + kr_sem_protein_DF['values']
+#         avg_minus_sem_protein = kr_avg_protein_DF['values'] - kr_sem_protein_DF['values']
+#
+#         avg_plus_sem_mRNA = kr_avg_mRNA_DF['values'] + kr_sem_mRNA_DF['values']
+#         avg_minus_sem_mRNA = kr_avg_mRNA_DF['values'] - kr_sem_mRNA_DF['values']
+#
+#         upper_bar_protein.extend(avg_plus_sem_protein.tolist())
+#         lower_bar_protein.extend(avg_minus_sem_protein.to_list())
+#
+#         upper_bar_mrna.extend(avg_plus_sem_mRNA.tolist())
+#         lower_bar_mrna.extend(avg_minus_sem_mRNA.to_list())
+#
+#         kr_subtype.extend(['Basal', 'Her2', 'LumA', 'LumB', 'Norm'])
+#     # update plot and CDS
+#     kr_protein_subtype_plot.x_range.factors = x_axis_subtype
+#     kr_subtype_protein_CDS.data={'x': x_axis_subtype, 'y': y_axis_subtype_protein,
+#               'upper': upper_bar_protein, 'lower': lower_bar_protein}
+#
+#     kr_mRNA_subtype_plot.x_range.factors = x_axis_subtype
+#     kr_subtype_mRNA_CDS.data = {'x': x_axis_subtype, 'y': y_axis_subtype_mrna,
+#                                        'upper': upper_bar_mrna, 'lower': lower_bar_mrna}
+#
+# def Mertins_Subtype_Plot_update():
+#     # Create empty list to store data iterated from the for loop below
+#     x_axis_subtype = []
+#
+#     y_axis_subtype_protein = []
+#     upper_bar_protein = []
+#     lower_bar_protein = []
+#
+#     y_axis_subtype_mrna = []
+#     upper_bar_mrna = []
+#     lower_bar_mrna = []
+#
+#     me_subtype = []
+#
+#     for gene in SUBTYPE_PLOT_GENE_LIST:
+#         [me_avg_protein_DF, me_sem_protein_DF, me_avg_mRNA_DF, me_sem_mRNA_DF] = Mertins_Subtype_Avg_SEM_DFs(gene)
+#
+#         x_axis_subtype.extend([(gene,x) for x in ['Basal', 'Her2', 'LumA', 'LumB']])
+#
+#         y_axis_subtype_protein.extend(me_avg_protein_DF['values'].tolist())
+#         y_axis_subtype_mrna.extend(me_avg_mRNA_DF['values'].tolist())
+#
+#         avg_plus_sem_protein = me_avg_protein_DF['values'] + me_sem_protein_DF['values']
+#         avg_minus_sem_protein = me_avg_protein_DF['values'] - me_sem_protein_DF['values']
+#
+#         avg_plus_sem_mRNA = me_avg_mRNA_DF['values'] + me_sem_mRNA_DF['values']
+#         avg_minus_sem_mRNA = me_avg_mRNA_DF['values'] - me_sem_mRNA_DF['values']
+#
+#         upper_bar_protein.extend(avg_plus_sem_protein.tolist())
+#         lower_bar_protein.extend(avg_minus_sem_protein.to_list())
+#
+#         upper_bar_mrna.extend(avg_plus_sem_mRNA.tolist())
+#         lower_bar_mrna.extend(avg_minus_sem_mRNA.to_list())
+#
+#         me_subtype.extend(['Basal', 'Her2', 'LumA', 'LumB'])
+#     # update plot and CDS
+#     me_protein_subtype_plot.x_range.factors = x_axis_subtype
+#     me_subtype_protein_CDS.data = {'x': x_axis_subtype, 'y': y_axis_subtype_protein,
+#                                    'upper': upper_bar_protein, 'lower': lower_bar_protein}
+#
+#     me_mRNA_subtype_plot.x_range.factors = x_axis_subtype
+#     me_subtype_mRNA_CDS.data = {'x': x_axis_subtype, 'y': y_axis_subtype_mrna,
+#                                 'upper': upper_bar_mrna, 'lower': lower_bar_mrna}
+
+# new subtype plot update function
 def Johansson_Subtype_Plot_update():
+    """ Create ColumnDataSource dictionary for plotting subtype mean and SEM purposes """
+    # Create empty list to store data iterated from the for loop below
     x_axis_subtype = []
 
     y_axis_subtype_protein = []
@@ -303,40 +442,46 @@ def Johansson_Subtype_Plot_update():
     upper_bar_mrna = []
     lower_bar_mrna = []
 
-    jo_subtype = []
-
     for gene in SUBTYPE_PLOT_GENE_LIST:
-        [jo_avg_protein_DF, jo_sem_protein_DF, jo_avg_mRNA_DF, jo_sem_mRNA_DF] = Johansson_Subtype_Avg_SEM_DFs(gene)
+        try:
+            gene_sub_avg_pro = jo_pro.loc[gene,['basal_avg','her2_avg','lumA_avg','lumB_avg','norm_avg']].tolist()
+            gene_sub_upper_pro = jo_pro.loc[gene,['basal_up','her2_up','lumA_up','lumB_up','norm_up']].tolist()
+            gene_sub_lower_pro = jo_pro.loc[gene,['basal_down','her2_down','lumA_down','lumB_down','norm_down']].tolist()
+
+            gene_sub_avg_rna = jo_rna.loc[gene,['basal_avg','her2_avg','lumA_avg','lumB_avg','norm_avg']].tolist()
+            gene_sub_upper_rna = jo_rna.loc[gene,['basal_up','her2_up','lumA_up','lumB_up','norm_up']].tolist()
+            gene_sub_lower_rna = jo_rna.loc[gene,['basal_down','her2_down','lumA_down','lumB_down','norm_down']].tolist()
+
+        except KeyError:
+            gene_sub_avg_pro = [0, 0, 0, 0, 0]
+            gene_sub_upper_pro = [0, 0, 0, 0, 0]
+            gene_sub_lower_pro = [0, 0, 0, 0, 0]
+            gene_sub_avg_rna = [0, 0, 0, 0, 0]
+            gene_sub_upper_rna = [0, 0, 0, 0, 0]
+            gene_sub_lower_rna = [0, 0, 0, 0, 0]
 
         x_axis_subtype.extend([(gene,x) for x in ['Basal', 'Her2', 'LumA', 'LumB', 'Norm']])
 
-        y_axis_subtype_protein.extend(jo_avg_protein_DF['values'].tolist())
-        y_axis_subtype_mrna.extend(jo_avg_mRNA_DF['values'].tolist())
+        y_axis_subtype_protein.extend(gene_sub_avg_pro)
+        y_axis_subtype_mrna.extend(gene_sub_avg_rna)
 
-        avg_plus_sem_protein = jo_avg_protein_DF['values'] + jo_sem_protein_DF['values']
-        avg_minus_sem_protein = jo_avg_protein_DF['values'] - jo_sem_protein_DF['values']
+        upper_bar_protein.extend(float(x) for x in gene_sub_upper_pro)
+        lower_bar_protein.extend(float(x) for x in gene_sub_lower_pro)
 
-        avg_plus_sem_mRNA = jo_avg_mRNA_DF['values'] + jo_sem_mRNA_DF['values']
-        avg_minus_sem_mRNA = jo_avg_mRNA_DF['values'] - jo_sem_mRNA_DF['values']
+        upper_bar_mrna.extend(float(x) for x in gene_sub_upper_rna)
+        lower_bar_mrna.extend(float(x) for x in gene_sub_lower_rna)
 
-        upper_bar_protein.extend(avg_plus_sem_protein.tolist())
-        lower_bar_protein.extend(avg_minus_sem_protein.to_list())
-
-        upper_bar_mrna.extend(avg_plus_sem_mRNA.tolist())
-        lower_bar_mrna.extend(avg_minus_sem_mRNA.to_list())
-
-        jo_subtype.extend(['Basal', 'Her2', 'LumA', 'LumB', 'Norm'])
-
-    # update plot and CDS
+    # modify the plot data sources from the dictionaries for each gene.
     jo_protein_subtype_plot.x_range.factors = x_axis_subtype
-    jo_subtype_protein_CDS.data={'x': x_axis_subtype, 'y': y_axis_subtype_protein,
+    jo_subtype_protein_CDS.data = {'x': x_axis_subtype, 'y': y_axis_subtype_protein,
               'upper': upper_bar_protein, 'lower': lower_bar_protein}
 
     jo_mRNA_subtype_plot.x_range.factors = x_axis_subtype
     jo_subtype_mRNA_CDS.data = {'x': x_axis_subtype, 'y': y_axis_subtype_mrna,
-                                       'upper': upper_bar_mrna, 'lower': lower_bar_mrna}
+              'upper': upper_bar_mrna, 'lower': lower_bar_mrna}
 
 def Krug_Subtype_Plot_update():
+    """ Create ColumnDataSource dictionary for plotting subtype mean and SEM purposes """
     # Create empty list to store data iterated from the for loop below
     x_axis_subtype = []
 
@@ -348,39 +493,46 @@ def Krug_Subtype_Plot_update():
     upper_bar_mrna = []
     lower_bar_mrna = []
 
-    kr_subtype = []
-
     for gene in SUBTYPE_PLOT_GENE_LIST:
-        [kr_avg_protein_DF, kr_sem_protein_DF, kr_avg_mRNA_DF, kr_sem_mRNA_DF] = Krug_Subtype_Avg_SEM_DFs(gene)
+        try:
+            gene_sub_avg_pro = kr_pro.loc[gene,['basal_avg','her2_avg','lumA_avg','lumB_avg','norm_avg']].tolist()
+            gene_sub_upper_pro = kr_pro.loc[gene,['basal_up','her2_up','lumA_up','lumB_up','norm_up']].tolist()
+            gene_sub_lower_pro = kr_pro.loc[gene,['basal_down','her2_down','lumA_down','lumB_down','norm_down']].tolist()
+
+            gene_sub_avg_rna = kr_rna.loc[gene,['basal_avg','her2_avg','lumA_avg','lumB_avg','norm_avg']].tolist()
+            gene_sub_upper_rna = kr_rna.loc[gene,['basal_up','her2_up','lumA_up','lumB_up','norm_up']].tolist()
+            gene_sub_lower_rna = kr_rna.loc[gene,['basal_down','her2_down','lumA_down','lumB_down','norm_down']].tolist()
+
+        except KeyError:
+            gene_sub_avg_pro = [0, 0, 0, 0, 0]
+            gene_sub_upper_pro = [0, 0, 0, 0, 0]
+            gene_sub_lower_pro = [0, 0, 0, 0, 0]
+            gene_sub_avg_rna = [0, 0, 0, 0, 0]
+            gene_sub_upper_rna = [0, 0, 0, 0, 0]
+            gene_sub_lower_rna = [0, 0, 0, 0, 0]
 
         x_axis_subtype.extend([(gene,x) for x in ['Basal', 'Her2', 'LumA', 'LumB', 'Norm']])
 
-        y_axis_subtype_protein.extend(kr_avg_protein_DF['values'].tolist())
-        y_axis_subtype_mrna.extend(kr_avg_mRNA_DF['values'].tolist())
+        y_axis_subtype_protein.extend(gene_sub_avg_pro)
+        y_axis_subtype_mrna.extend(gene_sub_avg_rna)
 
-        avg_plus_sem_protein = kr_avg_protein_DF['values'] + kr_sem_protein_DF['values']
-        avg_minus_sem_protein = kr_avg_protein_DF['values'] - kr_sem_protein_DF['values']
+        upper_bar_protein.extend(float(x) for x in gene_sub_upper_pro)
+        lower_bar_protein.extend(float(x) for x in gene_sub_lower_pro)
 
-        avg_plus_sem_mRNA = kr_avg_mRNA_DF['values'] + kr_sem_mRNA_DF['values']
-        avg_minus_sem_mRNA = kr_avg_mRNA_DF['values'] - kr_sem_mRNA_DF['values']
+        upper_bar_mrna.extend(float(x) for x in gene_sub_upper_rna)
+        lower_bar_mrna.extend(float(x) for x in gene_sub_lower_rna)
 
-        upper_bar_protein.extend(avg_plus_sem_protein.tolist())
-        lower_bar_protein.extend(avg_minus_sem_protein.to_list())
-
-        upper_bar_mrna.extend(avg_plus_sem_mRNA.tolist())
-        lower_bar_mrna.extend(avg_minus_sem_mRNA.to_list())
-
-        kr_subtype.extend(['Basal', 'Her2', 'LumA', 'LumB', 'Norm'])
-    # update plot and CDS
+    # modify the plot data sources from the dictionaries for each gene.
     kr_protein_subtype_plot.x_range.factors = x_axis_subtype
-    kr_subtype_protein_CDS.data={'x': x_axis_subtype, 'y': y_axis_subtype_protein,
-              'upper': upper_bar_protein, 'lower': lower_bar_protein}
+    kr_subtype_protein_CDS.data = {'x': x_axis_subtype, 'y': y_axis_subtype_protein,
+                                   'upper': upper_bar_protein, 'lower': lower_bar_protein}
 
     kr_mRNA_subtype_plot.x_range.factors = x_axis_subtype
     kr_subtype_mRNA_CDS.data = {'x': x_axis_subtype, 'y': y_axis_subtype_mrna,
-                                       'upper': upper_bar_mrna, 'lower': lower_bar_mrna}
+                                'upper': upper_bar_mrna, 'lower': lower_bar_mrna}
 
 def Mertins_Subtype_Plot_update():
+    """ Create ColumnDataSource dictionary for plotting subtype mean and SEM purposes """
     # Create empty list to store data iterated from the for loop below
     x_axis_subtype = []
 
@@ -392,30 +544,36 @@ def Mertins_Subtype_Plot_update():
     upper_bar_mrna = []
     lower_bar_mrna = []
 
-    me_subtype = []
-
     for gene in SUBTYPE_PLOT_GENE_LIST:
-        [me_avg_protein_DF, me_sem_protein_DF, me_avg_mRNA_DF, me_sem_mRNA_DF] = Mertins_Subtype_Avg_SEM_DFs(gene)
+        try:
+            gene_sub_avg_pro = me_pro.loc[gene,['basal_avg','her2_avg','lumA_avg','lumB_avg']].tolist()
+            gene_sub_upper_pro = me_pro.loc[gene,['basal_up','her2_up','lumA_up','lumB_up']].tolist()
+            gene_sub_lower_pro = me_pro.loc[gene,['basal_down','her2_down','lumA_down','lumB_down']].tolist()
+
+            gene_sub_avg_rna = me_rna.loc[gene,['basal_avg','her2_avg','lumA_avg','lumB_avg']].tolist()
+            gene_sub_upper_rna = me_rna.loc[gene,['basal_up','her2_up','lumA_up','lumB_up']].tolist()
+            gene_sub_lower_rna = me_rna.loc[gene,['basal_down','her2_down','lumA_down','lumB_down']].tolist()
+
+        except KeyError:
+            gene_sub_avg_pro = [0, 0, 0, 0]
+            gene_sub_upper_pro = [0, 0, 0, 0]
+            gene_sub_lower_pro = [0, 0, 0, 0]
+            gene_sub_avg_rna = [0, 0, 0, 0]
+            gene_sub_upper_rna = [0, 0, 0, 0]
+            gene_sub_lower_rna = [0, 0, 0, 0]
 
         x_axis_subtype.extend([(gene,x) for x in ['Basal', 'Her2', 'LumA', 'LumB']])
 
-        y_axis_subtype_protein.extend(me_avg_protein_DF['values'].tolist())
-        y_axis_subtype_mrna.extend(me_avg_mRNA_DF['values'].tolist())
+        y_axis_subtype_protein.extend(gene_sub_avg_pro)
+        y_axis_subtype_mrna.extend(gene_sub_avg_rna)
 
-        avg_plus_sem_protein = me_avg_protein_DF['values'] + me_sem_protein_DF['values']
-        avg_minus_sem_protein = me_avg_protein_DF['values'] - me_sem_protein_DF['values']
+        upper_bar_protein.extend(float(x) for x in gene_sub_upper_pro)
+        lower_bar_protein.extend(float(x) for x in gene_sub_lower_pro)
 
-        avg_plus_sem_mRNA = me_avg_mRNA_DF['values'] + me_sem_mRNA_DF['values']
-        avg_minus_sem_mRNA = me_avg_mRNA_DF['values'] - me_sem_mRNA_DF['values']
+        upper_bar_mrna.extend(float(x) for x in gene_sub_upper_rna)
+        lower_bar_mrna.extend(float(x) for x in gene_sub_lower_rna)
 
-        upper_bar_protein.extend(avg_plus_sem_protein.tolist())
-        lower_bar_protein.extend(avg_minus_sem_protein.to_list())
-
-        upper_bar_mrna.extend(avg_plus_sem_mRNA.tolist())
-        lower_bar_mrna.extend(avg_minus_sem_mRNA.to_list())
-
-        me_subtype.extend(['Basal', 'Her2', 'LumA', 'LumB'])
-    # update plot and CDS
+    # modify the plot data sources from the dictionaries for each gene.
     me_protein_subtype_plot.x_range.factors = x_axis_subtype
     me_subtype_protein_CDS.data = {'x': x_axis_subtype, 'y': y_axis_subtype_protein,
                                    'upper': upper_bar_protein, 'lower': lower_bar_protein}
@@ -430,10 +588,12 @@ def Subtype_Plot_GeneList_Update(attrname, old, new):
     print(f'Subtype gene list updated: {SUBTYPE_PLOT_GENE_LIST}...')
 
 def Master_Subtype_Plot_Button_Update(event):
+    start = time.time()
     Johansson_Subtype_Plot_update()
     Krug_Subtype_Plot_update()
     Mertins_Subtype_Plot_update()
-    print(f"Subtype plot updated...")
+    end = time.time()
+    print(f"Subtype plot updated. {round(end - start, 6)} ms")
 
 ##### Master update that for text boxes
 def Master_Textbox_Update(attrname, old, new):
@@ -451,7 +611,7 @@ def Master_Textbox_Update(attrname, old, new):
 #### Correlation tables
 def Correlation_Table_Protein_Update(attrname, old, new):
     start = time.time()
-    [jo_Correlation_table_df, kr_Correlation_table_df, me_Correlation_table_df] = Get_Protein_Correlation_Table(new)
+    [jo_Correlation_table_df, kr_Correlation_table_df, me_Correlation_table_df, protein_sum_df] = Get_Protein_Correlation_Table(new)
     jo_pro_gene_cor_source.data = jo_Correlation_table_df # update column data source
     jo_pro_cor_data_table.source = jo_pro_gene_cor_source # update table
 
@@ -461,13 +621,16 @@ def Correlation_Table_Protein_Update(attrname, old, new):
     me_pro_gene_cor_source.data = me_Correlation_table_df  # update column data source
     me_pro_cor_data_table.source = me_pro_gene_cor_source  # update table
 
+    summary_pro_source.data = protein_sum_df  # update column data source
+    summary_pro_data_table.source = summary_pro_source  # update summary table
+
     #protein_table_gene_col_name.title = f'Genes correlated with {new}' # update plot title
     end = time.time()
-    print(f"Correlation Table Protein is updated. {end-start}")
+    print(f"Correlation Table Protein is updated. {round(end-start, 6)} ms")
 
 def Correlation_Table_mRNA_Update(attrname, old, new):
     start = time.time()
-    [jo_m_Correlation_table_df, kr_m_Correlation_table_df, me_m_Correlation_table_df] = Get_mRNA_Correlation_Table(new)
+    [jo_m_Correlation_table_df, kr_m_Correlation_table_df, me_m_Correlation_table_df, mRNA_sum_df] = Get_mRNA_Correlation_Table(new)
     jo_mrna_gene_cor_source.data = jo_m_Correlation_table_df # update column data source
     jo_mrna_cor_data_table.source = jo_mrna_gene_cor_source # update table
 
@@ -477,11 +640,16 @@ def Correlation_Table_mRNA_Update(attrname, old, new):
     me_mrna_gene_cor_source.data = me_m_Correlation_table_df  # update column data source
     me_mrna_cor_data_table.source = me_mrna_gene_cor_source  # update table
 
+    summary_mrna_source.data = mRNA_sum_df  # update column data source
+    summary_mrna_data_table.source = summary_mrna_source  # update summary table
+
     #mRNA_table_gene_col_name.title = f'Genes correlated with {new}' # update plot title
     end = time.time()
-    print(f"Correlation Table mRNA is updated. {end-start}")
+    print(f"Correlation Table mRNA is updated. {round(end-start, 6)} ms")
 
-################################# Row 1: Protein Complex Subunit Correlation Plot ######################################
+# --------------------------------------------------------------------
+# Row 1: Protein Complex Subunit Correlation Plot
+# --------------------------------------------------------------------
 start_time = time.time()
 
 # function call
@@ -515,7 +683,7 @@ for j in range(4):
 # TICKER[j].on_change('value', Line_Plot_Update)
 # TICKER[j].on_change('value', Scatter_Plot_Update)
 # TICKER[j].on_change('value', All_Subtype_Plot_Update)
-    #TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
+# TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
 
 for j in range(4):
     kr_plot_p.line(subtype_tuple, protein_data, source=krug_cds[j], color=GENE_COLORS[j], legend_label=GENE_NUMBER[j])
@@ -532,7 +700,7 @@ for j in range(4):
     # TICKER[j].on_change('value', Line_Plot_Update)
     # TICKER[j].on_change('value', Scatter_Plot_Update)
     # TICKER[j].on_change('value', All_Subtype_Plot_Update)
-    #TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
+    # TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
 
 for j in range(4):
     me_plot_p.line(subtype_tuple, protein_data, source=mertins_cds[j], color=GENE_COLORS[j], legend_label=GENE_NUMBER[j])
@@ -549,7 +717,7 @@ for j in range(4):
 # TICKER[j].on_change('value', Line_Plot_Update)
 # TICKER[j].on_change('value', Scatter_Plot_Update)
 # TICKER[j].on_change('value', All_Subtype_Plot_Update)
-    #TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
+# TICKER[j].on_change('value', STATUS_FUNCTION_LIST[j])
 
 # styling plots
 for i in [jo_plot_p, jo_plot_m, kr_plot_p, kr_plot_m, me_plot_p, me_plot_m]:
@@ -561,9 +729,9 @@ line_plot_kr_layout = layout(column(kr_plot_p, Spacer(height=30), kr_plot_m))
 line_plot_me_layout = layout(column(me_plot_p, Spacer(height=30), me_plot_m))
 
 # Stack the 3 layouts into tabs
-line_plot_tab = Tabs(tabs=[Panel(child=line_plot_jo_layout, title="Johansson"),
-                     Panel(child=line_plot_kr_layout, title="Krug"),
-                     Panel(child=line_plot_me_layout, title="Mertins")])
+line_plot_tab = Tabs(tabs=[TabPanel(child=line_plot_jo_layout, title="Johansson"),
+                     TabPanel(child=line_plot_kr_layout, title="Krug"),
+                     TabPanel(child=line_plot_me_layout, title="Mertins")])
 
 #Download data
 button1 = Button(label="Download", button_type="success", width=100, width_policy='fixed')  # Gene 1 Data
@@ -606,7 +774,9 @@ formatted_button4 = row(column(Spacer(height=19),button4))
 
 tickers_buttons_layout = column(row(TICKER[0], formatted_button1), row(TICKER[1], formatted_button2), row(TICKER[2], formatted_button3), row(TICKER[3], formatted_button4))
 
-################################# Row 1.5: Pro-Pro & RNA-RNA Correlation Scatter Plot ##################################
+# --------------------------------------------------------------------
+# Row 1.5: Pro-Pro & RNA-RNA Correlation Scatter Plot
+# --------------------------------------------------------------------
 # function call to get the plots
 [jo_pro_pro_scatter_plot, kr_pro_pro_scatter_plot, me_pro_pro_scatter_plot] = Pro_Pro_Scatter_Plot()
 [jo_rna_rna_scatter_plot, kr_rna_rna_scatter_plot, me_rna_rna_scatter_plot] = RNA_RNA_Scatter_Plot()
@@ -645,9 +815,9 @@ scatter_plot_kr_layout = layout(column(row(p_p_plots[1]), Spacer(height=10),row(
 scatter_plot_me_layout = layout(column(row(p_p_plots[2]), Spacer(height=10),row(r_r_plots[2])))
 
 # stack 3 layouts into tab
-pprr_scatter_plot_tab = Tabs(tabs=[Panel(child=scatter_plot_jo_layout, title="Johansson"),
-                              Panel(child=scatter_plot_kr_layout, title="Krug"),
-                              Panel(child=scatter_plot_me_layout, title="Mertins")])
+pprr_scatter_plot_tab = Tabs(tabs=[TabPanel(child=scatter_plot_jo_layout, title="Johansson"),
+                              TabPanel(child=scatter_plot_kr_layout, title="Krug"),
+                              TabPanel(child=scatter_plot_me_layout, title="Mertins")])
 
 # select widget
 x_axis_select = Select(title="X axis", value="Gene 1", options=['Gene 1', 'Gene 2', 'Gene 3', 'Gene 4'], width = 100, width_policy='fixed')
@@ -664,7 +834,9 @@ legend_pic = Div(text="<img src='portal_hdf5/static/Legend pic.png'>")
 # static divider
 divider_pic = Div(text="<img src='portal_hdf5/static/Divider.png'>")
 
-################################# Row 2: mRNA-Protein Correlation Scatter Plot #########################################
+# --------------------------------------------------------------------
+# Row 2: mRNA-Protein Correlation Scatter Plot
+# --------------------------------------------------------------------
 # function calls
 [jo_plot_mRNA_prot1, jo_plot_mRNA_prot2, jo_plot_mRNA_prot3, jo_plot_mRNA_prot4] = Johansson_RNA_Pro_Scatter_Plot()
 [kr_plot_mRNA_prot1, kr_plot_mRNA_prot2, kr_plot_mRNA_prot3, kr_plot_mRNA_prot4] = Krug_RNA_Pro_Scatter_Plot()
@@ -729,19 +901,21 @@ scatter_plot_me_layout = layout(column(row(me_plot_mRNA_prot1,me_plot_mRNA_prot2
                                        Spacer(height=10),
                                        row(me_plot_mRNA_prot3,me_plot_mRNA_prot4)))
 # stack 3 layouts into tab
-scatter_plot_tab = Tabs(tabs=[Panel(child=scatter_plot_jo_layout, title="Johansson"),
-                              Panel(child=scatter_plot_kr_layout, title="Krug"),
-                              Panel(child=scatter_plot_me_layout, title="Mertins")])
+scatter_plot_tab = Tabs(tabs=[TabPanel(child=scatter_plot_jo_layout, title="Johansson"),
+                              TabPanel(child=scatter_plot_kr_layout, title="Krug"),
+                              TabPanel(child=scatter_plot_me_layout, title="Mertins")])
 
 # scatter plots update button
 scatter_update_button = Button(label='Update', button_type='default', width=50, width_policy='fixed')
 scatter_update_button.on_click(Scatter_Plot_Update)
 
-########################################  Row 3: Subtype Mean and SEM plot #############################################
+# --------------------------------------------------------------------
+# Row 3: Subtype Mean and SEM plot
+# --------------------------------------------------------------------
 # function call
-[jo_subtype_protein_CDS, jo_subtype_mRNA_CDS] = Johansson_Subtype_Avg_Plot_CDS(['ESR1', 'PGR', 'ERBB2', 'MKI67'])
-[kr_subtype_protein_CDS, kr_subtype_mRNA_CDS] = Krug_Subtype_Avg_Plot_CDS(['ESR1', 'PGR', 'ERBB2', 'MKI67'])
-[me_subtype_protein_CDS, me_subtype_mRNA_CDS] = Mertins_Subtype_Avg_Plot_CDS(['ESR1', 'PGR', 'ERBB2', 'MKI67'])
+[jo_subtype_protein_CDS, jo_subtype_mRNA_CDS] = Johansson_Subtype_Avg_Plot_CDS()
+[kr_subtype_protein_CDS, kr_subtype_mRNA_CDS] = Krug_Subtype_Avg_Plot_CDS()
+[me_subtype_protein_CDS, me_subtype_mRNA_CDS] = Mertins_Subtype_Avg_Plot_CDS()
 
 [jo_protein_subtype_plot, jo_mRNA_subtype_plot] = Johansson_Subtype_Plot(jo_subtype_protein_CDS, jo_subtype_mRNA_CDS)
 [kr_protein_subtype_plot, kr_mRNA_subtype_plot] = Krug_Subtype_Plot(kr_subtype_protein_CDS, kr_subtype_mRNA_CDS)
@@ -763,21 +937,23 @@ subtype_plot_kr_layout = layout(row(column(kr_plot_subtype_p), column(kr_plot_su
 subtype_plot_me_layout = layout(row(column(me_plot_subtype_p), column(me_plot_subtype_m)))
 
 # Stack the 3 layouts into tabs
-subtype_plot_tab = Tabs(tabs=[Panel(child=subtype_plot_jo_layout, title="Johansson"),
-                              Panel(child=subtype_plot_kr_layout, title="Krug"),
-                              Panel(child=subtype_plot_me_layout, title="Mertins")])
+subtype_plot_tab = Tabs(tabs=[TabPanel(child=subtype_plot_jo_layout, title="Johansson"),
+                              TabPanel(child=subtype_plot_kr_layout, title="Krug"),
+                              TabPanel(child=subtype_plot_me_layout, title="Mertins")])
 
 # button to update subtype plot (beta)
 subtype_update_button = Button(label='Update', button_type='default', width=50, width_policy='fixed')
 subtype_update_button.on_click(Master_Subtype_Plot_Button_Update)
 
 
-################################################### Row 4: GxG Correlation #############################################
+# --------------------------------------------------------------------
+# Row 4: GxG Correlation
+# --------------------------------------------------------------------
 # function call
-[jo_mrna_ERBB2, jo_protein_ERBB2, kr_mrna_ERBB2, kr_protein_ERBB2, me_mrna_ERBB2, me_protein_ERBB2] = Import_Static_Correlation_Table()
+[jo_mrna_ERBB2, jo_protein_ERBB2, kr_mrna_ERBB2, kr_protein_ERBB2, me_mrna_ERBB2, me_protein_ERBB2, summary_protein_ERBB2, summary_mrna_ERBB2] = Import_Static_Correlation_Table()
 
 # constant
-TABLE_WIDTH = 750
+TABLE_WIDTH = 900
 TABLE_HEIGHT = 250
 
 # textbox widget and on_change
@@ -792,41 +968,57 @@ mrna_correlation_textbox.on_change('value', Correlation_Table_mRNA_Update)
 jo_pro_gene_cor_source = ColumnDataSource(data=jo_protein_ERBB2) # set up columndatasource
 kr_pro_gene_cor_source = ColumnDataSource(data=kr_protein_ERBB2)
 me_pro_gene_cor_source = ColumnDataSource(data=me_protein_ERBB2)
+summary_pro_source = ColumnDataSource(data=summary_protein_ERBB2)
 
 jo_mrna_gene_cor_source = ColumnDataSource(data=jo_mrna_ERBB2) # set up columndatasource
 kr_mrna_gene_cor_source = ColumnDataSource(data=kr_mrna_ERBB2)
 me_mrna_gene_cor_source = ColumnDataSource(data=me_mrna_ERBB2)
+summary_mrna_source = ColumnDataSource(data=summary_mrna_ERBB2)
 
 # table assembly
-#protein_table_gene_col_name = TableColumn(field='Gene', title=f'Genes correlated with {protein_correlation_textbox.value}')
-#mRNA_table_gene_col_name = TableColumn(field='Gene', title=f'Genes correlated with {mrna_correlation_textbox.value}')
+# title = f'Genes correlated with {mrna_correlation_textbox.value}
+protein_table_gene_col_name = TableColumn(field='Gene', title='Gene')
+mRNA_table_gene_col_name = TableColumn(field='Gene', title='Gene')
 
-protein_table_columns = [TableColumn(field='Gene', title='Gene'),  # set up mRNA_table_columns
+protein_table_columns = [protein_table_gene_col_name,  # set up protein_table_columns
                          TableColumn(field='r', title='Coefficient', formatter=ScientificFormatter(precision=3)),
                          TableColumn(field='p', title='p value', formatter=ScientificFormatter(precision=3)),
                          TableColumn(field='Name', title='Name')]
-mRNA_table_columns = [TableColumn(field='Gene', title='Gene'),  # set up mRNA_table_columns
+mRNA_table_columns = [mRNA_table_gene_col_name,  # set up mRNA_table_columns
                       TableColumn(field='r', title='Coefficient', formatter=ScientificFormatter(precision=3)),
                       TableColumn(field='p', title='p value', formatter=ScientificFormatter(precision=3)),
                       TableColumn(field='Name', title='Name')]
 
-# create table widget by assembling columndatasource and mRNA_table_columns
-jo_mrna_cor_data_table = DataTable(source=jo_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None, autosize_mode = 'fit_columns')
-kr_mrna_cor_data_table = DataTable(source=kr_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None, autosize_mode = 'fit_columns')
-me_mrna_cor_data_table = DataTable(source=me_mrna_gene_cor_source, columns = mRNA_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None, autosize_mode = 'fit_columns')
+protein_summary_table_columns = [protein_table_gene_col_name, # set up protein_summary_table_columns
+                         TableColumn(field='Summed p values', title='Summed p values', formatter=ScientificFormatter(precision=3)),
+                         TableColumn(field='Name', title='Name')]
 
-jo_pro_cor_data_table = DataTable(source=jo_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None, autosize_mode = 'fit_columns')
-kr_pro_cor_data_table = DataTable(source=kr_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None, autosize_mode = 'fit_columns')
-me_pro_cor_data_table = DataTable(source=me_pro_gene_cor_source, columns = protein_table_columns, width=TABLE_WIDTH, height = TABLE_HEIGHT, editable=False, index_position=None, autosize_mode = 'fit_columns')
+mRNA_summary_table_columns = [mRNA_table_gene_col_name, # set up mRNA_summary_table_columns
+                         TableColumn(field='Summed p values', title='Summed p values', formatter=ScientificFormatter(precision=3)),
+                         TableColumn(field='Name', title='Name')]
+
+# create table widget by assembling columndatasource and protein_table_columns
+jo_pro_cor_data_table = DataTable(source=jo_pro_gene_cor_source, columns=protein_table_columns, width=TABLE_WIDTH, height=TABLE_HEIGHT, index_position=None, autosize_mode='fit_columns')
+kr_pro_cor_data_table = DataTable(source=kr_pro_gene_cor_source, columns=protein_table_columns, width=TABLE_WIDTH, height=TABLE_HEIGHT, index_position=None, autosize_mode='fit_columns')
+me_pro_cor_data_table = DataTable(source=me_pro_gene_cor_source, columns=protein_table_columns, width=TABLE_WIDTH, height=TABLE_HEIGHT, index_position=None, autosize_mode='fit_columns')
+summary_pro_data_table = DataTable(source=summary_pro_source, columns=protein_summary_table_columns, width=TABLE_WIDTH, height=TABLE_HEIGHT, index_position=None, autosize_mode='fit_columns')
+
+# create table widget by assembling columndatasource and mRNA_table_columns
+jo_mrna_cor_data_table = DataTable(source=jo_mrna_gene_cor_source, columns=mRNA_table_columns, width=TABLE_WIDTH, height=TABLE_HEIGHT, index_position=None, autosize_mode='fit_columns')
+kr_mrna_cor_data_table = DataTable(source=kr_mrna_gene_cor_source, columns=mRNA_table_columns, width=TABLE_WIDTH, height=TABLE_HEIGHT, index_position=None, autosize_mode='fit_columns')
+me_mrna_cor_data_table = DataTable(source=me_mrna_gene_cor_source, columns=mRNA_table_columns, width=TABLE_WIDTH, height=TABLE_HEIGHT, index_position=None, autosize_mode='fit_columns')
+summary_mrna_data_table = DataTable(source=summary_mrna_source, columns=mRNA_summary_table_columns, width=TABLE_WIDTH, height=TABLE_HEIGHT, index_position=None, autosize_mode='fit_columns')
 
 # combine tables into tabs
-cor_pro_table_tab = Tabs(tabs=[Panel(child=jo_pro_cor_data_table, title ="Johansson"),
-                           Panel(child=kr_pro_cor_data_table, title = "Krug"),
-                           Panel(child=me_pro_cor_data_table, title = "Mertins")])
+cor_pro_table_tab = Tabs(tabs=[TabPanel(child=jo_pro_cor_data_table, title ="Johansson"),
+                           TabPanel(child=kr_pro_cor_data_table, title = "Krug"),
+                           TabPanel(child=me_pro_cor_data_table, title = "Mertins"),
+                           TabPanel(child=summary_pro_data_table, title = 'Summary')])
 
-cor_mrna_table_tab = Tabs(tabs=[Panel(child=jo_mrna_cor_data_table, title ="Johansson"),
-                           Panel(child=kr_mrna_cor_data_table, title = "Krug"),
-                           Panel(child=me_mrna_cor_data_table, title = "Mertins")])
+cor_mrna_table_tab = Tabs(tabs=[TabPanel(child=jo_mrna_cor_data_table, title ="Johansson"),
+                           TabPanel(child=kr_mrna_cor_data_table, title = "Krug"),
+                           TabPanel(child=me_mrna_cor_data_table, title = "Mertins"),
+                           TabPanel(child=summary_mrna_data_table, title = 'Summary')])
 
 # button and call back
 button5 = Button(label="Download", button_type="success", width=100, width_policy='fixed') #mRNA Correlation Table
@@ -853,91 +1045,64 @@ button6.js_on_event("button_click", CustomJS(args=dict(source=me_pro_gene_cor_so
 
 formatted_button5 = row(column(Spacer(height=19),button5))
 formatted_button6 = row(column(Spacer(height=19),button6))
-########################################################### layout #####################################################
+
+# --------------------------------------------------------------------
+# Row 5: Heatmaps
+# --------------------------------------------------------------------
+
+[jo_pro_hm, kr_pro_hm, me_pro_hm] = Get_Protein_Heatmaps()
+[jo_mRNA_hm, kr_mRNA_hm, me_mRNA_hm] = Get_mRNA_Heatmaps()
+
+protein_heatmap_tab = Tabs(tabs=[TabPanel(child=jo_pro_hm, title="Johansson"),
+                               TabPanel(child=kr_pro_hm, title="Krug"),
+                               TabPanel(child=me_pro_hm, title="Mertins")])
+mRNA_heatmap_tab = Tabs(tabs=[TabPanel(child=jo_mRNA_hm, title="Johansson"),
+                               TabPanel(child=kr_mRNA_hm, title="Krug"),
+                               TabPanel(child=me_mRNA_hm, title="Mertins")])
+
+# --------------------------------------------------------------------
+# layout
+# --------------------------------------------------------------------
 RowSpacer = Spacer(height=30)
 PageMargin = Spacer(width=30)
 
 tool_title_text = "Breast Cancer Data Portal"
 tool_title_div = Div(text=tool_title_text,
-                     style={'font-size': '200%', 'color': 'black', 'font-style': 'normal', 'font-weight': 'bold'},
+                     styles={'font-size': '200%', 'color': 'black', 'font-style': 'normal', 'font-weight': 'bold'},
                      width=1000)
 
-# jo_info_text = '''The Oslo cohort from Johansson et al. has 45 breast cancer tumors including 5 subtypes (basal-like, Her2-enriched, LumA, LumB and normal-like). Each subtype contains 9 samples.
-#              The dataset provided identifications of fully quantified 23663 gene transcripts and 9995 proteins.'''
-# kr_info_text = '''The BRCA cohort from Krug et al. contains 122 treatment-naive primary breast cancer tumors. Sample subtypes include 29 basal-like, 14 Her2-enriched, 57 LumA, 17 LumB and 5 normal-like samples.
-#              The dataset provided identifications of fully quantified 10733 gene transcripts and 7586 proteins.'''
-# me_info_text = '''The TCGA-BRCA cohort from Mertins et al. contains 77 breast cancer tumors. Subtypes include 18 basal-like, 12 Her2-enriched, 23 LumA and 24 LumB samples.
-#              The dataset provided identifications of fully quantified 14440 gene transcripts, 7016 proteins.'''
-# bg_info_div = column(Div(text="Background Information:",
-#                          style={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}),
-#                      Div(text=jo_info_text,
-#                                 style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}),
-#                      Div(text=kr_info_text,
-#                                 style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}),
-#                      Div(text=me_info_text,
-#                                 style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}), width=1000)
-
-# line_plot_descriptive_text = "Abundances of proteins that are part of the same complex are tightly correlated across breast tumors. " \
-#                              "However, this does not appear to be the case for the corresponding mRNA transcripts. " \
-#                              "The plots are initialized showing abundances of structural proteins of complex I of the electron transport chain. " \
-#                              "If you wish to hide the curve for a specific gene, click on the corresponding legend entries."
 line_plot_div = column(Div(text="Abundance Traces:",
-                           style={'font-size': '120%', 'color': 'black', 'font-style': 'italic',
+                           styles={'font-size': '120%', 'color': 'black', 'font-style': 'italic',
                                        'font-weight': 'bold'}))
                        # Div(text=line_plot_descriptive_text,
                        #     style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}), width=1000)
 
 #scatter_plot_descriptive_text = "Protein and transcript abundances often are not correlated; indicating substantial utilization of post-transcriptional regulatory mechanisms."
 scatter_plot_div = column(Div(text="Pairwise Abundances:",
-                              style={'font-size': '120%', 'color': 'black', 'font-style': 'italic',
+                              styles={'font-size': '120%', 'color': 'black', 'font-style': 'italic',
                                       'font-weight': 'bold'}))
                           # Div(text=scatter_plot_descriptive_text,
                           #     style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}), width=1000)
 
-# subtype_plot_text = "Breast cancer subtypes are defined by their gene expression profiles. " \
-#                           "The plots are initialized above showing abundances of ER (ESR1), PR (PGR), HER2 (ERBB2), and KI-67 (MKI67); " \
-#                           "four immunohistochemical markers commonly used in the clinic. " \
-#                           "Values are means +/- standard error of the mean (SEM). " \
-#                           "If data are not available for a gene, values will appear as all zeros with no SEMs."
 subtype_plot_div = column(Div(text="Abundances by Subtype:",
-                              style={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}))
+                              styles={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}))
                           # Div(text=subtype_plot_text,
                           #     style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}), width=1000)
 
-
 protein_cor_table_title_div = column(Div(text="Correlation Table - Protein:",
-                                    style={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}))
+                                    styles={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}))
 mRNA_cor_table_title_div = column(Div(text="Correlation Table - mRNA:",
-                                 style={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}))
-# correlation_table_text = "The gene-gene correlation is calculated from protein and mRNA expression data using the pearson correlation. " \
-#                "The table shows the top 100 genes that are correlated with the input gene based on the p-value. " \
-#                "The computation roughly takes 30 seconds, please be patient."
-# correlation_table_div = column(Div(text="Gene-Gene Correlation Table:",
-#                                    style={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}),
-#                                Div(text=correlation_table_text,
-#                                    style={'font-size': '100%', 'color': 'black', 'font-style': 'italic'}), width=1000)
-
-# gene_entry_instruc_text = "To view data for a different gene, type a HGNC gene symbol in the textbox."
-# blank_gene_instruc_text = "If you wish to leave certain textboxes blank, please input the corresponding blank entries."
-# warning_text = "Please do not enter same gene/blank entry across multiple textboxes."
-# download_text = 'Click "download" to save the protein and mRNA data for corresponding genes from the three studies. ' \
-#               'Please use Firefox or Google Chrome for better download experience.'
-# red_text_div = column(Div(text=gene_entry_instruc_text, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'}, width=300),
-#                     Div(text=blank_gene_instruc_text, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'}, width=300),
-#                     Div(text=warning_text, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'}, width=300),
-#                     Div(text=download_text, style={'font-size': '100%', 'color': 'red', 'font-style': 'italic'}, width=300))
-
+                                 styles={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}))
 gene_hide_text_div = Div(text="If you wish to hide certain genes, please click on the interactive legend.",
-                         style={'font-size': '100%', 'color': 'red'}, width=200, width_policy='auto', height_policy='auto')
+                         styles={'font-size': '100%', 'color': 'red'}, width=200, width_policy='auto', height_policy='auto')
 
 gene_entry_section = column(tickers_buttons_layout)
 line_plot_section = column(line_plot_div, row(line_plot_tab, column(gene_entry_section, gene_hide_text_div)))
 select_widget_section = column(select_widget_layout)
 scatter_plot_section = column(row(scatter_plot_div, scatter_update_button), row(scatter_plot_tab, Spacer(width=120), pprr_scatter_plot_tab, column(select_widget_section, legend_pic)))
 subtype_plot_section = row(column(row(subtype_plot_div, subtype_update_button), subtype_plot_tab),column(Spacer(height=60),legend_pic))
-correlation_table_section = column(row(column(protein_cor_table_title_div, row(protein_correlation_textbox, formatted_button6), cor_pro_table_tab, Spacer(height=30),
-                                              mRNA_cor_table_title_div, row(mrna_correlation_textbox,formatted_button5), cor_mrna_table_tab)))
-
+correlation_table_section = column(row(column(protein_cor_table_title_div, row(protein_correlation_textbox, formatted_button6), cor_pro_table_tab, Spacer(height=15), protein_heatmap_tab, Spacer(height=30),
+                                              mRNA_cor_table_title_div, row(mrna_correlation_textbox,formatted_button5), cor_mrna_table_tab, Spacer(height=15), mRNA_heatmap_tab)))
 
 l = layout([
     [PageMargin, tool_title_div],

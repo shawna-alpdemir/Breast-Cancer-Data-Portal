@@ -25,7 +25,10 @@ def Import_Static_Correlation_Table():
     me_mrna_ERBB2 = pd.read_csv('portal_hdf5/Data/StaticCorrelationTable/me_mrna_for_cor_ERBB2.txt', sep='\t')
     me_protein_ERBB2 = pd.read_csv('portal_hdf5/Data/StaticCorrelationTable/me_protein_for_cor_ERBB2.txt', sep='\t')
 
-    return jo_mrna_ERBB2, jo_protein_ERBB2, kr_mrna_ERBB2, kr_protein_ERBB2, me_mrna_ERBB2, me_protein_ERBB2
+    summary_mrna_ERBB2 = pd.read_csv('portal_hdf5/Data/StaticCorrelationTable/erbb2_mrna_summed_table.txt', sep='\t')
+    summary_protein_ERBB2 = pd.read_csv('portal_hdf5/Data/StaticCorrelationTable/erbb2_pro_summed_table.txt', sep='\t')
+
+    return jo_mrna_ERBB2, jo_protein_ERBB2, kr_mrna_ERBB2, kr_protein_ERBB2, me_mrna_ERBB2, me_protein_ERBB2, summary_protein_ERBB2, summary_mrna_ERBB2
 
 def Import_Cor_Matrix_HDF5():
     jo_protein_cormat = 'portal_hdf5/Data/HDF5_Cormat/jo_protein_cormat.hdf5'
@@ -40,3 +43,15 @@ def Import_Cor_Matrix_HDF5():
     annotate = pd.read_csv('portal_hdf5/Data/Gene name annotation.csv', index_col='Gene')
 
     return jo_protein_cormat, jo_mrna_cormat, kr_protein_cormat, kr_mrna_cormat, me_protein_cormat, me_mrna_cormat, annotate
+
+def Import_Subtype_DF():
+    jo_pro = pd.read_csv('portal_hdf5/Data/Subtype_avg_sem/jo_pro_subtype.csv', index_col='Gene')
+    jo_rna = pd.read_csv('portal_hdf5/Data/Subtype_avg_sem/jo_rna_subtype.csv', index_col='Gene')
+
+    kr_pro = pd.read_csv('portal_hdf5/Data/Subtype_avg_sem/kr_pro_subtype.csv', index_col='Gene')
+    kr_rna = pd.read_csv('portal_hdf5/Data/Subtype_avg_sem/kr_rna_subtype.csv', index_col='Gene')
+
+    me_pro = pd.read_csv('portal_hdf5/Data/Subtype_avg_sem/me_pro_subtype.csv', index_col='Gene')
+    me_rna = pd.read_csv('portal_hdf5/Data/Subtype_avg_sem/me_rna_subtype.csv', index_col='Gene')
+
+    return jo_pro, jo_rna, kr_rna, kr_pro, me_rna, me_pro
