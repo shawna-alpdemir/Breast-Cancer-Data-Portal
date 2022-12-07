@@ -150,9 +150,6 @@ def Textbox_GeneList_Update(attrname, old, new):
 
 def Scatter_Plot_Update(event):
     """Update function for text entries call back targeting line plot"""
-    # jo_plot_mRNA_prot[TICKER_INDEX].title.text = new
-    # kr_plot_mRNA_prot[TICKER_INDEX].title.text = new
-    # me_plot_mRNA_prot[TICKER_INDEX].title.text = new
 
     for j, k in zip(TEXTBOX_GENE_LIST, range(4)):
         with h5py.File(JohanssonProteome, "r") as a, h5py.File(JohanssonTranscriptome, "r") as b:
@@ -197,7 +194,7 @@ def Scatter_Plot_Update(event):
             if not np.all(mRNA_data_new_gene):
                 mRNA_data_new_gene = np.zeros(77)
 
-            mertins_scatter_cds[TICKER_INDEX].data = {subtype: list(zip(*mertins_subtype_tumor_tuple))[0],
+            mertins_scatter_cds[k].data = {subtype: list(zip(*mertins_subtype_tumor_tuple))[0],
                                                       # extract first element of the list of subtype_tumor_tuple
                                                       protein_data: protein_data_new_gene,
                                                       mRNA_data: mRNA_data_new_gene}
@@ -225,7 +222,6 @@ def Scatter_Select_Button_Update(event):
         new_data_list = []
         for data in old_data_list:
             if not np.all(data):
-                #data = np.repeat(np.nan, 45)
                 data = np.zeros(45)
             new_data_list.append(data)
 
@@ -249,7 +245,6 @@ def Scatter_Select_Button_Update(event):
         new_data_list = []
         for data in old_data_list:
             if not np.all(data):
-                #data = np.repeat(np.nan, 122)
                 data = np.zeros(122)
             new_data_list.append(data)
 
@@ -273,7 +268,6 @@ def Scatter_Select_Button_Update(event):
         new_data_list = []
         for data in old_data_list:
             if not np.all(data):
-                #data = np.repeat(np.nan, 77)
                 data = np.zeros(77)
             new_data_list.append(data)
 
@@ -445,17 +439,18 @@ def Johansson_Subtype_Plot_update():
     for gene in SUBTYPE_PLOT_GENE_LIST:
         try:
             gene_sub_avg_pro = jo_pro.loc[gene,['basal_avg','her2_avg','lumA_avg','lumB_avg','norm_avg']].tolist()
-            gene_sub_upper_pro = jo_pro.loc[gene,['basal_up','her2_up','lumA_up','lumB_up','norm_up']].tolist()
-            gene_sub_lower_pro = jo_pro.loc[gene,['basal_down','her2_down','lumA_down','lumB_down','norm_down']].tolist()
-
-            gene_sub_avg_rna = jo_rna.loc[gene,['basal_avg','her2_avg','lumA_avg','lumB_avg','norm_avg']].tolist()
-            gene_sub_upper_rna = jo_rna.loc[gene,['basal_up','her2_up','lumA_up','lumB_up','norm_up']].tolist()
-            gene_sub_lower_rna = jo_rna.loc[gene,['basal_down','her2_down','lumA_down','lumB_down','norm_down']].tolist()
-
+            gene_sub_upper_pro = jo_pro.loc[gene, ['basal_up', 'her2_up', 'lumA_up', 'lumB_up', 'norm_up']].tolist()
+            gene_sub_lower_pro = jo_pro.loc[gene, ['basal_down', 'her2_down', 'lumA_down', 'lumB_down', 'norm_down']].tolist()
         except KeyError:
             gene_sub_avg_pro = [0, 0, 0, 0, 0]
             gene_sub_upper_pro = [0, 0, 0, 0, 0]
             gene_sub_lower_pro = [0, 0, 0, 0, 0]
+
+        try:
+            gene_sub_avg_rna = jo_rna.loc[gene,['basal_avg','her2_avg','lumA_avg','lumB_avg','norm_avg']].tolist()
+            gene_sub_upper_rna = jo_rna.loc[gene, ['basal_up', 'her2_up', 'lumA_up', 'lumB_up', 'norm_up']].tolist()
+            gene_sub_lower_rna = jo_rna.loc[gene, ['basal_down', 'her2_down', 'lumA_down', 'lumB_down', 'norm_down']].tolist()
+        except KeyError:
             gene_sub_avg_rna = [0, 0, 0, 0, 0]
             gene_sub_upper_rna = [0, 0, 0, 0, 0]
             gene_sub_lower_rna = [0, 0, 0, 0, 0]
@@ -498,15 +493,17 @@ def Krug_Subtype_Plot_update():
             gene_sub_avg_pro = kr_pro.loc[gene,['basal_avg','her2_avg','lumA_avg','lumB_avg','norm_avg']].tolist()
             gene_sub_upper_pro = kr_pro.loc[gene,['basal_up','her2_up','lumA_up','lumB_up','norm_up']].tolist()
             gene_sub_lower_pro = kr_pro.loc[gene,['basal_down','her2_down','lumA_down','lumB_down','norm_down']].tolist()
+        except KeyError:
+            gene_sub_avg_pro = [0, 0, 0, 0, 0]
+            gene_sub_upper_pro = [0, 0, 0, 0, 0]
+            gene_sub_lower_pro = [0, 0, 0, 0, 0]
 
+        try:
             gene_sub_avg_rna = kr_rna.loc[gene,['basal_avg','her2_avg','lumA_avg','lumB_avg','norm_avg']].tolist()
             gene_sub_upper_rna = kr_rna.loc[gene,['basal_up','her2_up','lumA_up','lumB_up','norm_up']].tolist()
             gene_sub_lower_rna = kr_rna.loc[gene,['basal_down','her2_down','lumA_down','lumB_down','norm_down']].tolist()
 
         except KeyError:
-            gene_sub_avg_pro = [0, 0, 0, 0, 0]
-            gene_sub_upper_pro = [0, 0, 0, 0, 0]
-            gene_sub_lower_pro = [0, 0, 0, 0, 0]
             gene_sub_avg_rna = [0, 0, 0, 0, 0]
             gene_sub_upper_rna = [0, 0, 0, 0, 0]
             gene_sub_lower_rna = [0, 0, 0, 0, 0]
@@ -550,14 +547,17 @@ def Mertins_Subtype_Plot_update():
             gene_sub_upper_pro = me_pro.loc[gene,['basal_up','her2_up','lumA_up','lumB_up']].tolist()
             gene_sub_lower_pro = me_pro.loc[gene,['basal_down','her2_down','lumA_down','lumB_down']].tolist()
 
+        except KeyError:
+            gene_sub_avg_pro = [0, 0, 0, 0]
+            gene_sub_upper_pro = [0, 0, 0, 0]
+            gene_sub_lower_pro = [0, 0, 0, 0]
+
+        try:
             gene_sub_avg_rna = me_rna.loc[gene,['basal_avg','her2_avg','lumA_avg','lumB_avg']].tolist()
             gene_sub_upper_rna = me_rna.loc[gene,['basal_up','her2_up','lumA_up','lumB_up']].tolist()
             gene_sub_lower_rna = me_rna.loc[gene,['basal_down','her2_down','lumA_down','lumB_down']].tolist()
 
         except KeyError:
-            gene_sub_avg_pro = [0, 0, 0, 0]
-            gene_sub_upper_pro = [0, 0, 0, 0]
-            gene_sub_lower_pro = [0, 0, 0, 0]
             gene_sub_avg_rna = [0, 0, 0, 0]
             gene_sub_upper_rna = [0, 0, 0, 0]
             gene_sub_lower_rna = [0, 0, 0, 0]
