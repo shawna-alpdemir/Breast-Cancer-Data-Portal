@@ -2,7 +2,7 @@
 
 #from pdb import set_trace
 from bokeh.models import ColumnDataSource
-from Subtype_Average_DF import Johansson_Subtype_Avg_SEM_DFs, Krug_Subtype_Avg_SEM_DFs, Mertins_Subtype_Avg_SEM_DFs
+from portal_hdf5.Archive.Subtype_Average_DF import Johansson_Subtype_Avg_SEM_DFs, Krug_Subtype_Avg_SEM_DFs, Mertins_Subtype_Avg_SEM_DFs
 
 
 ########################################################################################################################
