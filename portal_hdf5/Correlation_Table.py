@@ -6,6 +6,7 @@ import pandas as pd
 import h5py
 import numpy as np
 import scipy.stats as sc
+import pdb
 from Import_Files import Import_Cor_Matrix_HDF5
 
 jo_patients_num = 45
@@ -129,13 +130,46 @@ def Get_Protein_Correlation_Table(gene_name):
     protein_sum_df.drop([0],inplace=True) # drop the first gene because it is itself
     protein_sum_df.dropna(thresh=3, inplace=True) # save rows if NA is less than 2, thresh is 3 because you need gene with 2 p values (3 non NA values)
 
+    protein_sum_df['p_jo'].mask(protein_sum_df['p_jo'] >= 0.01, 10000, inplace=True)
+    protein_sum_df['p_jo'].mask(protein_sum_df['p_jo'] < 0.001, 1, inplace=True)
+    protein_sum_df['p_jo'].mask(protein_sum_df['p_jo'] < 0.01, 10, inplace=True)
+    protein_sum_df['p_jo'].mask(protein_sum_df['p_jo'] < 0.05, 100, inplace=True)
+    protein_sum_df['p_jo'].mask(protein_sum_df['p_jo'] < 0.01, 1000, inplace=True)
+
+    protein_sum_df['p_kr'].mask(protein_sum_df['p_kr'] >= 0.01, 10000, inplace=True)
+    protein_sum_df['p_kr'].mask(protein_sum_df['p_kr'] < 0.001, 1, inplace=True)
+    protein_sum_df['p_kr'].mask(protein_sum_df['p_kr'] < 0.01, 10, inplace=True)
+    protein_sum_df['p_kr'].mask(protein_sum_df['p_kr'] < 0.05, 100, inplace=True)
+    protein_sum_df['p_kr'].mask(protein_sum_df['p_kr'] < 0.01, 1000, inplace=True)
+
+    protein_sum_df['p'].mask(protein_sum_df['p'] >= 0.01, 10000, inplace=True)
+    protein_sum_df['p'].mask(protein_sum_df['p'] < 0.001, 1, inplace=True)
+    protein_sum_df['p'].mask(protein_sum_df['p'] < 0.01, 10, inplace=True)
+    protein_sum_df['p'].mask(protein_sum_df['p'] < 0.05, 100, inplace=True)
+    protein_sum_df['p'].mask(protein_sum_df['p'] < 0.01, 1000, inplace=True)
+
     # sum the p values into a new column, and re-annotate with gene names, drop individual p values, rank by p-values
-    protein_sum_df['Summed p values'] = protein_sum_df.sum(numeric_only=True, axis=1)
+    protein_sum_df['p value'] = protein_sum_df.sum(numeric_only=True, axis=1)
+
+    # category the p value levels
+    for i in [2, 3, 12, 102, 1002, 10002]:
+        protein_sum_df['p value'].mask(protein_sum_df['p value'] == i, '<0.001', inplace=True)
+    for i in [11, 20, 21, 30, 111, 120, 1011, 1020, 10011, 10020]:
+        protein_sum_df['p value'].mask(protein_sum_df['p value'] == i, '<0.01', inplace=True)
+    for i in [101, 110, 200, 201, 210, 300, 1101, 1110, 1200, 10101, 10110, 10200]:
+        protein_sum_df['p value'].mask(protein_sum_df['p value'] == i, '<0.05', inplace=True)
+    for i in [1001, 1010, 1100, 2000, 2001, 2010, 2100, 3000, 11011, 11010, 11100, 12000]:
+        protein_sum_df['p value'].mask(protein_sum_df['p value'] == i, '<0.1', inplace=True)
+    for i in [10001, 10010, 10100, 11000, 20000, 20001, 20010, 20100, 21000, 30000]:
+        protein_sum_df['p value'].mask(protein_sum_df['p value'] == i, '>0.1', inplace=True)
+
     protein_sum_df = protein_sum_df.join(annotate,on='Gene')
     protein_sum_df.set_index('Gene',inplace=True)
     protein_sum_df.drop(protein_sum_df.columns[[0,1,2]],axis=1,inplace=True)
-    protein_sum_df.sort_values(by='Summed p values', inplace=True, ascending=True)
+    protein_sum_df['p value'] = pd.Categorical(protein_sum_df['p value'], ['<0.001', '<0.01', '<0.05', '<0.1', '>0.1'])
+    protein_sum_df.sort_values(by='p value', inplace=True, ascending=True)
 
+    protein_sum_df.to_csv("ERBB2_protein_summary_table.txt", sep='\t')
     return jo_Correlation_table_df, kr_Correlation_table_df, me_Correlation_table_df, protein_sum_df
 
 
@@ -254,11 +288,48 @@ def Get_mRNA_Correlation_Table(gene_name):
     mRNA_sum_df.drop([0],inplace=True) # drop the first gene because it is itself
     mRNA_sum_df.dropna(thresh=3, inplace=True) # save rows if NA is less than 2, thresh is 3 because you need gene with 2 p values (3 non NA values)
 
+    mRNA_sum_df['p_jo'].mask(mRNA_sum_df['p_jo'] >= 0.01, 10000, inplace=True)
+    mRNA_sum_df['p_jo'].mask(mRNA_sum_df['p_jo'] < 0.001, 1, inplace=True)
+    mRNA_sum_df['p_jo'].mask(mRNA_sum_df['p_jo'] < 0.01, 10, inplace=True)
+    mRNA_sum_df['p_jo'].mask(mRNA_sum_df['p_jo'] < 0.05, 100, inplace=True)
+    mRNA_sum_df['p_jo'].mask(mRNA_sum_df['p_jo'] < 0.01, 1000, inplace=True)
+
+    mRNA_sum_df['p_kr'].mask(mRNA_sum_df['p_kr'] >= 0.01, 10000, inplace=True)
+    mRNA_sum_df['p_kr'].mask(mRNA_sum_df['p_kr'] < 0.001, 1, inplace=True)
+    mRNA_sum_df['p_kr'].mask(mRNA_sum_df['p_kr'] < 0.01, 10, inplace=True)
+    mRNA_sum_df['p_kr'].mask(mRNA_sum_df['p_kr'] < 0.05, 100, inplace=True)
+    mRNA_sum_df['p_kr'].mask(mRNA_sum_df['p_kr'] < 0.01, 1000, inplace=True)
+
+    mRNA_sum_df['p'].mask(mRNA_sum_df['p'] >= 0.01, 10000, inplace=True)
+    mRNA_sum_df['p'].mask(mRNA_sum_df['p'] < 0.001, 1, inplace=True)
+    mRNA_sum_df['p'].mask(mRNA_sum_df['p'] < 0.01, 10, inplace=True)
+    mRNA_sum_df['p'].mask(mRNA_sum_df['p'] < 0.05, 100, inplace=True)
+    mRNA_sum_df['p'].mask(mRNA_sum_df['p'] < 0.01, 1000, inplace=True)
+
     # sum the p values into a new column, and re-annotate with gene names, drop individual p values, rank by p-values
-    mRNA_sum_df['Summed p values'] = mRNA_sum_df.sum(numeric_only=True, axis=1)
+    mRNA_sum_df['p value'] = mRNA_sum_df.sum(numeric_only=True, axis=1)
+
+    # category the p value levels
+    for i in [2, 3, 12, 102, 1002, 10002]:
+        mRNA_sum_df['p value'].mask(mRNA_sum_df['p value'] == i, '<0.001', inplace=True)
+    for i in [11, 20, 21, 30, 111, 120, 1011, 1020, 10011, 10020]:
+        mRNA_sum_df['p value'].mask(mRNA_sum_df['p value'] == i, '<0.01', inplace=True)
+    for i in [101, 110, 200, 201, 210, 300, 1101, 1110, 1200, 10101, 10110, 10200]:
+        mRNA_sum_df['p value'].mask(mRNA_sum_df['p value'] == i, '<0.05', inplace=True)
+    for i in [1001, 1010, 1100, 2000, 2001, 2010, 2100, 3000, 11011, 11010, 11100, 12000]:
+        mRNA_sum_df['p value'].mask(mRNA_sum_df['p value'] == i, '<0.1', inplace=True)
+    for i in [10001, 10010, 10100, 11000, 20000, 20001, 20010, 20100, 21000, 30000]:
+        mRNA_sum_df['p value'].mask(mRNA_sum_df['p value'] == i, '>0.1', inplace=True)
+
+    # re-annotate with gene names, drop individual p values
     mRNA_sum_df = mRNA_sum_df.join(annotate,on='Gene')
     mRNA_sum_df.set_index('Gene',inplace=True)
     mRNA_sum_df.drop(mRNA_sum_df.columns[[0,1,2]],axis=1,inplace=True)
-    mRNA_sum_df.sort_values(by='Summed p values', inplace=True, ascending=True)
+    mRNA_sum_df['p value'] = pd.Categorical(mRNA_sum_df['p value'], ['<0.001', '<0.01', '<0.05', '<0.1', '>0.1'])
+    mRNA_sum_df.sort_values(by='p value', inplace=True, ascending=True)
 
+    mRNA_sum_df.to_csv("ERBB2_mRNA_summary_table.txt", sep='\t')
     return jo_m_Correlation_table_df, kr_m_Correlation_table_df, me_m_Correlation_table_df, mRNA_sum_df
+
+Get_Protein_Correlation_Table('ERBB2')
+Get_mRNA_Correlation_Table('ERBB2')
