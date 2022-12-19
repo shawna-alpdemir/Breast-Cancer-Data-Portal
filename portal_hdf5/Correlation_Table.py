@@ -127,12 +127,14 @@ def Get_Protein_Correlation_Table(gene_name):
     # merge dataframes, drop genes with only 1 p value
     jokr_pro_df = jo_pro_DF.merge(kr_pro_DF, how='outer', on='Gene', suffixes=['_jo','_kr'])
     protein_sum_df = jokr_pro_df.merge(me_pro_DF, how='outer', on='Gene')
-    protein_sum_df.drop([0],inplace=True) # drop the first gene because it is itself
+    protein_sum_df.set_index('Gene', inplace=True)
+    protein_sum_df.drop(labels=gene_name,inplace=True) # drop the first gene because it is itself
+    protein_sum_df.reset_index(inplace=True)
     protein_sum_df.dropna(thresh=3, inplace=True) # save rows if NA is less than 2, thresh is 3 because you need gene with 2 p values (3 non NA values)
 
     # subset gene with 3 p values into df_3study, have 2 p value into df_2study
     protein_sum_df_3study = protein_sum_df.dropna(how='any')
-    protein_sum_df_2study = pd.DataFrame(protein_sum_df.loc[protein_sum_df.isnull().any(1)])
+    protein_sum_df_2study = pd.DataFrame(protein_sum_df.loc[protein_sum_df.isnull().any(axis=1)])
 
     # replace max p value of each gene with NaN
     protein_sum_df_3study = protein_sum_df_3study.mask(
@@ -264,12 +266,14 @@ def Get_mRNA_Correlation_Table(gene_name):
     # merge dataframes, drop genes with only 1 p value
     jokr_mRNA_df = jo_mRNA_DF.merge(kr_mRNA_DF, how='outer', on='Gene', suffixes=['_jo','_kr'])
     mRNA_sum_df = jokr_mRNA_df.merge(me_mRNA_DF, how='outer', on='Gene')
-    mRNA_sum_df.drop([0],inplace=True) # drop the first gene because it is itself
+    mRNA_sum_df.set_index('Gene', inplace=True)
+    mRNA_sum_df.drop(labels=gene_name,inplace=True) # drop the first gene because it is itself
+    mRNA_sum_df.reset_index(inplace=True)
     mRNA_sum_df.dropna(thresh=3, inplace=True) # save rows if NA is less than 2, thresh is 3 because you need gene with 2 p values (3 non NA values)
 
     # subset gene with 3 p values into df_3study, have 2 p value into df_2study
     mRNA_sum_df_3study = mRNA_sum_df.dropna(how='any')
-    mRNA_sum_df_2study = pd.DataFrame(mRNA_sum_df.loc[mRNA_sum_df.isnull().any(1)])
+    mRNA_sum_df_2study = pd.DataFrame(mRNA_sum_df.loc[mRNA_sum_df.isnull().any(axis=1)])
 
     # replace max p value of each gene with NaN
     mRNA_sum_df_3study = mRNA_sum_df_3study.mask(
@@ -286,7 +290,5 @@ def Get_mRNA_Correlation_Table(gene_name):
     mRNA_sum_df = mRNA_sum_df.join(annotate,on='Gene')
     mRNA_sum_df.set_index('Gene',inplace=True)
     mRNA_sum_df.drop(mRNA_sum_df.columns[[0,1,2]],axis=1,inplace=True)
-
-    mRNA_sum_df.to_csv("ERBB2_mRNA_summary_table.txt", sep='\t')
 
     return jo_m_Correlation_table_df, kr_m_Correlation_table_df, me_m_Correlation_table_df, mRNA_sum_df
