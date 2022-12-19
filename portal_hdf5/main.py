@@ -846,11 +846,11 @@ mRNA_table_columns = [mRNA_table_gene_col_name,  # set up mRNA_table_columns
                       TableColumn(field='Name', title='Name')]
 
 protein_summary_table_columns = [protein_table_gene_col_name, # set up protein_summary_table_columns
-                         TableColumn(field='p value', title='p value'),
+                         TableColumn(field='p avg', title='Averaged p values', formatter=ScientificFormatter(precision=3)),
                          TableColumn(field='Name', title='Name')]
 
 mRNA_summary_table_columns = [mRNA_table_gene_col_name, # set up mRNA_summary_table_columns
-                         TableColumn(field='p value', title='p value'),
+                         TableColumn(field='p avg', title='Averaged p values', formatter=ScientificFormatter(precision=3)),
                          TableColumn(field='Name', title='Name')]
 
 # create table widget by assembling columndatasource and protein_table_columns
