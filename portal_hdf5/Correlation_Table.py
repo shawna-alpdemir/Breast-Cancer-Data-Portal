@@ -127,14 +127,12 @@ def Get_Protein_Correlation_Table(gene_name):
     # merge dataframes, drop genes with only 1 p value
     jokr_pro_df = jo_pro_DF.merge(kr_pro_DF, how='outer', on='Gene', suffixes=['_jo','_kr'])
     protein_sum_df = jokr_pro_df.merge(me_pro_DF, how='outer', on='Gene')
-
+    protein_sum_df.set_index('Gene', inplace=True)
     try:
-        protein_sum_df.set_index('Gene', inplace=True)
         protein_sum_df.drop(labels=gene_name,inplace=True) # drop the first gene because it is itself
-        protein_sum_df.reset_index(inplace=True)
     except KeyError: # skip the dropping if the gene has no data
         pass
-
+    protein_sum_df.reset_index(inplace=True)
     protein_sum_df.dropna(thresh=3, inplace=True) # save rows if NA is less than 2, thresh is 3 because you need gene with 2 p values (3 non NA values)
 
     # subset gene with 3 p values into df_3study, have 2 p value into df_2study
@@ -271,14 +269,12 @@ def Get_mRNA_Correlation_Table(gene_name):
     # merge dataframes, drop genes with only 1 p value
     jokr_mRNA_df = jo_mRNA_DF.merge(kr_mRNA_DF, how='outer', on='Gene', suffixes=['_jo','_kr'])
     mRNA_sum_df = jokr_mRNA_df.merge(me_mRNA_DF, how='outer', on='Gene')
-
+    mRNA_sum_df.set_index('Gene', inplace=True)
     try:
-        mRNA_sum_df.set_index('Gene', inplace=True)
         mRNA_sum_df.drop(labels=gene_name,inplace=True) # drop the first gene because it is itself
-        mRNA_sum_df.reset_index(inplace=True)
     except KeyError: # skip the dropping if the gene has no data
         pass
-
+    mRNA_sum_df.reset_index(inplace=True)
     mRNA_sum_df.dropna(thresh=3, inplace=True) # save rows if NA is less than 2, thresh is 3 because you need gene with 2 p values (3 non NA values)
 
     # subset gene with 3 p values into df_3study, have 2 p value into df_2study
