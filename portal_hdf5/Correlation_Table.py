@@ -42,7 +42,7 @@ def Get_Protein_Correlation_Table(gene_name):
             jo_Correlation_table_df = jo_pro_DF.iloc[1:1001]
             jo_Correlation_table_df = jo_Correlation_table_df.join(annotate, on='Gene')
 
-        except ValueError:
+        except ValueError or KeyError:
             jo_pro_DF = pd.DataFrame({"Gene": [f"No data for {gene_name}"],
                                                     "r": [0],
                                                     "p": [0]}, index=None)
@@ -76,7 +76,7 @@ def Get_Protein_Correlation_Table(gene_name):
             kr_Correlation_table_df = kr_pro_DF.iloc[1:1001]
             kr_Correlation_table_df = kr_Correlation_table_df.join(annotate, on='Gene')
 
-        except ValueError:
+        except ValueError or KeyError:
             kr_pro_DF = pd.DataFrame({"Gene": [f"No data for {gene_name}"],
                                                     "r": [0],
                                                     "p": [0]}, index=None)
@@ -110,7 +110,7 @@ def Get_Protein_Correlation_Table(gene_name):
             me_Correlation_table_df = me_pro_DF.iloc[1:1001]
             me_Correlation_table_df = me_Correlation_table_df.join(annotate, on='Gene')
 
-        except ValueError:
+        except ValueError or KeyError:
             me_pro_DF = pd.DataFrame({"Gene": [f"No data for {gene_name}"],
                                                     "r": [0],
                                                     "p": [0]}, index=None)
@@ -128,7 +128,10 @@ def Get_Protein_Correlation_Table(gene_name):
     jokr_pro_df = jo_pro_DF.merge(kr_pro_DF, how='outer', on='Gene', suffixes=['_jo','_kr'])
     protein_sum_df = jokr_pro_df.merge(me_pro_DF, how='outer', on='Gene')
     protein_sum_df.set_index('Gene', inplace=True)
-    protein_sum_df.drop(labels=gene_name,inplace=True) # drop the first gene because it is itself
+    try:
+        protein_sum_df.drop(labels=gene_name,inplace=True) # drop the first gene because it is itself
+    except KeyError:
+        pass
     protein_sum_df.reset_index(inplace=True)
     protein_sum_df.dropna(thresh=3, inplace=True) # save rows if NA is less than 2, thresh is 3 because you need gene with 2 p values (3 non NA values)
 
@@ -181,7 +184,7 @@ def Get_mRNA_Correlation_Table(gene_name):
             jo_m_Correlation_table_df = jo_mRNA_DF.iloc[1:1001]
             jo_m_Correlation_table_df = jo_m_Correlation_table_df.join(annotate, on='Gene')
 
-        except ValueError:
+        except ValueError or KeyError:
             jo_mRNA_DF = pd.DataFrame({"Gene": [f"No data for {gene_name}"],
                                                     "r": [0],
                                                     "p": [0]}, index=None)
@@ -215,7 +218,7 @@ def Get_mRNA_Correlation_Table(gene_name):
             kr_m_Correlation_table_df = kr_mRNA_DF.iloc[1:1001]
             kr_m_Correlation_table_df = kr_m_Correlation_table_df.join(annotate, on='Gene')
 
-        except ValueError:
+        except ValueError or KeyError:
             kr_mRNA_DF = pd.DataFrame({"Gene": [f"No data for {gene_name}"],
                                                     "r": [0],
                                                     "p": [0]}, index=None)
@@ -249,7 +252,7 @@ def Get_mRNA_Correlation_Table(gene_name):
             me_m_Correlation_table_df = me_mRNA_DF.iloc[1:1001]
             me_m_Correlation_table_df = me_m_Correlation_table_df.join(annotate, on='Gene')
 
-        except ValueError:
+        except ValueError or KeyError:
             me_mRNA_DF = pd.DataFrame({"Gene": [f"No data for {gene_name}"],
                                                     "r": [0],
                                                     "p": [0]}, index=None)
@@ -267,7 +270,10 @@ def Get_mRNA_Correlation_Table(gene_name):
     jokr_mRNA_df = jo_mRNA_DF.merge(kr_mRNA_DF, how='outer', on='Gene', suffixes=['_jo','_kr'])
     mRNA_sum_df = jokr_mRNA_df.merge(me_mRNA_DF, how='outer', on='Gene')
     mRNA_sum_df.set_index('Gene', inplace=True)
-    mRNA_sum_df.drop(labels=gene_name,inplace=True) # drop the first gene because it is itself
+    try:
+        mRNA_sum_df.drop(labels=gene_name,inplace=True) # drop the first gene because it is itself
+    except KeyError:
+        pass
     mRNA_sum_df.reset_index(inplace=True)
     mRNA_sum_df.dropna(thresh=3, inplace=True) # save rows if NA is less than 2, thresh is 3 because you need gene with 2 p values (3 non NA values)
 
