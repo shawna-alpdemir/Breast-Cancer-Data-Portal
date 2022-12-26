@@ -881,30 +881,19 @@ cor_mrna_table_tab = Tabs(tabs=[
                            ])
 
 # button and call back - download button will be removed
-# button5 = Button(label="Download", button_type="success", width=100, width_policy='fixed') #mRNA Correlation Table
-# button5.js_on_event("button_click", CustomJS(args=dict(source=jo_mrna_gene_cor_source),
-#                                              code=open(join(dirname(__file__),
-#                                                             "Download_Javascript/jo_cor_table_download.js")).read()))
-# button5.js_on_event("button_click", CustomJS(args=dict(source=kr_mrna_gene_cor_source),
-#                                              code=open(join(dirname(__file__),
-#                                                             "Download_Javascript/kr_cor_table_download.js")).read()))
-# button5.js_on_event("button_click", CustomJS(args=dict(source=me_mrna_gene_cor_source),
-#                                              code=open(join(dirname(__file__),
-#                                                             "Download_Javascript/me_cor_table_download.js")).read()))
-#
-# button6 = Button(label="Download", button_type="success", width=100, width_policy='fixed') #Protein Correlation Table
-# button6.js_on_event("button_click", CustomJS(args=dict(source=jo_pro_gene_cor_source),
-#                                              code=open(join(dirname(__file__),
-#                                                             "Download_Javascript/jo_cor_table_download.js")).read()))
-# button6.js_on_event("button_click", CustomJS(args=dict(source=kr_pro_gene_cor_source),
-#                                              code=open(join(dirname(__file__),
-#                                                             "Download_Javascript/kr_cor_table_download.js")).read()))
-# button6.js_on_event("button_click", CustomJS(args=dict(source=me_pro_gene_cor_source),
-#                                              code=open(join(dirname(__file__),
-#                                                             "Download_Javascript/me_cor_table_download.js")).read()))
-#
-# formatted_button5 = row(column(Spacer(height=19),button5))
-# formatted_button6 = row(column(Spacer(height=19),button6))
+button5 = Button(label="Download", button_type="success", width=100, width_policy='fixed') #Protein Correlation Table
+button5.js_on_event("button_click", CustomJS(args=dict(source=summary_pro_source),
+                                             code=open(join(dirname(__file__),
+                                                            "Download_Javascript/pro_sum_cor_table_download.js")).read()))
+
+
+button6 = Button(label="Download", button_type="success", width=100, width_policy='fixed') #mRNA Correlation Table
+button6.js_on_event("button_click", CustomJS(args=dict(source=summary_mrna_source),
+                                             code=open(join(dirname(__file__),
+                                                            "Download_Javascript/mRNA_sum_cor_table_download.js")).read()))
+
+formatted_button5 = row(column(Spacer(height=19),button5))
+formatted_button6 = row(column(Spacer(height=19),button6))
 
 # --------------------------------------------------------------------
 # Row 5: Heatmaps (future feature)
@@ -954,8 +943,8 @@ line_plot_section = column(line_plot_div, row(line_plot_tab, column(gene_entry_s
 select_widget_section = column(select_widget_layout)
 scatter_plot_section = column(row(scatter_plot_div, scatter_update_button), row(scatter_plot_tab, Spacer(width=120), pprr_scatter_plot_tab, column(select_widget_section, legend_pic)))
 subtype_plot_section = row(column(row(subtype_plot_div, subtype_update_button), subtype_plot_tab),column(Spacer(height=60),legend_pic))
-correlation_table_section = column(row(column(protein_cor_table_title_div, row(protein_correlation_textbox), cor_pro_table_tab, Spacer(height=30),
-                                              mRNA_cor_table_title_div, row(mrna_correlation_textbox), cor_mrna_table_tab, Spacer(height=15))))
+correlation_table_section = column(row(column(protein_cor_table_title_div, row(protein_correlation_textbox, formatted_button5), cor_pro_table_tab, Spacer(height=30),
+                                              mRNA_cor_table_title_div, row(mrna_correlation_textbox, formatted_button6), cor_mrna_table_tab, Spacer(height=15))))
 
 l = layout([
     [PageMargin, tool_title_div],

@@ -11,11 +11,10 @@ function table_to_csv(source) {
         }
         lines.push(row.join(','))
     }
-
     return lines.join('\n').concat('\n')
 }
 
-var filename = 'Johansson_correlation_table.csv'
+var filename = 'mRNA_Summary_Correlation_Table.csv'
 var filetext = table_to_csv(source)
 var blob = new Blob([filetext], { type: 'text/csv;charset=utf-8;' })
 
