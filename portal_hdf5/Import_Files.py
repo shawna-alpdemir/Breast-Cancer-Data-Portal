@@ -25,8 +25,8 @@ def Import_Static_Correlation_Table():
     me_mrna_ERBB2 = pd.read_csv('portal_hdf5/Data/StaticCorrelationTable/me_mrna_for_cor_ERBB2.txt', sep='\t')
     me_protein_ERBB2 = pd.read_csv('portal_hdf5/Data/StaticCorrelationTable/me_protein_for_cor_ERBB2.txt', sep='\t')
 
-    summary_mrna_ERBB2 = pd.read_csv('portal_hdf5/Data/StaticCorrelationTable/ERBB2_mRNA_summary_table.txt', sep='\t')
-    summary_protein_ERBB2 = pd.read_csv('portal_hdf5/Data/StaticCorrelationTable/ERBB2_protein_summary_table.txt', sep='\t')
+    summary_mrna_ERBB2 = pd.read_csv('portal_hdf5/Data/StaticCorrelationTable/ERBB2_mRNA_summary_table.txt', sep='\t', index_col='Gene')
+    summary_protein_ERBB2 = pd.read_csv('portal_hdf5/Data/StaticCorrelationTable/ERBB2_protein_summary_table.txt', sep='\t', index_col='Gene')
 
     return jo_mrna_ERBB2, jo_protein_ERBB2, kr_mrna_ERBB2, kr_protein_ERBB2, me_mrna_ERBB2, me_protein_ERBB2, summary_protein_ERBB2, summary_mrna_ERBB2
 
