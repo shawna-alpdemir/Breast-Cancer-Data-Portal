@@ -169,7 +169,7 @@ def Scatter_Plot_Update(event):
                 protein_data_new_gene = np.zeros(45)
 
             if not np.all(mRNA_data_new_gene):
-                mRNA_data_new_gene = np.zeroes(45)
+                mRNA_data_new_gene = np.zeros(45)
 
             johansson_scatter_cds[k].data = {subtype: list(zip(*johansson_subtype_tumor_tuple))[0],
                                              # extract first element of the list of subtype_tumor_tuple, which is the subtype
