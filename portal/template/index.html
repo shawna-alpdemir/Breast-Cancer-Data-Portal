@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z711PVTXLX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-Z711PVTXLX');
+        </script>
+
+    </head>
+        <body>
+            <div>
+                <!-- bokeh embedding -->
+                <script id="p4732">
+                  (function() {
+                    const xhr = new XMLHttpRequest()
+                    xhr.responseType = 'blob';
+                    xhr.open('GET', "http://breastcancerproteome.org/autoload.js?bokeh-autoload-element=p4732&bokeh-absolute-url=http://breastcancerproteome.org", true);
+                    xhr.onload = function (event) {
+                      const script = document.createElement('script');
+                      const src = URL.createObjectURL(event.target.response);
+                      script.src = src;
+                      document.body.appendChild(script);
+                    };
+                    xhr.send();
+                  })();
+                </script>
+            </div>
+        </body>
+</html>

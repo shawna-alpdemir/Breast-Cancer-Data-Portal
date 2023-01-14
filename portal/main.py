@@ -10,7 +10,7 @@ from bokeh.layouts import layout, column, row
 from bokeh.models import Spacer, Tabs, TabPanel, AutocompleteInput, ColumnDataSource, TableColumn, DataTable, Button, \
     Select, Div, CustomJS, ScientificFormatter
 from bokeh.transform import factor_cmap
-
+from bokeh.embed import server_document
 from Correlation_Table import Get_Protein_Correlation_Table, Get_mRNA_Correlation_Table
 from Gene_List import Gene_List
 from Import_Files import Import_HDF5, Import_Static_Correlation_Table, Import_Subtype_DF
@@ -912,7 +912,7 @@ formatted_button6 = row(column(Spacer(height=19),button6))
 RowSpacer = Spacer(height=30)
 PageMargin = Spacer(width=30)
 
-tool_title_text = "Breast Cancer Data Portal"
+tool_title_text = "Breast Cancer Proteome Portal"
 tool_title_div = Div(text=tool_title_text,
                      styles={'font-size': '200%', 'color': 'black', 'font-style': 'normal', 'font-weight': 'bold'},
                      width=1000)
@@ -961,3 +961,7 @@ end_time=time.time()
 elapsed=end_time-start_time
 print(f'Total response time: {elapsed}')
 
+# --------------------------------------------------------------------
+# HTML related
+# --------------------------------------------------------------------
+script = server_document("http://breastcancerproteome.org/")
