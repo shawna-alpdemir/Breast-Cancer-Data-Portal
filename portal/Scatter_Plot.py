@@ -27,11 +27,11 @@ gene = 'gene'
 def Pro_Pro_Scatter_Plot():
     """protein-protein for gene 1 and gene 2 scatter plot for Johansson, Krug and Mertins"""
 
-    jo_pro_pro_scatter_plot = figure(title='NDUFS2-NDUFS3', x_axis_label='protein z-score', y_axis_label='protein z-score',
+    jo_pro_pro_scatter_plot = figure(title='NDUFS3 vs. NDUFS2', x_axis_label='protein z-score', y_axis_label='protein z-score',
                                 width=SCATTER_PLOT_WIDTH, height=SCATTER_PLOT_HEIGHT, output_backend="webgl")
-    kr_pro_pro_scatter_plot = figure(title='NDUFS2-NDUFS3', x_axis_label='protein z-score', y_axis_label='protein z-score',
+    kr_pro_pro_scatter_plot = figure(title='NDUFS3 vs. NDUFS2', x_axis_label='protein z-score', y_axis_label='protein z-score',
                                 width=SCATTER_PLOT_WIDTH, height=SCATTER_PLOT_HEIGHT, output_backend="webgl")
-    me_pro_pro_scatter_plot = figure(title='NDUFS2-NDUFS3', x_axis_label='protein z-score', y_axis_label='protein z-score',
+    me_pro_pro_scatter_plot = figure(title='NDUFS3 vs. NDUFS2', x_axis_label='protein z-score', y_axis_label='protein z-score',
                                 width=SCATTER_PLOT_WIDTH, height=SCATTER_PLOT_HEIGHT, output_backend="webgl")
 
     return jo_pro_pro_scatter_plot, kr_pro_pro_scatter_plot, me_pro_pro_scatter_plot
@@ -39,11 +39,11 @@ def Pro_Pro_Scatter_Plot():
 def RNA_RNA_Scatter_Plot():
     """RNA-RNA for gene 1 and gene 2 scatter plot for Johansson, Krug and Mertins"""
 
-    jo_rna_rna_scatter_plot = figure(title='NDUFS2-NDUFS3', x_axis_label='mRNA z-score', y_axis_label='mRNA z-score',
+    jo_rna_rna_scatter_plot = figure(title='NDUFS3 vs. NDUFS2', x_axis_label='mRNA z-score', y_axis_label='mRNA z-score',
                                 width=SCATTER_PLOT_WIDTH, height=SCATTER_PLOT_HEIGHT, output_backend="webgl")
-    kr_rna_rna_scatter_plot = figure(title='NDUFS2-NDUFS3', x_axis_label='mRNA z-score', y_axis_label='mRNA z-score',
+    kr_rna_rna_scatter_plot = figure(title='NDUFS3 vs. NDUFS2', x_axis_label='mRNA z-score', y_axis_label='mRNA z-score',
                                 width=SCATTER_PLOT_WIDTH, height=SCATTER_PLOT_HEIGHT, output_backend="webgl")
-    me_rna_rna_scatter_plot = figure(title='NDUFS2-NDUFS3', x_axis_label='mRNA z-score', y_axis_label='mRNA z-score',
+    me_rna_rna_scatter_plot = figure(title='NDUFS3 vs. NDUFS2', x_axis_label='mRNA z-score', y_axis_label='mRNA z-score',
                                 width=SCATTER_PLOT_WIDTH, height=SCATTER_PLOT_HEIGHT, output_backend="webgl")
 
     return jo_rna_rna_scatter_plot, kr_rna_rna_scatter_plot, me_rna_rna_scatter_plot

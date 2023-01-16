@@ -289,13 +289,13 @@ def Scatter_Select_Button_Update(event):
                                  'x_mRNA_data': new_data_list[2],
                                  'y_mRNA_data': new_data_list[3]}
     # scatter plot title change
-    jo_pro_pro_scatter_plot.title.text = f"{x_gene_name}-{y_gene_name}"
-    kr_pro_pro_scatter_plot.title.text = f"{x_gene_name}-{y_gene_name}"
-    me_pro_pro_scatter_plot.title.text = f"{x_gene_name}-{y_gene_name}"
+    jo_pro_pro_scatter_plot.title.text = f"{y_gene_name} vs. {x_gene_name}"
+    kr_pro_pro_scatter_plot.title.text = f"{y_gene_name} vs. {x_gene_name}"
+    me_pro_pro_scatter_plot.title.text = f"{y_gene_name} vs. {x_gene_name}"
 
-    jo_rna_rna_scatter_plot.title.text = f"{x_gene_name}-{y_gene_name}"
-    kr_rna_rna_scatter_plot.title.text = f"{x_gene_name}-{y_gene_name}"
-    me_rna_rna_scatter_plot.title.text = f"{x_gene_name}-{y_gene_name}"
+    jo_rna_rna_scatter_plot.title.text = f"{y_gene_name} vs. {x_gene_name}"
+    kr_rna_rna_scatter_plot.title.text = f"{y_gene_name} vs. {x_gene_name}"
+    me_rna_rna_scatter_plot.title.text = f"{y_gene_name} vs. {x_gene_name}"
 
 
 def Johansson_Subtype_Plot_update():
@@ -590,7 +590,7 @@ line_plot_tab = Tabs(tabs=[TabPanel(child=line_plot_jo_layout, title="Johansson"
                      TabPanel(child=line_plot_me_layout, title="Mertins")])
 
 #Download data
-button1 = Button(label="Download", button_type="success", width=100, width_policy='fixed')  # Gene 1 Data
+button1 = Button(label="Download Data", button_type="success", width=120, width_policy='fixed')  # Gene 1 Data
 button1.js_on_event("button_click", CustomJS(args=dict(source=johansson_cds[0]), code=open(join(dirname(__file__),
                                                                                                 "Download_Javascript/jo_download.js")).read()))
 button1.js_on_event("button_click", CustomJS(args=dict(source=krug_cds[0]), code=open(join(dirname(__file__),
@@ -598,7 +598,7 @@ button1.js_on_event("button_click", CustomJS(args=dict(source=krug_cds[0]), code
 button1.js_on_event("button_click", CustomJS(args=dict(source=mertins_cds[0]), code=open(join(dirname(__file__),
                                                                                               "Download_Javascript/me_download.js")).read()))
 ####
-button2 = Button(label="Download", button_type="success", width=100, width_policy='fixed')  # Gene 2 Data
+button2 = Button(label="Download Data", button_type="success", width=120, width_policy='fixed')  # Gene 2 Data
 button2.js_on_event("button_click", CustomJS(args=dict(source=johansson_cds[1]), code=open(join(dirname(__file__),
                                                                                                 "Download_Javascript/jo_download.js")).read()))
 button2.js_on_event("button_click", CustomJS(args=dict(source=krug_cds[1]), code=open(join(dirname(__file__),
@@ -606,7 +606,7 @@ button2.js_on_event("button_click", CustomJS(args=dict(source=krug_cds[1]), code
 button2.js_on_event("button_click", CustomJS(args=dict(source=mertins_cds[1]), code=open(join(dirname(__file__),
                                                                                               "Download_Javascript/me_download.js")).read()))
 ####
-button3 = Button(label="Download", button_type="success", width=100, width_policy='fixed')  # Gene 3 Data
+button3 = Button(label="Download Data", button_type="success", width=120, width_policy='fixed')  # Gene 3 Data
 button3.js_on_event("button_click", CustomJS(args=dict(source=johansson_cds[2]), code=open(join(dirname(__file__),
                                                                                                 "Download_Javascript/jo_download.js")).read()))
 button3.js_on_event("button_click", CustomJS(args=dict(source=krug_cds[2]), code=open(join(dirname(__file__),
@@ -614,7 +614,7 @@ button3.js_on_event("button_click", CustomJS(args=dict(source=krug_cds[2]), code
 button3.js_on_event("button_click", CustomJS(args=dict(source=mertins_cds[2]), code=open(join(dirname(__file__),
                                                                                               "Download_Javascript/me_download.js")).read()))
 ####
-button4 = Button(label="Download", button_type="success", width=100, width_policy='fixed')  # Gene 4 Data
+button4 = Button(label="Download Data", button_type="success", width=120, width_policy='fixed')  # Gene 4 Data
 button4.js_on_event("button_click", CustomJS(args=dict(source=johansson_cds[3]), code=open(join(dirname(__file__),
                                                                                                 "Download_Javascript/jo_download.js")).read()))
 button4.js_on_event("button_click", CustomJS(args=dict(source=krug_cds[3]), code=open(join(dirname(__file__),
@@ -678,7 +678,7 @@ pprr_scatter_plot_tab = Tabs(tabs=[TabPanel(child=scatter_plot_jo_layout, title=
 # select widget
 x_axis_select = Select(title="X axis", value="Gene 1", options=['Gene 1', 'Gene 2', 'Gene 3', 'Gene 4'], width = 100, width_policy='fixed')
 y_axis_select = Select(title="Y axis", value="Gene 2", options=['Gene 1', 'Gene 2', 'Gene 3', 'Gene 4'], width = 100, width_policy='fixed')
-selection_update_button = Button(label='Update', button_type='default', width=100, width_policy='fixed')
+selection_update_button = Button(label='Update', button_type='danger', width=100, width_policy='fixed')
 selection_update_button.on_click(Scatter_Select_Button_Update)
 
 # select widget next to pro-pro/rna-rna scatter plot
@@ -759,7 +759,7 @@ scatter_plot_tab = Tabs(tabs=[TabPanel(child=scatter_plot_jo_layout, title="Joha
                               TabPanel(child=scatter_plot_me_layout, title="Mertins")])
 
 # scatter plots update button
-scatter_update_button = Button(label='Update', button_type='default', width=50, width_policy='fixed')
+scatter_update_button = Button(label='Update', button_type='danger', width=50, width_policy='fixed')
 scatter_update_button.on_click(Scatter_Plot_Update)
 
 # --------------------------------------------------------------------
@@ -795,7 +795,7 @@ subtype_plot_tab = Tabs(tabs=[TabPanel(child=subtype_plot_jo_layout, title="Joha
                               TabPanel(child=subtype_plot_me_layout, title="Mertins")])
 
 # button to update subtype plot (beta)
-subtype_update_button = Button(label='Update', button_type='default', width=50, width_policy='fixed')
+subtype_update_button = Button(label='Update', button_type='danger', width=50, width_policy='fixed')
 subtype_update_button.on_click(Master_Subtype_Plot_Button_Update)
 
 
@@ -834,20 +834,20 @@ protein_table_gene_col_name = TableColumn(field='Gene', title='Gene')
 mRNA_table_gene_col_name = TableColumn(field='Gene', title='Gene')
 
 protein_table_columns = [protein_table_gene_col_name,  # set up protein_table_columns
-                         TableColumn(field='r', title='Coefficient', formatter=ScientificFormatter(precision=3)),
+                         TableColumn(field='r', title='Coefficient (Pearson)', formatter=ScientificFormatter(precision=3)),
                          TableColumn(field='p', title='p value', formatter=ScientificFormatter(precision=3)),
                          TableColumn(field='Name', title='Name')]
 mRNA_table_columns = [mRNA_table_gene_col_name,  # set up mRNA_table_columns
-                      TableColumn(field='r', title='Coefficient', formatter=ScientificFormatter(precision=3)),
+                      TableColumn(field='r', title='Coefficient (Pearson)', formatter=ScientificFormatter(precision=3)),
                       TableColumn(field='p', title='p value', formatter=ScientificFormatter(precision=3)),
                       TableColumn(field='Name', title='Name')]
 
 protein_summary_table_columns = [protein_table_gene_col_name, # set up protein_summary_table_columns
-                         TableColumn(field='p avg', title='Averaged p values', formatter=ScientificFormatter(precision=3)),
+                         TableColumn(field='p avg', title='Mean of 2 smallest p values', formatter=ScientificFormatter(precision=3)),
                          TableColumn(field='Name', title='Name')]
 
 mRNA_summary_table_columns = [mRNA_table_gene_col_name, # set up mRNA_summary_table_columns
-                         TableColumn(field='p avg', title='Averaged p values', formatter=ScientificFormatter(precision=3)),
+                         TableColumn(field='p avg', title='Mean of 2 smallest p values', formatter=ScientificFormatter(precision=3)),
                          TableColumn(field='Name', title='Name')]
 
 # create table widget by assembling columndatasource and protein_table_columns
@@ -864,27 +864,27 @@ summary_mrna_data_table = DataTable(source=summary_mrna_source, columns=mRNA_sum
 
 # combine tables into tabs
 cor_pro_table_tab = Tabs(tabs=[
+                           TabPanel(child=summary_pro_data_table, title = 'Summary'),
                            TabPanel(child=jo_pro_cor_data_table, title ="Johansson"),
                            TabPanel(child=kr_pro_cor_data_table, title = "Krug"),
-                           TabPanel(child=me_pro_cor_data_table, title = "Mertins"),
-                           TabPanel(child=summary_pro_data_table, title = 'Summary')
+                           TabPanel(child=me_pro_cor_data_table, title = "Mertins")
                            ])
 
 cor_mrna_table_tab = Tabs(tabs=[
+                           TabPanel(child=summary_mrna_data_table, title = 'Summary'),
                            TabPanel(child=jo_mrna_cor_data_table, title ="Johansson"),
                            TabPanel(child=kr_mrna_cor_data_table, title = "Krug"),
-                           TabPanel(child=me_mrna_cor_data_table, title = "Mertins"),
-                           TabPanel(child=summary_mrna_data_table, title = 'Summary')
+                           TabPanel(child=me_mrna_cor_data_table, title = "Mertins")
                            ])
 
 # button and call back - download button will be removed
-button5 = Button(label="Download", button_type="success", width=100, width_policy='fixed') #Protein Correlation Table
+button5 = Button(label="Download Data", button_type="success", width=100, width_policy='fixed') #Protein Correlation Table
 button5.js_on_event("button_click", CustomJS(args=dict(source=summary_pro_source),
                                              code=open(join(dirname(__file__),
                                                             "Download_Javascript/pro_sum_cor_table_download.js")).read()))
 
 
-button6 = Button(label="Download", button_type="success", width=100, width_policy='fixed') #mRNA Correlation Table
+button6 = Button(label="Download Data", button_type="success", width=100, width_policy='fixed') #mRNA Correlation Table
 button6.js_on_event("button_click", CustomJS(args=dict(source=summary_mrna_source),
                                              code=open(join(dirname(__file__),
                                                             "Download_Javascript/mRNA_sum_cor_table_download.js")).read()))
@@ -921,7 +921,11 @@ line_plot_div = column(Div(text="Abundance Traces:",
                            styles={'font-size': '120%', 'color': 'black', 'font-style': 'italic',
                                        'font-weight': 'bold'}))
 
-scatter_plot_div = column(Div(text="Pairwise Abundances:",
+scatter_plot_div = column(Div(text="Protein-mRNA:",
+                              styles={'font-size': '120%', 'color': 'black', 'font-style': 'italic',
+                                      'font-weight': 'bold'}))
+
+scatter_plot_div2 = column(Div(text="Protein-Protein/mRNA-mRNA:",
                               styles={'font-size': '120%', 'color': 'black', 'font-style': 'italic',
                                       'font-weight': 'bold'}))
 
@@ -932,13 +936,13 @@ protein_cor_table_title_div = column(Div(text="Correlation Table - Protein:",
                                     styles={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}))
 mRNA_cor_table_title_div = column(Div(text="Correlation Table - mRNA:",
                                  styles={'font-size': '120%', 'color': 'black', 'font-style': 'italic', 'font-weight': 'bold'}))
-gene_hide_text_div = Div(text="If you wish to hide certain genes, please click on the interactive legend.",
+gene_hide_text_div = Div(text="To hide traces, click on interactive legend entries.",
                          styles={'font-size': '100%', 'color': 'red'}, width=200, width_policy='auto', height_policy='auto')
 
 gene_entry_section = column(tickers_buttons_layout)
 line_plot_section = column(line_plot_div, row(line_plot_tab, column(gene_entry_section, gene_hide_text_div)))
 select_widget_section = column(select_widget_layout)
-scatter_plot_section = column(row(scatter_plot_div, scatter_update_button), row(scatter_plot_tab, Spacer(width=120), pprr_scatter_plot_tab, column(select_widget_section, legend_pic)))
+scatter_plot_section = column(row(scatter_plot_div, scatter_update_button, Spacer(width=400), scatter_plot_div2), row(scatter_plot_tab, Spacer(width=120), pprr_scatter_plot_tab, column(select_widget_section, legend_pic)))
 subtype_plot_section = row(column(row(subtype_plot_div, subtype_update_button), subtype_plot_tab),column(Spacer(height=60),legend_pic))
 correlation_table_section = column(row(column(protein_cor_table_title_div, row(protein_correlation_textbox, formatted_button5), cor_pro_table_tab, Spacer(height=30),
                                               mRNA_cor_table_title_div, row(mrna_correlation_textbox, formatted_button6), cor_mrna_table_tab, Spacer(height=15))))
@@ -964,4 +968,5 @@ print(f'Total response time: {elapsed}')
 # --------------------------------------------------------------------
 # HTML related
 # --------------------------------------------------------------------
-script = server_document("http://breastcancerproteome.org/")
+script = server_document("http://breastcancerproteome.org/portal")
+print(script)
