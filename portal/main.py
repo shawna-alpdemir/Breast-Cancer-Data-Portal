@@ -969,4 +969,3 @@ print(f'Total response time: {elapsed}')
 # HTML related
 # --------------------------------------------------------------------
 script = server_document("http://52.45.183.122:5006/portal")
-print(script)
