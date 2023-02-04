@@ -26,13 +26,21 @@ def Make_Line_Plot(gene_list, dataset, study, yaxis_label, output_filename):
         sample_subtype_name = [i + ' ' + str(j) for i in subtype_name for j in range(1, 10)]
         df_col_name = df_col_name + sample_subtype_name
         DF = pd.DataFrame(columns=df_col_name)
-    else:
+    elif study == 'kr':
         kr_basal = ['Basal' + ' ' + str(j) for j in range(1, 30)]
         kr_her2 = ['Her2' + ' ' + str(j) for j in range(1, 15)]
         kr_luma = ['LumA' + ' ' + str(j) for j in range(1, 58)]
         kr_lumb = ['LumB' + ' ' + str(j) for j in range(1, 18)]
         kr_norm = ['Norm' + ' ' + str(j) for j in range(1, 6)]
         sample_subtype_name = kr_basal + kr_her2 + kr_luma + kr_lumb + kr_norm
+        df_col_name = df_col_name + sample_subtype_name
+        DF = pd.DataFrame(columns=df_col_name)
+    else:
+        me_basal = ['Basal' + ' ' + str(j) for j in range(1, 19)]
+        me_her2 = ['Her2' + ' ' + str(j) for j in range(1, 13)]
+        me_luma = ['LumA' + ' ' + str(j) for j in range(1, 24)]
+        me_lumb = ['LumB' + ' ' + str(j) for j in range(1, 25)]
+        sample_subtype_name = me_basal + me_her2 + me_luma + me_lumb
         df_col_name = df_col_name + sample_subtype_name
         DF = pd.DataFrame(columns=df_col_name)
 
@@ -54,8 +62,10 @@ def Make_Line_Plot(gene_list, dataset, study, yaxis_label, output_filename):
     plt.ylabel(yaxis_label, fontsize=12)
     if study=='jo':
         plt.xticks(['Basal 9','Her2 9', 'LumA 9', 'LumB 9', 'Norm 9'], ['Basal', 'Her2', 'LumA', 'LumB', 'Norm'])
-    else:
+    elif study=='kr':
         plt.xticks(['Basal 29', 'Her2 14', 'LumA 57', 'LumB 17', 'Norm 5'], ['Basal', 'Her2', 'LumA', 'LumB', 'Norm'])
+    else:
+        plt.xticks(['Basal 18', 'Her2 12', 'LumA 23', 'LumB 24'], ['Basal', 'Her2', 'LumA', 'LumB'])
     plt.savefig(f'{output_filename}.pdf',dpi=1500)
 
 def Make_Scat_Plot(gene_list, dataset, study, protein_oder_mrna, output_filename):
@@ -86,26 +96,38 @@ def Make_Scat_Plot(gene_list, dataset, study, protein_oder_mrna, output_filename
     DF.set_index('Subtype', inplace=True)
     DF_array = DF.transpose()
 
-    # plot except 2B 2C 2D
+    # plot except 2ABC
     fig, ax = plt.subplots(figsize=(5, 5))
     ax.scatter(x=DF_array[gene_list[0]], y=DF_array[gene_list[1]], c=DF_array.index.map(colorcode)) # scatter plot with color mapping
-    plt.xlabel(f'{gene_list[0]} {protein_oder_mrna} z-score', fontsize=12) # x axis label
-    plt.ylabel(f'{gene_list[1]} {protein_oder_mrna} z-score', fontsize=12) # y axis label
+    plt.xlabel(f'{gene_list[0]} {protein_oder_mrna} z-score', fontsize=15) # x axis label
+    plt.ylabel(f'{gene_list[1]} {protein_oder_mrna} z-score', fontsize=15) # y axis label
 
-    #  fig 2A 2B 2C 2D specifically # ylims=((-1.5, 2), (4.5, 5.5)),
-    # fig = plt.figure(figsize=(5,4))
-    # bax = brokenaxes(xlims=((-0.5, 1), (6.25, 6.5)),
-    #                  hspace=.05)
-    #
-    # #scatterplots
+    # fig 2A 2B 2C 2D specifically
+    # 2A
+    # fig = plt.figure(figsize=(5,5))
+    # bax = brokenaxes(xlims=((-2, 3), (3.5, 4)), ylims=((-2.5, 2), (3, 4)), hspace=.05)
+
+    # 2B
+    # fig = plt.figure(figsize=(5, 5))
+    # bax = brokenaxes(xlims=((-1.5, 2.5), (4, 5)), ylims=((-2, 2.5), (3.5, 4.5)), hspace=.05)
+
+    # 2C
+    # fig = plt.figure(figsize=(5, 5))
+    # bax = brokenaxes(xlims=((-1.5, 2), (4.5, 5)), hspace=.05)
+
+    # 2ABC scatterplots
     # bax.scatter(x=DF_array[gene_list[0]], y=DF_array[gene_list[1]],c=DF_array.index.map(colorcode))  # scatter plot with color mapping
-    # bax.set_xlabel(f'{gene_list[0]} {protein_oder_mrna} z-score', fontsize=12) # x axis label
-    # bax.set_ylabel(f'{gene_list[1]} {protein_oder_mrna} z-score', fontsize=12) # y axis label
+    # bax.set_xlabel(f'{gene_list[0]} {protein_oder_mrna} z-score', fontsize=15) # x axis label
+    # bax.set_ylabel(f'{gene_list[1]} {protein_oder_mrna} z-score', fontsize=15) # y axis label
 
     # call the scipy function for pearson correlation
     r, p = scipy.stats.pearsonr(x=DF_array[gene_list[0]], y = DF_array[gene_list[1]])
+
     # Plot regression line
     ax.plot(DF_array[gene_list[0]], p + r * DF_array[gene_list[0]], color="k", lw=1)
+
+    # for 2ABC
+    # bax.plot(DF_array[gene_list[0]], p + r * DF_array[gene_list[0]], color="k", lw=1)
 
     # annotate the pearson correlation coefficient text to 2 decimal places
     plt.text(.05, .8, 'r={:.2f}'.format(r))
@@ -113,7 +135,7 @@ def Make_Scat_Plot(gene_list, dataset, study, protein_oder_mrna, output_filename
     plt.savefig(f'{output_filename}.pdf',dpi=1500)
 
 def Make_Subtype_Plot(gene_list, dataset, study, protein_oder_mrna, output_filename):
-    # johansson and krug: study == 20, mertins: study == 16
+    # johansson and krug: study == 15, mertins: study == 12
     avg_DF = pd.DataFrame()
     sem_DF = pd.DataFrame()
     for i in gene_list:
@@ -144,78 +166,78 @@ def Make_Subtype_Plot(gene_list, dataset, study, protein_oder_mrna, output_filen
 # -----------------------------------x
 # Figure 1, S1
 # -----------------------------------
-# 1A
+# 1B
 # Make_Line_Plot(gene_list=['NDUFS2', 'NDUFS3', 'NDUFS4', 'NDUFS7', 'NDUFS8'],
 #                dataset=JohanssonProteome,
 #                study='jo',
 #                yaxis_label='protein z-score',
-#                output_filename='Johansson_complexI_pro')
+#                output_filename='fig1B_0130')
 # S1A
 # Make_Line_Plot(gene_list=['NDUFS2', 'NDUFS3', 'NDUFS4', 'NDUFS7', 'NDUFS8'],
 #                dataset=KrugProteome,
 #                study='kr',
 #                yaxis_label='protein z-score',
 #                output_filename='Krug_S1A')
-# 1B
+# 1C
 # Make_Line_Plot(gene_list=['NDUFS2', 'NDUFS3', 'NDUFS4', 'NDUFS7', 'NDUFS8'],
 #                dataset=JohanssonTranscriptome,
 #                study='jo',
 #                yaxis_label='mRNA z-score',
-#                output_filename='Johansson_complexI_mRNA')
+#                output_filename='fig1C_0130')
 # S1B
 # Make_Line_Plot(gene_list=['NDUFS2', 'NDUFS3', 'NDUFS4', 'NDUFS7', 'NDUFS8'],
 #                dataset=KrugTranscriptome,
 #                study='kr',
 #                yaxis_label='mRNA z-score',
 #                output_filename='Krug_S1B')
-# 1C
+# 1D
 # Make_Scat_Plot(gene_list=['PDHA1','PDHB'],
 #                dataset=JohanssonProteome,
 #                study='jo',
 #                protein_oder_mrna='protein',
-#                output_filename='Johansson_PDH_complex')
+#                output_filename='fig1D_0130')
 # S1C
 # Make_Scat_Plot(gene_list=['PDHA1','PDHB'],
 #                dataset=KrugProteome,
 #                study='kr',
 #                protein_oder_mrna='protein',
 #                output_filename='Krug_S1C')
-# 1D
+# 1E
 # Make_Scat_Plot(gene_list=['SDHA','SDHB'],
 #                dataset=JohanssonProteome,
 #                study='jo',
 #                protein_oder_mrna='protein',
-#                output_filename='Johansson_SDH_complex')
+#                output_filename='fig1E_0130')
 # S1D
 # Make_Scat_Plot(gene_list=['SDHA','SDHB'],
 #                dataset=KrugProteome,
 #                study='kr',
 #                protein_oder_mrna='protein',
 #                output_filename='Krug_S1D')
-# 1E
+# 1F
 # Make_Scat_Plot(gene_list=['CYC1','UQCRH'],
 #                dataset=JohanssonProteome,
 #                study='jo',
 #                protein_oder_mrna='protein',
-#                output_filename='Johansson_cytC_red_complex')
+#                output_filename='fig1F_0130')
 # S1E
 # Make_Scat_Plot(gene_list=['CYC1','UQCRH'],
 #                dataset=KrugProteome,
 #                study='kr',
 #                protein_oder_mrna='protein',
 #                output_filename='Krug_S1E')
-# 1F
+# 1G
 # Make_Line_Plot(gene_list=['COX5A','COX5B','COX7A2'],
 #                dataset=JohanssonProteome,
 #                study='jo',
 #                yaxis_label= 'protein z-score',
-#                output_filename='Johansson_cytC_ox_complex')
+#                output_filename='fig1G_0130')
 # S1F
-Make_Line_Plot(gene_list=['COX5A','COX5B','COX7A2'],
-               dataset=KrugProteome,
-               study='kr',
-               yaxis_label= 'protein z-score',
-               output_filename='Krug_S1F')
+# Make_Line_Plot(gene_list=['COX5A','COX5B','COX7A2'],
+#                dataset=KrugProteome,
+#                study='kr',
+#                yaxis_label= 'protein z-score',
+#                output_filename='Krug_S1F')
 
 # -----------------------------------
 # Figure 2, S2
@@ -225,77 +247,118 @@ Make_Line_Plot(gene_list=['COX5A','COX5B','COX7A2'],
 #                dataset=JohanssonProteome,
 #                study='jo',
 #                protein_oder_mrna='protein',
-#                output_filename='Johansson_fig2A')
+#                output_filename='fig2A_0130_cut')
 # 2B
-# Make_Scat_Plot(gene_list=['SHMT2','MTHFR'],
-#                dataset=JohanssonProteome,
-#                study='jo',
-#                protein_oder_mrna='protein',
-#                output_filename='Johansson_fig2B')
-# 2C
 # Make_Scat_Plot(gene_list=['PHGDH','SHMT2'],
 #                dataset=JohanssonProteome,
 #                study='jo',
 #                protein_oder_mrna='protein',
-#                output_filename='Johansson_fig2C')
-# 2D
+#                output_filename='fig2b_0130_cut')
+# 2C
 # Make_Scat_Plot(gene_list=['PHGDH','SHMT1'],
 #                dataset=JohanssonProteome,
 #                study='jo',
 #                protein_oder_mrna='protein',
-#                output_filename='Johansson_fig2D')
+#                output_filename='fig2c_0130_cut')
 # 2E
-# Make_Subtype_Plot(gene_list=['SHMT2','SLC25A32','MTHFR','PHGDH'],
+# Make_Subtype_Plot(gene_list=['SHMT2','SLC25A32','PHGDH'],
 #                   dataset=JohanssonProteome,
-#                   study=20,
+#                   study=15,
 #                   protein_oder_mrna='protein',
-#                   output_filename='Johansson_protein_2E1')
-# Make_Subtype_Plot(gene_list=['SHMT2','SLC25A32','MTHFR','PHGDH'],
-#                   dataset=JohanssonTranscriptome,
-#                   study=20,
-#                   protein_oder_mrna='mRNA',
-#                   output_filename='Johansson_mRNA_2E2')
+#                   output_filename='fig2E_0130')
 # S2A
 # Make_Scat_Plot(gene_list=['PHGDH','SHMT2'],
 #                dataset=KrugProteome,
 #                study='kr',
 #                protein_oder_mrna='protein',
 #                output_filename='Krug_figS2A1')
+# S2B
 # Make_Scat_Plot(gene_list=['PHGDH','SHMT1'],
 #                dataset=KrugProteome,
 #                study='kr',
 #                protein_oder_mrna='protein',
 #                output_filename='Krug_figS2A2')
-# S2B
+# S2C
 # Make_Scat_Plot(gene_list=['PHGDH','SHMT2'],
 #                dataset=MertinsProteome,
 #                study='me',
 #                protein_oder_mrna='protein',
 #                output_filename='Mertins_figS2B1')
+# S2D
 # Make_Scat_Plot(gene_list=['PHGDH','SHMT1'],
 #                dataset=MertinsProteome,
 #                study='me',
 #                protein_oder_mrna='protein',
 #                output_filename='Mertins_figS2B2')
-# S2C
+# S2E
 # Make_Subtype_Plot(gene_list=['SHMT2','SLC25A32','MTHFR','PHGDH'],
 #                   dataset=KrugProteome,
 #                   study=20,
 #                   protein_oder_mrna='protein',
 #                   output_filename='Krug_protein_S2C')
-# Make_Subtype_Plot(gene_list=['SHMT2','SLC25A32','MTHFR','PHGDH'],
-#                   dataset=KrugTranscriptome,
-#                   study=20,
-#                   protein_oder_mrna='mRNA',
-#                   output_filename='Krug_mRNA_S2C')
-#
-# Make_Subtype_Plot(gene_list=['SHMT2','SLC25A32','MTHFR','PHGDH'],
+
+# S2F
+# Make_Subtype_Plot(gene_list=['SHMT2','SLC25A32','PHGDH'],
 #                   dataset=MertinsProteome,
 #                   study=16,
 #                   protein_oder_mrna='protein',
 #                   output_filename='Mertins_protein_S2C')
-# Make_Subtype_Plot(gene_list=['SHMT2','SLC25A32','MTHFR','PHGDH'],
-#                   dataset=MertinsTranscriptome,
-#                   study=16,
-#                   protein_oder_mrna='mRNA',
-#                   output_filename='Mertins_mRNA_S2C')
+
+
+# -----------------------------------
+# Figure 3, S3
+# -----------------------------------
+#3C
+# Make_Scat_Plot(gene_list=['GLS','GATA3'],
+#                dataset=JohanssonProteome,
+#                study='jo',
+#                protein_oder_mrna='protein',
+#                output_filename='figure3C')
+#3D
+# Make_Scat_Plot(gene_list=['GLS','FOXA1'],
+#                dataset=JohanssonProteome,
+#                study='jo',
+#                protein_oder_mrna='protein',
+#                output_filename='figure3D')
+#3E
+# Make_Line_Plot(gene_list=['GATA3', 'FOXA1', 'ESR1'],
+#                dataset=JohanssonProteome,
+#                study='jo',
+#                yaxis_label='protein z-score',
+#                output_filename='figure3E')
+#S3A
+# Make_Scat_Plot(gene_list=['GLS','GATA3'],
+#                dataset=KrugProteome,
+#                study='kr',
+#                protein_oder_mrna='protein',
+#                output_filename='figureS3A')
+# #S3B
+# Make_Scat_Plot(gene_list=['GLS','FOXA1'],
+#                dataset=KrugProteome,
+#                study='kr',
+#                protein_oder_mrna='protein',
+#                output_filename='figureS3B')
+# #S3C
+# Make_Scat_Plot(gene_list=['GLS','GATA3'],
+#                dataset=MertinsProteome,
+#                study='me',
+#                protein_oder_mrna='protein',
+#                output_filename='figureS3C')
+# #S3D
+# Make_Scat_Plot(gene_list=['GLS','FOXA1'],
+#                dataset=MertinsProteome,
+#                study='me',
+#                protein_oder_mrna='protein',
+#                output_filename='figureS3D')
+# #S3E
+# Make_Line_Plot(gene_list=['GATA3', 'FOXA1', 'ESR1'],
+#                dataset=KrugProteome,
+#                study='kr',
+#                yaxis_label='protein z-score',
+#                output_filename='figureS3E')
+#S3F
+# Make_Line_Plot(gene_list=['GATA3', 'FOXA1', 'ESR1'],
+#                dataset=MertinsProteome,
+#                study='me',
+#                yaxis_label='protein z-score',
+#                output_filename='figureS3F')
