@@ -10,33 +10,33 @@ import pandas as pd
 
 ################################### Johansson
 # create hdf5 files
-# JohanssonProteome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/Clean HDF5/JohanssonProteome.hdf5'
-# JohanssonTranscriptome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/Clean HDF5/JohanssonTranscriptome.hdf5'
+# JohanssonProteome = '/PATH/JohanssonProteome.hdf5'
+# JohanssonTranscriptome = '/PATH/JohanssonTranscriptome.hdf5'
 
 # read in txt files
-# jo_df_protein = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/jo_pro_z.csv', index_col='Gene')
-# jo_df_RNA = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/jo_mrna_z.csv', index_col='Gene')
-# jo_df_subtype = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/jo_group_key.txt', sep='\t')
+# jo_df_protein = pd.read_csv('/PATH/jo_pro_z.csv', index_col='Gene')
+# jo_df_RNA = pd.read_csv('/PATH/jo_mrna_z.csv', index_col='Gene')
+# jo_df_subtype = pd.read_csv('/PATH/jo_group_key.txt', sep='\t')
 
 ################################### Krug
 # create hdf5 files
-# KrugProteome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/Clean HDF5/KrugProteome.hdf5'
-# KrugTranscriptome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/Clean HDF5/KrugTranscriptome.hdf5'
+# KrugProteome = '/PATH/KrugProteome.hdf5'
+# KrugTranscriptome = '/PATH/KrugTranscriptome.hdf5'
 
 # read in txt files
-# kr_df_protein = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/kr_pro_z.csv', index_col='Gene')
-# kr_df_RNA = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/kr_rna_z.csv',index_col='Gene')
-# kr_df_subtype = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/kr_group_key.txt', sep='\t')
+# kr_df_protein = pd.read_csv('/PATH/kr_pro_z.csv', index_col='Gene')
+# kr_df_RNA = pd.read_csv('/PATH/kr_rna_z.csv',index_col='Gene')
+# kr_df_subtype = pd.read_csv('/PATH/kr_group_key.txt', sep='\t')
 
 ################################### Mertins
 # create hdf5 files
-# MertinsProteome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/Clean HDF5/MertinsProteome.hdf5'
-# MertinsTranscriptome = '/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/Clean HDF5/MertinsTranscriptome.hdf5'
+# MertinsProteome = '/PATH/MertinsProteome.hdf5'
+# MertinsTranscriptome = '/PATH/MertinsTranscriptome.hdf5'
 
 # read in txt files
-# me_df_protein = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/me_pro_z.csv', index_col='Gene')
-# me_df_RNA = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/me_rna_z.csv', index_col='Gene')
-# me_df_subtype = pd.read_csv('/Users/zhuoheng/Desktop/Vacanti/RawData_March/CleanData_April/me_group_key.txt', sep='\t')
+# me_df_protein = pd.read_csv('/PATH/me_pro_z.csv', index_col='Gene')
+# me_df_RNA = pd.read_csv('/PATH/me_rna_z.csv', index_col='Gene')
+# me_df_subtype = pd.read_csv('/PATH/me_group_key.txt', sep='\t')
 
 
 # function
@@ -81,9 +81,9 @@ def write_hdf5(hdf5_FileName, DF_quant, DF_subtype, Subtype_col_num):
 # write the files
 # write_hdf5(JohanssonProteome, jo_df_protein, jo_df_subtype, 2)
 # write_hdf5(JohanssonTranscriptome, jo_df_RNA, jo_df_subtype, 2)
-#
+
 # write_hdf5(KrugProteome, kr_df_protein, kr_df_subtype, 2)
 # write_hdf5(KrugTranscriptome, kr_df_RNA, kr_df_subtype, 2)
-#
+
 # write_hdf5(MertinsProteome, me_df_protein, me_df_subtype, 1)
 # write_hdf5(MertinsTranscriptome, me_df_RNA, me_df_subtype, 1)

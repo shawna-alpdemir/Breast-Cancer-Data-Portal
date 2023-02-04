@@ -1,3 +1,5 @@
+# Archived Feb 4, 2023. Heatmap may be a feature in the future
+
 import h5py
 import numpy as np
 import pandas as pd

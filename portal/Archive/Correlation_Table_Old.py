@@ -1,4 +1,5 @@
-#old method: use Proteome and Transcriptome HDF5 file to create correlation matrix from scratch
+# Archived Feb 4, 2023
+# Old method: use Proteome and Transcriptome HDF5 file to create correlation matrix from scratch
 
 # def Get_Protein_Correlation_Table(gene_name):
 #
