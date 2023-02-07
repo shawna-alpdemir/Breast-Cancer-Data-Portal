@@ -33,20 +33,20 @@ def Johansson_Subtype_Plot(jo_subtype_protein_CDS, jo_subtype_mRNA_CDS):
                                   height=SUBTYPE_PLOT_HEIGHT, width=SUBTYPE_PLOT_WIDTH, output_backend="webgl")
 
     # make protein plot
-    jo_protein_subtype_plot.circle('x', 'y', source=jo_subtype_protein_CDS,
+    jo_protein_subtype_plot.scatter('x', 'y', source=jo_subtype_protein_CDS,
                                    fill_color=factor_cmap('x', palette=five_subtype_colors, factors=five_subtypes, start=1, end=2),
                                    line_color=factor_cmap('x', palette=five_subtype_colors, factors=five_subtypes, start=1, end=2),
                                    )
-    jo_protein_subtype_plot.circle('x', 'upper', source=jo_subtype_protein_CDS, size=0)  # invisible, here only to set initial visible range correctly
-    jo_protein_subtype_plot.circle('x', 'lower', source=jo_subtype_protein_CDS, size=0)  # invisible, here only to set initial visible range correctly
+    jo_protein_subtype_plot.scatter('x', 'upper', source=jo_subtype_protein_CDS, size=0)  # invisible, here only to set initial visible range correctly
+    jo_protein_subtype_plot.scatter('x', 'lower', source=jo_subtype_protein_CDS, size=0)  # invisible, here only to set initial visible range correctly
 
     # make mRNA plot
-    jo_mRNA_subtype_plot.circle('x', 'y', source=jo_subtype_mRNA_CDS,
+    jo_mRNA_subtype_plot.scatter('x', 'y', source=jo_subtype_mRNA_CDS,
                                 fill_color=factor_cmap('x', palette=five_subtype_colors, factors=five_subtypes, start=1, end=2),
                                 line_color=factor_cmap('x', palette=five_subtype_colors, factors=five_subtypes, start=1, end=2),
                                 )
-    jo_mRNA_subtype_plot.circle('x', 'upper', source=jo_subtype_mRNA_CDS, size=0)  # invisible, here only to set initial visible range correctly
-    jo_mRNA_subtype_plot.circle('x', 'lower', source=jo_subtype_mRNA_CDS, size=0)  # invisible, here only to set initial visible range correctly
+    jo_mRNA_subtype_plot.scatter('x', 'upper', source=jo_subtype_mRNA_CDS, size=0)  # invisible, here only to set initial visible range correctly
+    jo_mRNA_subtype_plot.scatter('x', 'lower', source=jo_subtype_mRNA_CDS, size=0)  # invisible, here only to set initial visible range correctly
 
     # Add error bars
     # protein plot
@@ -81,20 +81,20 @@ def Krug_Subtype_Plot(kr_subtype_protein_CDS, kr_subtype_mRNA_CDS):
                                   height=SUBTYPE_PLOT_HEIGHT, width=SUBTYPE_PLOT_WIDTH, output_backend="webgl")
 
     # make protein plot
-    kr_protein_subtype_plot.circle('x', 'y', source=kr_subtype_protein_CDS,
+    kr_protein_subtype_plot.scatter('x', 'y', source=kr_subtype_protein_CDS,
                                    fill_color=factor_cmap('x', palette=five_subtype_colors, factors=five_subtypes, start=1, end=2),
                                    line_color=factor_cmap('x', palette=five_subtype_colors, factors=five_subtypes, start=1, end=2),
                                    )
-    kr_protein_subtype_plot.circle('x', 'upper', source=kr_subtype_protein_CDS, size=0)  # invisible, here only to set initial visible range correctly
-    kr_protein_subtype_plot.circle('x', 'lower', source=kr_subtype_protein_CDS, size=0)  # invisible, here only to set initial visible range correctly
+    kr_protein_subtype_plot.scatter('x', 'upper', source=kr_subtype_protein_CDS, size=0)  # invisible, here only to set initial visible range correctly
+    kr_protein_subtype_plot.scatter('x', 'lower', source=kr_subtype_protein_CDS, size=0)  # invisible, here only to set initial visible range correctly
 
     # make mRNA plot
-    kr_mRNA_subtype_plot.circle('x', 'y', source=kr_subtype_mRNA_CDS,
+    kr_mRNA_subtype_plot.scatter('x', 'y', source=kr_subtype_mRNA_CDS,
                                 fill_color=factor_cmap('x', palette=five_subtype_colors, factors=five_subtypes, start=1, end=2),
                                 line_color=factor_cmap('x', palette=five_subtype_colors, factors=five_subtypes, start=1, end=2),
                                 )
-    kr_mRNA_subtype_plot.circle('x', 'upper', source=kr_subtype_mRNA_CDS, size=0)  # invisible, here only to set initial visible range correctly
-    kr_mRNA_subtype_plot.circle('x', 'lower', source=kr_subtype_mRNA_CDS, size=0)  # invisible, here only to set initial visible range correctly
+    kr_mRNA_subtype_plot.scatter('x', 'upper', source=kr_subtype_mRNA_CDS, size=0)  # invisible, here only to set initial visible range correctly
+    kr_mRNA_subtype_plot.scatter('x', 'lower', source=kr_subtype_mRNA_CDS, size=0)  # invisible, here only to set initial visible range correctly
 
     # Add error bars
     # protein plot
@@ -129,20 +129,20 @@ def Mertins_Subtype_Plot(me_subtype_protein_CDS, me_subtype_mRNA_CDS):
                                   height=SUBTYPE_PLOT_HEIGHT, width=SUBTYPE_PLOT_WIDTH, output_backend="webgl")
 
     # make protein plot
-    me_protein_subtype_plot.circle('x', 'y', source=me_subtype_protein_CDS,
+    me_protein_subtype_plot.scatter('x', 'y', source=me_subtype_protein_CDS,
                                    fill_color=factor_cmap('x', palette=five_subtype_colors[0:4], factors=five_subtypes[0:4], start=1, end=2),
                                    line_color=factor_cmap('x', palette=five_subtype_colors[0:4], factors=five_subtypes[0:4], start=1, end=2),
                                    )
-    me_protein_subtype_plot.circle('x', 'upper', source=me_subtype_protein_CDS, size=0)  # invisible, here only to set initial visible range correctly
-    me_protein_subtype_plot.circle('x', 'lower', source=me_subtype_protein_CDS, size=0)  # invisible, here only to set initial visible range correctly
+    me_protein_subtype_plot.scatter('x', 'upper', source=me_subtype_protein_CDS, size=0)  # invisible, here only to set initial visible range correctly
+    me_protein_subtype_plot.scatter('x', 'lower', source=me_subtype_protein_CDS, size=0)  # invisible, here only to set initial visible range correctly
 
     # make mRNA plot
-    me_mRNA_subtype_plot.circle('x', 'y', source=me_subtype_mRNA_CDS,
+    me_mRNA_subtype_plot.scatter('x', 'y', source=me_subtype_mRNA_CDS,
                                 fill_color=factor_cmap('x', palette=five_subtype_colors[0:4], factors=five_subtypes[0:4], start=1, end=2),
                                 line_color=factor_cmap('x', palette=five_subtype_colors[0:4], factors=five_subtypes[0:4], start=1, end=2),
                                 )
-    me_mRNA_subtype_plot.circle('x', 'upper', source=me_subtype_mRNA_CDS, size=0)  # invisible, here only to set initial visible range correctly
-    me_mRNA_subtype_plot.circle('x', 'lower', source=me_subtype_mRNA_CDS, size=0)  # invisible, here only to set initial visible range correctly
+    me_mRNA_subtype_plot.scatter('x', 'upper', source=me_subtype_mRNA_CDS, size=0)  # invisible, here only to set initial visible range correctly
+    me_mRNA_subtype_plot.scatter('x', 'lower', source=me_subtype_mRNA_CDS, size=0)  # invisible, here only to set initial visible range correctly
 
     # Add error bars
     # protein plot
