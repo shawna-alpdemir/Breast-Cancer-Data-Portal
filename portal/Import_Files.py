@@ -30,19 +30,31 @@ def Import_Static_Correlation_Table():
 
     return jo_mrna_ERBB2, jo_protein_ERBB2, kr_mrna_ERBB2, kr_protein_ERBB2, me_mrna_ERBB2, me_protein_ERBB2, summary_protein_ERBB2, summary_mrna_ERBB2
 
-def Import_Cor_Matrix_HDF5():
-    jo_protein_cormat = 'portal/Data/HDF5_Cormat/jo_protein_cormat.hdf5'
-    jo_mrna_cormat = 'portal/Data/HDF5_Cormat/jo_mrna_cormat.hdf5'
+def Import_Coef_Matrix_HDF5():
+    jo_protein_coef = 'portal/Data/HDF5_Cormat/jo_pro_coef.hdf5'
+    jo_mrna_coef = 'portal/Data/HDF5_Cormat/jo_mrna_coef.hdf5'
 
-    kr_protein_cormat = 'portal/Data/HDF5_Cormat/kr_protein_cormat.hdf5'
-    kr_mrna_cormat = 'portal/Data/HDF5_Cormat/kr_mrna_cormat.hdf5'
+    kr_protein_cormat = 'portal/Data/HDF5_Cormat/kr_pro_coef.hdf5'
+    kr_mrna_coef = 'portal/Data/HDF5_Cormat/kr_mrna_coef.hdf5'
 
-    me_protein_cormat = 'portal/Data/HDF5_Cormat/me_protein_cormat.hdf5'
-    me_mrna_cormat = 'portal/Data/HDF5_Cormat/me_mrna_cormat.hdf5'
+    me_protein_coef = 'portal/Data/HDF5_Cormat/me_pro_coef.hdf5'
+    me_mrna_coef = 'portal/Data/HDF5_Cormat/me_mrna_coef.hdf5'
 
     annotate = pd.read_csv('portal/Data/Gene name annotation.csv', index_col='Gene')
 
-    return jo_protein_cormat, jo_mrna_cormat, kr_protein_cormat, kr_mrna_cormat, me_protein_cormat, me_mrna_cormat, annotate
+    return jo_protein_coef, jo_mrna_coef, kr_protein_cormat, kr_mrna_coef, me_protein_coef, me_mrna_coef, annotate
+
+def Import_Pval_Matrix_HDF5():
+    jo_protein_pval = 'portal/Data/HDF5_Cormat/jo_pro_pval.hdf5'
+    jo_mrna_pval = 'portal/Data/HDF5_Cormat/jo_mrna_pval.hdf5'
+
+    kr_protein_pval = 'portal/Data/HDF5_Cormat/kr_pro_pval.hdf5'
+    kr_mrna_pval = 'portal/Data/HDF5_Cormat/kr_mrna_pval.hdf5'
+
+    me_protein_pval = 'portal/Data/HDF5_Cormat/me_pro_pval.hdf5'
+    me_mrna_pval = 'portal/Data/HDF5_Cormat/me_mrna_pval.hdf5'
+
+    return jo_protein_pval, jo_mrna_pval, kr_protein_pval, kr_mrna_pval, me_protein_pval, me_mrna_pval
 
 def Import_Subtype_DF():
     jo_pro = pd.read_csv('portal/Data/Subtype_avg_sem/jo_pro_subtype.csv', index_col='Gene')
