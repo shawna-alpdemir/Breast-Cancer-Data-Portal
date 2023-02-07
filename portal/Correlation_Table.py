@@ -5,19 +5,16 @@
 import pandas as pd
 import h5py
 import numpy as np
-import scipy.stats as sc
 import pdb
-from Import_Files import Import_Cor_Matrix_HDF5
+from Import_Files import Import_Coef_Matrix_HDF5, Import_Pval_Matrix_HDF5
 
-jo_patients_num = 45
-kr_patients_num = 122
-me_patients_num = 77
-[jo_protein_cormat, jo_mrna_cormat, kr_protein_cormat, kr_mrna_cormat, me_protein_cormat, me_mrna_cormat, annotate] = Import_Cor_Matrix_HDF5()
+[jo_protein_coef, jo_mrna_coef, kr_protein_coef, kr_mrna_coef, me_protein_coef, me_mrna_coef, annotate] = Import_Coef_Matrix_HDF5()
+[jo_protein_pval, jo_mrna_pval, kr_protein_pval, kr_mrna_pval, me_protein_pval, me_mrna_pval] = Import_Pval_Matrix_HDF5()
 
-# new method: use calculated correlation matrix HDF5 file to query gene, order and sort top 1000, calculate p values respectively
+# new method: use calculated correlation matrix HDF5 file to query gene, order and sort top 1000, retrieve p values respectively
 def Get_Protein_Correlation_Table(gene_name):
 
-    with h5py.File(jo_protein_cormat, "r") as a:
+    with h5py.File(jo_protein_coef, "r") as a:
 
         try:
             # input gene
@@ -30,14 +27,25 @@ def Get_Protein_Correlation_Table(gene_name):
             # assemble DF by putting correlation values in a column, with gene names in the index
             jo_pro_DF = pd.DataFrame(data=gene, index=total_gene_list, columns=['r'])
             jo_pro_DF.index.name = 'Gene'
-            jo_pro_DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
+            # jo_pro_DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
 
-            # calculate p values
-            TestStat = (jo_pro_DF * (jo_patients_num - 2) ** 0.5) / (1 - jo_pro_DF ** 2) ** 0.5  # calculate t score
-            Sig = sc.t.sf(abs(TestStat),df=jo_patients_num - 2) * 2  # using the survival function to compute one-sided p-value, then doubled it to make it two-side
+            # drop the gene_name itself
+            jo_pro_DF.drop(labels=gene_name, inplace=True)
 
-            # assemble final DF, X_pro_DF is for summary table assembly
-            jo_pro_DF.insert(1, 'p', Sig, True)
+            # retrieve p values
+            with h5py.File(jo_protein_pval, "r") as b:
+                gene = np.array(b.get(gene_name))
+                total_gene_list = np.array(b.get('genes'))
+                total_gene_list = [x.decode('utf-8') for x in total_gene_list]
+
+                jo_pro_pval = pd.DataFrame(data=gene, index=total_gene_list, columns=['p'])
+                jo_pro_pval.index.name = 'Gene'
+
+            # merge jo_pro_pval to jo_pro_DF
+            jo_pro_DF = pd.merge(jo_pro_DF, jo_pro_pval, left_index=True, right_index=True)
+            jo_pro_DF.sort_values(by='p', inplace=True, ascending=True)
+
+            # select first 1000 genes and annotate them
             jo_pro_DF.reset_index(inplace=True)
             jo_Correlation_table_df = jo_pro_DF.iloc[1:1001]
             jo_Correlation_table_df = jo_Correlation_table_df.join(annotate, on='Gene')
@@ -51,7 +59,7 @@ def Get_Protein_Correlation_Table(gene_name):
                                                     "p": [0],
                                                     "Name": [0]}, index=None)
 
-    with h5py.File(kr_protein_cormat, "r") as a:
+    with h5py.File(kr_protein_coef, "r") as a:
 
         try:
             # input gene
@@ -64,14 +72,24 @@ def Get_Protein_Correlation_Table(gene_name):
             # assemble DF by putting correlation values in a column, with gene names in the index
             kr_pro_DF = pd.DataFrame(data=gene, index=total_gene_list, columns=['r'])
             kr_pro_DF.index.name = 'Gene'
-            kr_pro_DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
+            # kr_pro_DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
 
-            # calculate p values
-            TestStat = (kr_pro_DF * (kr_patients_num - 2) ** 0.5) / (1 - kr_pro_DF ** 2) ** 0.5  # calculate t score
-            Sig = sc.t.sf(abs(TestStat),df=kr_patients_num - 2) * 2  # using the survival function to compute one-sided p-value, then doubled it to make it two-side
+            # drop the gene_name itself
+            kr_pro_DF.drop(labels=gene_name, inplace=True)
 
-            # assemble final DF, X_pro_DF is for summary table assembly
-            kr_pro_DF.insert(1, 'p', Sig, True)
+            # retrieve p values
+            with h5py.File(kr_protein_pval, "r") as b:
+                gene = np.array(b.get(gene_name))
+                total_gene_list = np.array(b.get('genes'))
+                total_gene_list = [x.decode('utf-8') for x in total_gene_list]
+
+                kr_pro_pval = pd.DataFrame(data=gene, index=total_gene_list, columns=['p'])
+                kr_pro_pval.index.name = 'Gene'
+
+            # merge jo_pro_pval to jo_pro_DF
+            kr_pro_DF =  pd.merge(kr_pro_DF, kr_pro_pval, left_index=True, right_index=True)
+            kr_pro_DF.sort_values(by='p', inplace=True, ascending=True)
+            # select first 1000 genes and annotate them
             kr_pro_DF.reset_index(inplace=True)
             kr_Correlation_table_df = kr_pro_DF.iloc[1:1001]
             kr_Correlation_table_df = kr_Correlation_table_df.join(annotate, on='Gene')
@@ -85,7 +103,7 @@ def Get_Protein_Correlation_Table(gene_name):
                                                     "p": [0],
                                                     "Name": [0]}, index=None)
 
-    with h5py.File(me_protein_cormat, "r") as a:
+    with h5py.File(me_protein_coef, "r") as a:
 
         try:
             # input gene
@@ -98,14 +116,25 @@ def Get_Protein_Correlation_Table(gene_name):
             # assemble DF by putting correlation values in a column, with gene names in the index
             me_pro_DF = pd.DataFrame(data=gene, index=total_gene_list, columns=['r'])
             me_pro_DF.index.name = 'Gene'
-            me_pro_DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
+            # me_pro_DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
 
-            # calculate p values
-            TestStat = (me_pro_DF * (me_patients_num - 2) ** 0.5) / (1 - me_pro_DF ** 2) ** 0.5  # calculate t score
-            Sig = sc.t.sf(abs(TestStat),df=me_patients_num - 2) * 2  # using the survival function to compute one-sided p-value, then doubled it to make it two-side
+            # drop the gene_name itself
+            me_pro_DF.drop(labels=gene_name, inplace=True)
 
-            # assemble final DF, X_pro_DF is for summary table assembly
-            me_pro_DF.insert(1, 'p', Sig, True)
+            # retrieve p values
+            with h5py.File(me_protein_pval, "r") as b:
+                gene = np.array(b.get(gene_name))
+                total_gene_list = np.array(b.get('genes'))
+                total_gene_list = [x.decode('utf-8') for x in total_gene_list]
+
+                me_pro_pval = pd.DataFrame(data=gene, index=total_gene_list, columns=['p'])
+                me_pro_pval.index.name = 'Gene'
+
+            # merge jo_pro_pval to jo_pro_DF
+            me_pro_DF = pd.merge(me_pro_DF, me_pro_pval, left_index=True, right_index=True)
+            me_pro_DF.sort_values(by='p', inplace=True, ascending=True)
+
+            # select first 1000 genes and annotate them
             me_pro_DF.reset_index(inplace=True)
             me_Correlation_table_df = me_pro_DF.iloc[1:1001]
             me_Correlation_table_df = me_Correlation_table_df.join(annotate, on='Gene')
@@ -159,7 +188,7 @@ def Get_Protein_Correlation_Table(gene_name):
 
 def Get_mRNA_Correlation_Table(gene_name):
 
-    with h5py.File(jo_mrna_cormat, "r") as a:
+    with h5py.File(jo_mrna_coef, "r") as a:
 
         try:
             # input gene
@@ -172,14 +201,25 @@ def Get_mRNA_Correlation_Table(gene_name):
             # assemble DF by putting correlation values in a column, with gene names in the index
             jo_mRNA_DF = pd.DataFrame(data=gene, index=total_gene_list, columns=['r'])
             jo_mRNA_DF.index.name = 'Gene'
-            jo_mRNA_DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
+            # jo_mRNA_DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
 
-            # calculate p values
-            TestStat = (jo_mRNA_DF * (jo_patients_num - 2) ** 0.5) / (1 - jo_mRNA_DF ** 2) ** 0.5  # calculate t score
-            Sig = sc.t.sf(abs(TestStat), df=jo_patients_num - 2) * 2  # using the survival function to compute one-sided p-value, then doubled it to make it two-side
+            # drop the gene_name itself
+            jo_mRNA_DF.drop(labels=gene_name, inplace=True)
 
-            # assemble final DF
-            jo_mRNA_DF.insert(1, 'p', Sig, True)
+            # retrieve p values
+            with h5py.File(jo_mrna_pval, "r") as b:
+                gene = np.array(b.get(gene_name))
+                total_gene_list = np.array(b.get('genes'))
+                total_gene_list = [x.decode('utf-8') for x in total_gene_list]
+
+                jo_mRNA_pval = pd.DataFrame(data=gene, index=total_gene_list, columns=['p'])
+                jo_mRNA_pval.index.name = 'Gene'
+
+            # merge jo_pro_pval to jo_pro_DF
+            jo_mRNA_DF = pd.merge(jo_mRNA_DF, jo_mRNA_pval, left_index=True, right_index=True)
+            jo_mRNA_DF.sort_values(by='p', inplace=True, ascending=True)
+
+            # select first 1000 genes and annotate them
             jo_mRNA_DF.reset_index(inplace=True)
             jo_m_Correlation_table_df = jo_mRNA_DF.iloc[1:1001]
             jo_m_Correlation_table_df = jo_m_Correlation_table_df.join(annotate, on='Gene')
@@ -193,7 +233,7 @@ def Get_mRNA_Correlation_Table(gene_name):
                                                     "p": [0],
                                                     "Name": [0]}, index=None)
 
-    with h5py.File(kr_mrna_cormat, "r") as a:
+    with h5py.File(kr_mrna_coef, "r") as a:
 
         try:
             # input gene
@@ -206,14 +246,25 @@ def Get_mRNA_Correlation_Table(gene_name):
             # assemble DF by putting correlation values in a column, with gene names in the index
             kr_mRNA_DF = pd.DataFrame(data=gene, index=total_gene_list, columns=['r'])
             kr_mRNA_DF.index.name = 'Gene'
-            kr_mRNA_DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
+            # kr_mRNA_DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
 
-            # calculate p values
-            TestStat = (kr_mRNA_DF * (kr_patients_num - 2) ** 0.5) / (1 - kr_mRNA_DF ** 2) ** 0.5  # calculate t score
-            Sig = sc.t.sf(abs(TestStat), df=kr_patients_num - 2) * 2  # using the survival function to compute one-sided p-value, then doubled it to make it two-side
+            # drop the gene_name itself
+            kr_mRNA_DF.drop(labels=gene_name, inplace=True)
 
-            # assemble final DF
-            kr_mRNA_DF.insert(1, 'p', Sig, True)
+            # retrieve p values
+            with h5py.File(kr_mrna_pval, "r") as b:
+                gene = np.array(b.get(gene_name))
+                total_gene_list = np.array(b.get('genes'))
+                total_gene_list = [x.decode('utf-8') for x in total_gene_list]
+
+                kr_mRNA_pval = pd.DataFrame(data=gene, index=total_gene_list, columns=['p'])
+                kr_mRNA_pval.index.name = 'Gene'
+
+            # merge jo_pro_pval to jo_pro_DF
+            kr_mRNA_DF = pd.merge(kr_mRNA_DF, kr_mRNA_pval, left_index=True, right_index=True)
+            kr_mRNA_DF.sort_values(by='p', inplace=True, ascending=True)
+
+            # select first 1000 genes and annotate them
             kr_mRNA_DF.reset_index(inplace=True)
             kr_m_Correlation_table_df = kr_mRNA_DF.iloc[1:1001]
             kr_m_Correlation_table_df = kr_m_Correlation_table_df.join(annotate, on='Gene')
@@ -227,7 +278,7 @@ def Get_mRNA_Correlation_Table(gene_name):
                                                     "p": [0],
                                                     "Name": [0]}, index=None)
 
-    with h5py.File(me_mrna_cormat, "r") as a:
+    with h5py.File(me_mrna_coef, "r") as a:
 
         try:
             # input gene
@@ -240,14 +291,25 @@ def Get_mRNA_Correlation_Table(gene_name):
             # assemble DF by putting correlation values in a column, with gene names in the index
             me_mRNA_DF = pd.DataFrame(data=gene, index=total_gene_list, columns=['r'])
             me_mRNA_DF.index.name = 'Gene'
-            me_mRNA_DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
+            # me_mRNA_DF.sort_values(by='r', key=abs, inplace=True, ascending=False)
 
-            # calculate p values
-            TestStat = (me_mRNA_DF * (me_patients_num - 2) ** 0.5) / (1 - me_mRNA_DF ** 2) ** 0.5  # calculate t score
-            Sig = sc.t.sf(abs(TestStat), df=me_patients_num - 2) * 2  # using the survival function to compute one-sided p-value, then doubled it to make it two-side
+            # drop the gene_name itself
+            me_mRNA_DF.drop(labels=gene_name, inplace=True)
 
-            # assemble final DF
-            me_mRNA_DF.insert(1, 'p', Sig, True)
+            # retrieve p values
+            with h5py.File(me_mrna_pval, "r") as b:
+                gene = np.array(b.get(gene_name))
+                total_gene_list = np.array(b.get('genes'))
+                total_gene_list = [x.decode('utf-8') for x in total_gene_list]
+
+                me_mRNA_pval = pd.DataFrame(data=gene, index=total_gene_list, columns=['p'])
+                me_mRNA_pval.index.name = 'Gene'
+
+            # merge jo_pro_pval to jo_pro_DF
+            me_mRNA_DF = pd.merge(me_mRNA_DF, me_mRNA_pval, left_index=True, right_index=True)
+            me_mRNA_DF.sort_values(by='p', inplace=True, ascending=True)
+
+            # select first 1000 genes and annotate them
             me_mRNA_DF.reset_index(inplace=True)
             me_m_Correlation_table_df = me_mRNA_DF.iloc[1:1001]
             me_m_Correlation_table_df = me_m_Correlation_table_df.join(annotate, on='Gene')
