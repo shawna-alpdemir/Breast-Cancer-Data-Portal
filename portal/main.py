@@ -912,10 +912,11 @@ formatted_button6 = row(column(Spacer(height=19),button6))
 RowSpacer = Spacer(height=30)
 PageMargin = Spacer(width=30)
 
-tool_title_text = "Breast Cancer Proteome Portal"
-tool_title_div = Div(text=tool_title_text,
+tool_title_div = Div(text="Breast Cancer Proteome Portal",
                      styles={'font-size': '200%', 'color': 'black', 'font-style': 'normal', 'font-weight': 'bold'},
                      width=1000)
+tab_click_reminder_text_div = Div(text="Toggle between studies using the tabs above each plot.",
+                         styles={'font-size': '100%', 'color': 'black'}, width=1000)
 
 line_plot_div = column(Div(text="Abundance Traces:",
                            styles={'font-size': '120%', 'color': 'black', 'font-style': 'italic',
@@ -939,6 +940,7 @@ mRNA_cor_table_title_div = column(Div(text="Correlation Table - mRNA:",
 gene_hide_text_div = Div(text="To hide traces, click on interactive legend entries.",
                          styles={'font-size': '100%', 'color': 'red'}, width=200, width_policy='auto', height_policy='auto')
 
+tool_title_description_section = column(tool_title_div, tab_click_reminder_text_div)
 gene_entry_section = column(tickers_buttons_layout)
 line_plot_section = column(line_plot_div, row(line_plot_tab, column(gene_entry_section, gene_hide_text_div)))
 select_widget_section = column(select_widget_layout)
@@ -948,7 +950,8 @@ correlation_table_section = column(row(column(protein_cor_table_title_div, row(p
                                               mRNA_cor_table_title_div, row(mrna_correlation_textbox, formatted_button6), cor_mrna_table_tab, Spacer(height=15))))
 
 l = layout([
-    [PageMargin, tool_title_div],
+    [PageMargin, tool_title_description_section],
+    Spacer(height=15),
     [PageMargin, line_plot_section],
     [RowSpacer],
     [PageMargin, scatter_plot_section],
@@ -968,4 +971,3 @@ print(f'Total response time: {elapsed}')
 # --------------------------------------------------------------------
 # HTML related
 # --------------------------------------------------------------------
-script = server_document("http://52.45.183.122:5006/portal")
