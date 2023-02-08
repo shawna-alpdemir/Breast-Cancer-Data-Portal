@@ -685,7 +685,7 @@ selection_update_button.on_click(Scatter_Select_Button_Update)
 select_widget_layout = column(x_axis_select, y_axis_select, selection_update_button)
 
 # static legend under selection dropdown
-legend_pic = Div(text="<img src='https://i.imgur.com/EkDG2GO.png'>")
+legend_pic = Div(text="<img src='https://i.imgur.com/bHTfVP8.png'>")
 
 # --------------------------------------------------------------------
 # Row 2: mRNA-Protein Correlation Scatter Plot
